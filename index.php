@@ -16,7 +16,7 @@ try {
     // Si oui, on la traite,
     // Sinon, on affiche soit la page login ou home en fonction si il y a une session d'ouverte ou pas
     if (isset($_GET['action'])) {
-        if($_GET['action'] == 'register') {
+        if ($_GET['action'] == 'register') {
             $frontController->register();
         }
     } else {

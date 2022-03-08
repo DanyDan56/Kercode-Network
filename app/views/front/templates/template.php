@@ -19,7 +19,7 @@
 <body class="theme-l5">
 
     <!-- On affiche la barre de navigation si on en a besoin -->
-    <?php if(isset($navbar)) { echo $navbar; } ?>
+    <?php if (isset($navbar)) { echo $navbar; } ?>
 
     <!-- Le contenu de la page -->
     <?= $content; ?>

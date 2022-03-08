@@ -3,13 +3,22 @@ plugins:
     enabled: true
     config:
       file_extensions: "php"
+    checks:
+      PhanUndeclaredVariable:
+          enabled: false
   
   phpcodesniffer:
     enabled: true
+    checks:
+      Generic Files LineLength TooLong:
+        enabled: false
+      Squiz WhiteSpace ScopeClosingBrace ContentBefore:
+        enabled: false
+      Squiz ControlStructures ControlSignature NewlineAfterOpenBrace:
+        enabled: false
 
   phpmd:
     enabled: true
-    # ... CONFIG CONTENT ...
     checks:
       Naming/ShortVariable:
         enabled: false

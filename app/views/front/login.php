@@ -13,7 +13,7 @@
             <form id="login" action="index.php?action=loginpost" method="POST">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" class="margin-bottom" placeholder="Entrez votre email"
-                    value="<?php if(isset($email)){echo $email;} ?>" required>
+                    value="<?php if (isset($email)) { echo $email; } ?>" required>
 
                 <label for="password">Mot de passe</label>
                 <input type="password" name="password" id="password" class="margin-bottom" placeholder="Entrez votre mot de passe" required>
