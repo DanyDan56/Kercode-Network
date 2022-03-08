@@ -243,6 +243,10 @@ input[type="radio"]:checked:before {
     display: block;
 }
 
+.no-decoration {
+    text-decoration: none;
+}
+
 .opacity {
     opacity: .60;
 }
@@ -328,6 +332,10 @@ input[type="radio"]:checked:before {
     font-size: 18px;
 }
 
+.font-xlarge {
+    font-size: 20px;
+}
+
 .fixed-top {
     position: fixed;
     width: 100%;
@@ -345,7 +353,6 @@ input[type="radio"]:checked:before {
 
 .right {
     margin-left: auto;
-    /* justify-self: flex-end; */
 }
 
 .float-right {
@@ -385,7 +392,6 @@ input[type="radio"]:checked:before {
 }
 
 .dropdown-content {
-    /* display: none; */
     position: absolute;
     cursor: auto;
     min-width: 160px;
@@ -464,14 +470,8 @@ input[type="radio"]:checked:before {
     width: 100%;
     margin: 0;
     padding: 0;
-
     list-style-type: none;
-    /* overflow: hidden; */
 }
-
-/* .navbar li {
-    float: left;
-} */
 
 .navbar a, .dropdown-content a {
     text-decoration: none;
@@ -508,11 +508,6 @@ input[type="radio"]:checked:before {
 /****************************************
                 LOGIN
 *****************************************/
-
-/* #login label {
-    display: inline-block;
-    width: 100%;
-} */
 
 #login input {
     width: 100%;

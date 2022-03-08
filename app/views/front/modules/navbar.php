@@ -36,7 +36,7 @@
         </li>
         <li class="hide-small right dropdown-hover">
             <a href="#" class="image-profile hover-white" title="Mon compte">
-                <img src="app/public/images/examples/img_avatar2.png" alt="Photo du profil" class="circle">
+                <img src="app/private/images/users/<?= $user->__get('id') . "/" . $user->__get('profileImage'); ?>" alt="Photo du profil" class="circle">
             </a>
             <div class="dropdown-content dropdown-content-right dropdown-anim white card-4">
                 <a href="#">Mon profil</a>

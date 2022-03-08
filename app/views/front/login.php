@@ -10,6 +10,19 @@
 <div class="content w30">
     <div class="card-2 round white">
         <div class="container padding-large">
+
+            <!-- On gère les exceptions -->
+            <?php try {
+                if(isset($e)) { throw $e; }
+            } catch(\Exception $e) { ?>
+                <?php if($e->getCode() === 0): ?>
+                    <div class="info-box margin-bottom"><p><?= $e->getMessage(); ?></p></div>
+                <?php elseif($e->getCode() === 3): ?>
+                    <div class="alert-box margin-bottom"><p><?= $e->getMessage(); ?></p></div>
+                <?php endif; ?>
+            <?php } ?>
+
+            <!-- Formulaire de connexion -->
             <form id="login" action="index.php?action=loginpost" method="POST">
                 <label for="email">Email</label>
                 <input type="email" name="email" id="email" class="margin-bottom" placeholder="Entrez votre email"
