@@ -1,0 +1,20 @@
+plugins:
+  phan:
+    enabled: true
+    config:
+      file_extensions: "php"
+  
+  phpcodesniffer:
+    enabled: true
+
+  phpmd:
+    enabled: true
+    # ... CONFIG CONTENT ...
+    checks:
+      Naming/ShortVariable:
+        enabled: false
+      Controversial/Superglobals:
+        enabled: false
+
+  sonar-php:
+    enabled: true

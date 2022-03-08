@@ -1,0 +1,18 @@
+{
+    "name": "dgd/knetwork",
+    "description": "Projet de fin d'annee pour la formation Kercode 2022",
+    "autoload": {
+        "psr-4": {
+            "Knetwork\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Daniel Goulard",
+            "email": "dgd.contact@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.4"
+    }
+}
