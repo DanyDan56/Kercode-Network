@@ -6,6 +6,10 @@ plugins:
     checks:
       PhanUndeclaredVariable:
           enabled: false
+      PhanUndeclaredFunction:
+          enabled: false
+      PhanUndeclaredClassMethod:
+        enabled: false
   
   phpcodesniffer:
     enabled: true
@@ -24,6 +28,10 @@ plugins:
         enabled: false
       Controversial/Superglobals:
         enabled: false
+      CleanCode/MissingImport:
+        enabled: false
 
   sonar-php:
     enabled: true
+    php:S1192:
+        enabled: false

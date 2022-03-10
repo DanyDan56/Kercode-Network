@@ -17,8 +17,8 @@ class UserController
     {
         // On vérifie si il y a eu une erreur
         // Si non, on enregistre l'image dans l'espace de l'ulisateur
-        if($image['error']) {
-            switch($image['error']) {
+        if ($image['error']) {
+            switch ($image['error']) {
                 case 1: // UPLOAD_ERR_INIT_SIZE
                     throw new \Exception("L'image dépasse la taille autorisée par le serveur", 3);
                     break;
@@ -31,19 +31,19 @@ class UserController
                 case 4: // UPLOAD_ERR_NO_FILE
                     throw new \Exception("Le fichier que vous envoyé a une taille nulle", 3);
                     break;
-            }
-        } else {
-            if((isset($image['tmp_name']) && ($image['error'] == UPLOAD_ERR_OK))) {
-                $dest = 'app/private/images/users/' . $id . "/";
-                $name = time() . ".png";
+                default: // UPLOAD_ERR_OK
+                    if(isset($image['tmp_name'])) {
+                        $dest = 'app/private/images/users/' . $id . "/";
+                        $name = time() . ".png";
 
-                // On enregistre l'image dans le dossier de l'utilisateur
-                move_uploaded_file($image['tmp_name'], $dest . $name);
-                
-                // On met à jour la base de donnée
-                if (!User::updateById($id, 'image_profile', $name)) {
-                    throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);
-                }
+                        // On enregistre l'image dans le dossier de l'utilisateur
+                        move_uploaded_file($image['tmp_name'], $dest . $name);
+
+                        // On met à jour la base de donnée
+                        if (!User::updateById($id, 'image_profile', $name)) {
+                            throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);
+                        }
+                    }
             }
         }
     }

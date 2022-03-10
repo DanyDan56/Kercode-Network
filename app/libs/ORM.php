@@ -7,14 +7,14 @@ if($_SERVER['HTTP_HOST'] != "coffee-k6.herokuapp.com"){
     $dotenv->load();
 }
 
-abstract class ORM 
+abstract class ORM
 {
     // Singleton
     private static $pdo = null;
 
     protected static function connect(): \PDO
     {
-        if(isset(self::$pdo)) {
+        if (isset(self::$pdo)) {
             return self::$pdo;
         } else {
             $servername = "mysql:host=" . $_ENV['DB_HOST'] . ";port=" . $_ENV['DB_PORT'] . ";dbname=" . $_ENV['DB_NAME'] . ";charset=utf8";
@@ -32,7 +32,7 @@ abstract class ORM
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
-        
+
         $sqlQuery = "SELECT id, name FROM $child";
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
