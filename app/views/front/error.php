@@ -1,3 +1,4 @@
+<!-- On change le titre -->
 <?php $title = 'Erreur - Kercode Network'; ?>
 
 <?php ob_start(); ?>

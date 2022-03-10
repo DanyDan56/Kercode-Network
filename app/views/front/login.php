@@ -1,4 +1,4 @@
-<!-- Change the title -->
+<!-- On change le titre-->
 <?php $title = 'Connexion - Kercode Network'; ?>
 
 <?php ob_start(); ?>
@@ -31,8 +31,10 @@
                 <label for="password">Mot de passe</label>
                 <input type="password" name="password" id="password" class="margin-bottom" placeholder="Entrez votre mot de passe" required>
 
+                <!-- TODO: Remember me -->
+
                 <button type="submit" class="btn btn-block theme-d1">Se connecter</button>
-                <p class="center"><a href="#" title="Réinitialisez votre mot de passe">Mot de passe oublié ?</a></p>
+                <p class="center"><a href="#" title="Réinitialisez votre mot de passe">Mot de passe oublié ?</a></p>    <!-- TODO: -->
                 <hr>
                 <a href="index.php?action=register" class="btn btn-block green margin-bottom" title="Créer un compte">Créer un compte</a>
             </form>

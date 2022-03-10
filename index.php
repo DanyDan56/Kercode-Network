@@ -14,21 +14,40 @@ try {
     // Si oui, on la traite,
     // Sinon, on affiche soit la page login ou home en fonction si il y a une session d'ouverte ou pas
     if (isset($_GET['action'])) {
+        // Affichage de la page d'enregistrement de compte
         if ($_GET['action'] == 'register') {
             $frontController->register();
         }
+        // Traitement de l'enregistrement d'un nouveau compte
+        else if ($_GET['action'] == 'registerpost') {
+            $data = [
+                'lastname' => htmlspecialchars($_POST['lastname']),
+                'firstname' => htmlspecialchars($_POST['firstname']),
+                'email' => htmlspecialchars($_POST['email']),
+                'password' => htmlspecialchars($_POST['password']),
+                'confirmPassword' => htmlspecialchars($_POST['confirm_password']),
+                'birthday' => htmlspecialchars($_POST['birthday']),
+                'imageProfile' => $_FILES['image_profile']
+            ];
+
+            $userController->register($data);
+        }
+        // Traitement de la connexion à un compte
         else if ($_GET['action'] == 'loginpost') {
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
 
             $userController->login($email, $password);
         }
+        // Déconnexion
         else if ($_GET['action'] == 'disconnect') {
             session_destroy();
             header('location: index.php');
         }
     } else {
         // On check si la session est setup
+        // Si oui, on affiche la page accueil correspondante au rôle
+        // Si non, on affiche la pge de login
         if (isset($_SESSION['id'])) {
             // TODO: rediriger si admin
             $frontController->home();

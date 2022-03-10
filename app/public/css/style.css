@@ -299,12 +299,24 @@ input[type="radio"]:checked:before {
     padding: 12px 24px !important;
 }
 
+.no-margin {
+    margin: 0;
+}
+
 .margin {
     margin: 16px;
 }
 
+.margin-top-small {
+    margin-top: 12px;
+}
+
 .margin-top {
     margin-top: 32px;
+}
+
+.margin-bottom-small {
+    margin-bottom: 12px;
 }
 
 .margin-bottom {

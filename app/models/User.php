@@ -2,7 +2,7 @@
 
 namespace Knetwork\Models;
 
-class UserModel extends Manager
+class User extends \Knetwork\Libs\ORM
 {
     private int $id;
     private string $firstname;
@@ -19,7 +19,7 @@ class UserModel extends Manager
     {
         $pdo = self::connect();
         $req = $pdo->prepare("SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover
-                              FROM users WHERE email = :email");
+                              FROM user WHERE email = :email");
         $req->execute(['email' => $email]);
         $user = $req->fetch();
 
@@ -35,6 +35,20 @@ class UserModel extends Manager
         }
 
         return new self($user);
+    }
+
+    public static function register(array $data): bool
+    {
+        $pdo = self::connect();
+        $req = $pdo->prepare("INSERT INTO user(lastname, firstname, email, password, birthday_date, created_at, updated_at)
+                             VALUES (:lastname, :firstname, :email, :password, :birthday, NOW(), NOW())");
+        return $req->execute([
+            'lastname' => $data['lastname'],
+            'firstname' => $data['firstname'],
+            'email' => $data['email'],
+            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+            'birthday' => $data['birthday']
+        ]);
     }
 
     public static function dateToFrench(string $date, string $format): string
