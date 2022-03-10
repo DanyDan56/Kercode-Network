@@ -2,7 +2,7 @@
 
 namespace Knetwork\Libs;
 
-if($_SERVER['HTTP_HOST'] != "coffee-k6.herokuapp.com"){
+if ($_SERVER['HTTP_HOST'] != "coffee-k6.herokuapp.com") {
     $dotenv = \Dotenv\Dotenv::createImmuTable("./");
     $dotenv->load();
 }
@@ -16,15 +16,15 @@ abstract class ORM
     {
         if (isset(self::$pdo)) {
             return self::$pdo;
-        } else {
-            $servername = "mysql:host=" . $_ENV['DB_HOST'] . ";port=" . $_ENV['DB_PORT'] . ";dbname=" . $_ENV['DB_NAME'] . ";charset=utf8";
-            $username = $_ENV['DB_USERNAME'];
-            $password = $_ENV['DB_PASSWORD'];
-
-            self::$pdo = new \PDO($servername, $username, $password, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
-
-            return self::$pdo;
         }
+
+        $servername = "mysql:host=" . $_ENV['DB_HOST'] . ";port=" . $_ENV['DB_PORT'] . ";dbname=" . $_ENV['DB_NAME'] . ";charset=utf8";
+        $username = $_ENV['DB_USERNAME'];
+        $password = $_ENV['DB_PASSWORD'];
+
+        self::$pdo = new \PDO($servername, $username, $password, array(\PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION));
+
+        return self::$pdo;
     }
 
     public static function all(): array
@@ -56,12 +56,13 @@ abstract class ORM
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
-        $sqlQuery = "SELECT id, name FROM $child WHERE id = :id";
         $pdo = self::connect();
+        $sqlQuery = "SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover
+                     FROM user WHERE id = :id";
         $req = $pdo->prepare($sqlQuery);
         $req->execute(['id' => $id]);
 
-        return new $child($req->fetch());
+        return $req->fetch();
     }
 
     public static function updateById(int $id, string $name, mixed $value): bool

@@ -51,6 +51,13 @@ class User extends \Knetwork\Libs\ORM
         ]);
     }
 
+    public static function find(int $id): self
+    {
+        $user = parent::find($id);
+
+        return new self($user);
+    }
+
     public static function dateToFrench(string $date, string $format): string
     {
         $englishMonths = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
@@ -68,7 +75,6 @@ class User extends \Knetwork\Libs\ORM
         $this->job = $data['job'];
         $this->address = $data['address'];
         $this->birthdayDate = $this::dateToFrench($data['birthday_date'], "d F Y");
-        $this->gender = $data['gender'];
         $this->profileImage = $data['image_profile'];
         $this->coverImage = $data['image_cover'];
 

@@ -50,7 +50,7 @@ try {
         // Si non, on affiche la pge de login
         if (isset($_SESSION['id'])) {
             // TODO: rediriger si admin
-            $frontController->home();
+            $frontController->home($_SESSION['id']);
         } else {
             $frontController->login();
         }

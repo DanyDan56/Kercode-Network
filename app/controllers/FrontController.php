@@ -4,8 +4,9 @@ namespace Knetwork\Controllers;
 
 class FrontController
 {
-    public function home(): void
+    public function home(int $id): void
     {
+        $user = \Knetwork\Models\User::find($id);
         require 'app/views/front/home.php';
     }
 
