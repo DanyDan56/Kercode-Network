@@ -3,7 +3,7 @@
 
 <?php ob_start(); ?>
 
-<div class="container content w30 margin-top">
+<section class="container content w30 margin-top">
     <div class="card-2 round white">
         <div class=" padding-large">
             <h2 class="center">Inscrivez-vous dès maintenant</h2>
@@ -50,7 +50,7 @@
             </form>
         </div>
     </div>
-</div>
+</section>
 
 <?php $content = ob_get_clean(); ?>
 

@@ -1,6 +1,6 @@
 <?php ob_start() ?>
 
-<div id="new-article" class="row-padding">
+<section id="new-article" class="row-padding">
     <div class="col m12">
         <div class="container card-2 round white">
             <h6 class="opacity">Kercode Network</h6>
@@ -13,6 +13,6 @@
             </form>
         </div>
     </div>
-</div>
+</section>
 
 <?php $newArticle = ob_get_clean(); ?>

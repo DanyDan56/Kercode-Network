@@ -27,19 +27,46 @@ abstract class ORM
         return self::$pdo;
     }
 
-    public static function all(): array
+    public static function insert(array $data): bool
     {
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
-        $sqlQuery = "SELECT id, name FROM $child";
+        // Préparation des données
+        $keys = array_keys($data);
+        $columns = join(",", $keys);
+
+        $values = array_values($data);
+        $datas = join("','", $values);
+
+        // Création de la requête
+        $sqlQuery = "INSERT INTO {$child}({$columns}) VALUES ('{$datas}')";
+
+        // Excécution de la requête
+        $pdo = self::connect();
+        $req = $pdo->prepare($sqlQuery);
+        return $req->execute();
+    }
+
+    public static function all(array $data): array
+    {
+        // On récupère le nom de la classe appelante et on lui enlève son namespace
+        $child = explode("\\", get_called_class());
+        $child = $child[array_key_last($child)];
+
+        // Création de la requête
+        $columns = join(",", $data);
+        $sqlQuery = "SELECT {$columns} FROM {$child}";
+
+        // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
         $req->execute();
 
+        // Instanciation des objets
         $objects = [];
-
+        $child = get_called_class();
         foreach ($req->fetchAll() as $data) {
             array_push(
                 $objects,
@@ -50,43 +77,80 @@ abstract class ORM
         return $objects;
     }
 
-    public static function find(int $id): mixed 
+    public static function last(array $data, string $order, int $limit): array
     {
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
+        // Création de la requête
+        $columns = join(",", $data);
+        $sqlQuery = "SELECT {$columns} FROM {$child} ORDER BY {$order} DESC LIMIT {$limit}";
+
+        // Excécution de la requête
         $pdo = self::connect();
-        $sqlQuery = "SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover
-                     FROM user WHERE id = :id";
+        $req = $pdo->prepare($sqlQuery);
+        $req->execute();
+
+        // Instanciation des objets
+        $objects = [];
+        $child = get_called_class();
+        foreach ($req->fetchAll() as $data) {
+            array_push(
+                $objects,
+                new $child($data)
+            );
+        }
+
+        return $objects;
+    }
+
+    public static function findById(int $id, array $data): mixed 
+    {
+        // On récupère le nom de la classe appelante et on lui enlève son namespace
+        $child = explode("\\", get_called_class());
+        $child = $child[array_key_last($child)];
+
+        // Création de la requête
+        $columns = join(",", $data);
+        $sqlQuery = "SELECT {$columns} FROM {$child} WHERE id = :id";
+
+        // Excécution de la requête
+        $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
         $req->execute(['id' => $id]);
-
         return $req->fetch();
     }
 
-    public static function updateById(int $id, string $name, mixed $value): bool
+    public static function updateById(int $id, array $data): bool
     {
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
-        $sqlQuery = "UPDATE $child SET $name = :value WHERE id = :id";
+        // Création de la requête
+        $column = join("", array_keys($data));
+        $value = join("", array_values($data));
+        $sqlQuery = "UPDATE $child SET $column = :value WHERE id = :id";
+
+        // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
-        return $req->execute([
-            'value' => $value,
-            'id' => $id
-        ]);
+        return $req->execute(['value' => $value, 'id' => $id]);
     }
 
-    public static function exist(string $name, mixed $value): bool 
+    public static function exist(array $data): bool 
     {
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
-        $sqlQuery = "SELECT $name FROM $child WHERE $name = :value";
+        // Création de la requête
+        $column = join("", array_keys($data));
+        $value = join("", array_values($data));
+        $sqlQuery = "SELECT $column FROM $child WHERE $column = :value";
+
+        // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
         $req->execute(['value' => $value]);
@@ -94,13 +158,18 @@ abstract class ORM
         return empty($req->fetch()) ? false : true;
     }
 
-    public static function getId(string $name, mixed $value): int
+    public static function getId(array $data): int
     {
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
-        $sqlQuery = "SELECT id FROM $child WHERE $name = :value";
+        // Création de la requête
+        $column = join("", array_keys($data));
+        $value = join("", array_values($data));
+        $sqlQuery = "SELECT id FROM $child WHERE $column = :value";
+
+        // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
         $req->execute(['value' => $value]);
@@ -114,7 +183,10 @@ abstract class ORM
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
+        // Création de la requête
         $sqlQuery = "SELECT id, name FROM $child LIMIT :limit";
+
+        // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
         $req->execute(['id' => $limit]);

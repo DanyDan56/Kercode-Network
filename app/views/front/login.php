@@ -7,7 +7,7 @@
     <h1 class="center">Bienvenue sur Kercode Network</h1>
 </div>
 
-<div class="content w30">
+<section class="content w30">
     <div class="card-2 round white">
         <div class="container padding-large">
 
@@ -40,7 +40,7 @@
             </form>
         </div>
     </div>
-</div>
+</section>
 
 <?php $content = ob_get_clean(); ?>
 
