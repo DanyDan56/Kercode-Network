@@ -26,6 +26,6 @@
     
 </body>
     <!-- Custom Scripts -->
-    <script src="app/public/js/custom.js"></script>
+    <script src="app/public/js/scripts.js"></script>
 
 </html>

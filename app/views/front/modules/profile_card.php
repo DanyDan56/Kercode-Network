@@ -1,6 +1,6 @@
 <?php ob_start() ?>
 
-<div class="card-2 round white">
+<aside class="card-2 round white">
     <div class="container">
         
         <p class="center"><img src="app/private/images/users/<?= $user->__get('id') . "/" . $user->__get('profileImage'); ?>" alt="Photo de profil" class="circle w106 h106"></p>
@@ -10,6 +10,6 @@
         <p><i class="fa fa-home fa-fw margin-right text-theme"></i><?= $user->__get('address'); ?>, FR</p>
         <p><i class="fa fa-birthday-cake fa-fw margin-right text-theme"></i><?= $user->__get('birthdayDate'); ?></p>
     </div>
-</div>
+</aside>
 
 <?php $profileCard = ob_get_clean(); ?>

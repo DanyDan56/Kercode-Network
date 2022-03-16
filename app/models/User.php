@@ -53,9 +53,13 @@ class User extends \Knetwork\Libs\ORM
 
     public static function find(int $id): self
     {
-        $user = parent::find($id);
+        $pdo = self::connect();
+        $sqlQuery = "SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover
+                     FROM user WHERE id = :id";
+        $req = $pdo->prepare($sqlQuery);
+        $req->execute(['id' => $id]);
 
-        return new self($user);
+        return new self($req->fetch());
     }
 
     public static function dateToFrench(string $date, string $format): string

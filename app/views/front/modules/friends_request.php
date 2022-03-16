@@ -1,6 +1,6 @@
 <?php ob_start(); ?>
 
-<div class="card-2 round white center">
+<aside class="card-2 round white center">
     <div class="container margin">
         <p>Demande en amis</p>
         <img src="app/public/images/examples/img_avatar6.png" alt="Photo de profil" class="w50">
@@ -11,6 +11,6 @@
             <button class="btn btn-block red section" title="Refuser"><i class="fa fa-remove"></i></button>
         </div>
     </div>
-</div>
+</aside>
 
 <?php $friendsRequest = ob_get_clean(); ?>

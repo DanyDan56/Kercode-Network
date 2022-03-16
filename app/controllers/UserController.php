@@ -40,7 +40,7 @@ class UserController
                         move_uploaded_file($image['tmp_name'], $dest . $name);
 
                         // On met à jour la base de donnée
-                        if (!User::updateById($id, 'image_profile', $name)) {
+                        if (!User::updateById($id, ['image_profile' => $name])) {
                             throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);
                         }
                     }
@@ -48,19 +48,21 @@ class UserController
         }
     }
 
-    public function login(string $email, string $password): void
+    public function login(string $email, string $password): mixed
     {
         // On essai de connecter l'utilisateur
-        // Si tout se passe bien, on affiche sa page d'accueil
+        // Si tout se passe bien, on redirige vers la page d'accueil
         // Sinon on gère les exceptions
         try {
             $user = User::login($email, $password);
 
             if($user) {
-                require 'app/views/front/home.php';
+                header('location: index.php');
             }
         } catch (\Exception $e) {
             require 'app/views/front/login.php';
+
+            return null;
         }
     }
 
@@ -87,7 +89,7 @@ class UserController
             }
 
             // Si le compte existe déjà
-            if (User::exist('email', $data['email'])) {
+            if (User::exist(['email' => $data['email']])) {
                 throw new \Exception("Ce compte existe déjà", 3);
             }
             
@@ -97,7 +99,7 @@ class UserController
             }
 
             // Si tout se passe bien, on créé un espace utilisateur dédié sur le serveur
-            $id = User::getId('email', $data['email']);
+            $id = User::getId(['email' => $data['email']]);
             self::createDirUser($id);
 
             // Si une image de profil a été sélectionnée, on l'enregistre
