@@ -1,6 +1,9 @@
 <?php
 
 // On charge les packages nécessaires fourni par Composer
+
+use Knetwork\Models\User;
+
 require_once __DIR__ . '/vendor/autoload.php';
 
 // On démarre la session
@@ -39,7 +42,7 @@ try {
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
 
-            $userController->login($email, $password);
+            $user = $userController->login($email, $password);
         }
         // Déconnexion
         else if ($_GET['action'] == 'disconnect') {
