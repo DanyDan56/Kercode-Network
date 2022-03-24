@@ -2,25 +2,25 @@
 
 namespace Knetwork\Controllers;
 
-class FrontController
+class FrontController extends Controller
 {
     public function home(int $id): void
     {
         $user = \Knetwork\Models\User::find($id);
 
-        $data = ['user_id', 'content', 'images', 'created_at', 'updated_at'];
+        $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
         $articles = \Knetwork\Models\Article::last($data, 'created_at', 10);
 
-        require 'app/views/front/home.php';
+        include $this->view('home');
     }
 
     public function login(): void
     {
-        require 'app/views/front/login.php';
+        include $this->view('login');
     }
 
     public function register(): void
     {
-        require 'app/views/front/register.php';
+        include $this->view('register');
     }
 }

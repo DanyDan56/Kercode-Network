@@ -243,6 +243,14 @@ input[type="radio"]:checked:before {
     display: block;
 }
 
+.pointer {
+    cursor: pointer;
+}
+
+.fill {
+    object-fit: fill;
+}
+
 .no-decoration {
     text-decoration: none;
 }
@@ -251,11 +259,15 @@ input[type="radio"]:checked:before {
     opacity: .60;
 }
 
+.hfit {
+    height: fit-content;
+}
+
 .w25 {
     width: 25px;
 }
 
-.w60 {
+.w60px {
     width: 60px;
 }
 
@@ -271,16 +283,44 @@ input[type="radio"]:checked:before {
     height: 106px;
 }
 
+.h100 {
+    height: 100%;
+}
+
+.w25 {
+    width: 25%;
+}
+
 .w30 {
     width: 30%;
+}
+
+.w33 {
+    width: 33%;
 }
 
 .w48 {
     width: 48%;
 }
 
+.w49 {
+    width: 49%;
+}
+
 .w50 {
     width: 50%;
+}
+
+.w65 {
+    width: 65%;
+}
+
+.w67 {
+    width: 66%;
+}
+
+.w75 {
+    width: 75%;
 }
 
 .w100 {
@@ -467,10 +507,72 @@ input[type="radio"]:checked:before {
               NEW ARTICLE
 *****************************************/
 
-#new-article a {
+#new-article label {
     font-size: 24px;
     margin-left: 20px;
     vertical-align: middle;
+    cursor: pointer;
+}
+
+#new-article ul {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0;
+}
+
+#new-article li {
+    width: 20%;
+}
+
+#new-article img {
+    width: 100%;
+    max-height: 150px;
+}
+
+/****************************************
+                 MODAL
+*****************************************/
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, .7);
+
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 2% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80vw;
+    height: 90vh;
+    position: relative;
+}
+
+.btn-modal-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.btn-modal-close:hover,
+.btn-modal-close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /****************************************

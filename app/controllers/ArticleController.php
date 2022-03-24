@@ -4,31 +4,19 @@ namespace Knetwork\Controllers;
 
 use \Knetwork\Models\Article;
 
-class ArticleController 
+class ArticleController extends Controller
 {
-    public static function dateDiff($date1, $date2): array
+    public function addArticle(string $content, array $files): void
     {
-        $diff = abs($date1 - strtotime($date2));
-        $result = array();
+        $article = Article::save([
+            'content' => $content,
+            'images' => $files['size'][0] > 0 ? 1 : 0
+        ]);
 
-        $tmp = $diff;
-        $result['second'] = $tmp % 60;
-
-        $tmp = floor(($tmp - $result['second']) / 60);
-        $result['minute'] = $tmp % 60;
-
-        $tmp = floor(($tmp - $result['minute']) / 60);
-        $result['hour'] = $tmp % 24;
-
-        $tmp = floor(($tmp - $result['hour'])  / 24 );
-        $result['day'] = $tmp;
-
-        return $result;
-    }
-     
-    public function addArticle(string $content): void
-    {
-        Article::save(['content' => $content, 'images' => 0]);
+        if ($files['size'][0] > 0) {
+            $names = $this::uploadImages($article->__get('user_id'), $article->__get('id'), $files);
+            $article->saveImages($names);
+        }
 
         header('location: index.php');
     }

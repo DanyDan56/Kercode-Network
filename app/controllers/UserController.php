@@ -4,7 +4,7 @@ namespace Knetwork\Controllers;
 
 use \Knetwork\Models\User;
 
-class UserController
+class UserController extends Controller
 {
     private static function createDirUser(int $id): void
     {
@@ -13,42 +13,7 @@ class UserController
         }
     }
 
-    private static function uploadImageProfile(int $id, array $image): void
-    {
-        // On vérifie si il y a eu une erreur
-        // Si non, on enregistre l'image dans l'espace de l'ulisateur
-        if ($image['error']) {
-            switch ($image['error']) {
-                case 1: // UPLOAD_ERR_INIT_SIZE
-                    throw new \Exception("L'image dépasse la taille autorisée par le serveur", 3);
-                    break;
-                case 2: // UPLOAD_ERR_FORM_SIZE
-                    throw new \Exception("L'image dépasse la taille autorisée par le formulaire", 3);
-                    break;
-                case 3: // UPLOAD_ERR_PARTIAL
-                    throw new \Exception("L'envoi du fichier a été interrompu pendant le transfert", 3);
-                    break;
-                case 4: // UPLOAD_ERR_NO_FILE
-                    throw new \Exception("Le fichier que vous envoyé a une taille nulle", 3);
-                    break;
-                default: // UPLOAD_ERR_OK
-                    if(isset($image['tmp_name'])) {
-                        $dest = 'app/private/images/users/' . $id . "/";
-                        $name = time() . ".png";
-
-                        // On enregistre l'image dans le dossier de l'utilisateur
-                        move_uploaded_file($image['tmp_name'], $dest . $name);
-
-                        // On met à jour la base de donnée
-                        if (!User::updateById($id, ['image_profile' => $name])) {
-                            throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);
-                        }
-                    }
-            }
-        }
-    }
-
-    public function login(string $email, string $password): mixed
+    public function login(string $email, string $password): void
     {
         // On essai de connecter l'utilisateur
         // Si tout se passe bien, on redirige vers la page d'accueil
@@ -61,8 +26,6 @@ class UserController
             }
         } catch (\Exception $e) {
             require 'app/views/front/login.php';
-
-            return null;
         }
     }
 
@@ -104,7 +67,13 @@ class UserController
 
             // Si une image de profil a été sélectionnée, on l'enregistre
             if ($data['imageProfile']['name'] != "") {
-                self::uploadImageProfile($id, $data['imageProfile']);
+                // Upload
+                $name = $this::uploadImage($id, $data['imageProfile']);
+
+                // Sauvegarde dans la base de donnée
+                if (!User::updateById($id, ['image_profile' => $name])) {
+                    throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);
+                }
             }
 
             // On redirige l'utilisateur vers la page de login avec un message informatif (code = 0)

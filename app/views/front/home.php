@@ -1,10 +1,10 @@
 <!-- On charge les modules requis pour la page d'acceuil -->
 <?php
-require 'modules/profile_card.php';
-require 'modules/new_article.php';
-require 'modules/list_articles.php';
-require 'modules/events_upcoming.php';
-require 'modules/friends_request.php';
+require_once 'modules/profile_card.php';
+require_once 'modules/new_article.php';
+require_once 'modules/list_articles.php';
+require_once 'modules/events_upcoming.php';
+require_once 'modules/friends_request.php';
 ?>
 
 
@@ -44,5 +44,5 @@ require 'modules/friends_request.php';
 <?php $content = ob_get_clean(); ?>
 
 <!-- Load the navbar & the template -->
-<?php require 'modules/navbar.php'; ?>
-<?php require 'templates/template.php'; ?>
+<?php require_once 'modules/navbar.php'; ?>
+<?php require_once 'templates/template.php'; ?>

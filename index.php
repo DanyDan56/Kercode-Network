@@ -1,9 +1,6 @@
 <?php
 
 // On charge les packages nécessaires fourni par Composer
-
-use Knetwork\Models\User;
-
 require_once __DIR__ . '/vendor/autoload.php';
 
 // On démarre la session
@@ -14,8 +11,6 @@ try {
     $frontController = new \Knetwork\Controllers\FrontController();
     $userController = new \Knetwork\Controllers\UserController();
     $articleController = new \Knetwork\Controllers\ArticleController();
-
-    $user = null;
 
     // On vérifie si il y a une action,
     // Si oui, on la traite,
@@ -44,19 +39,25 @@ try {
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
 
-            $user = $userController->login($email, $password);
+            $userController->login($email, $password);
         }
         // Déconnexion
         else if ($_GET['action'] == 'disconnect') {
+            unset($_SESSION['id']);
             session_destroy();
             header('location: index.php');
         }
         // Nouvel article
         else if ($_GET['action'] == 'newarticle') {
-            $content = htmlspecialchars($_POST['new-article-edit']);
-            $articleController->addArticle($content);
+            // Si il y a aucun contenu, on redirige vers l'index
+            if ($_POST['new-article-edit'] != "" || $_FILES['image-article']['size'][0] != 0) {
+                $content = htmlspecialchars($_POST['new-article-edit']);
+                $articleController->addArticle($content, $_FILES['image-article']);
+            } else {
+                header('location: index.php');
+            }
         }
-    } else {
+    } else { 
         // On check si l'utilisateur est connecté
         // Si oui, on affiche la page accueil correspondante au rôle
         // Si non, on affiche la pge de login
@@ -68,5 +69,5 @@ try {
         }
     }
 } catch (\Exception $e) {
-    require 'app/views/front/error.php';
+    include 'app/views/front/error.php';
 }

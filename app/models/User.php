@@ -83,7 +83,9 @@ class User extends \Knetwork\Libs\ORM
         $this->coverImage = $data['image_cover'];
 
         // On créé la session
-        $this->createSession();
+        if (!isset($_SESSION['id'])) {
+            $this->createSession();
+        }
     }
 
     public function __get(string $property): mixed
@@ -118,14 +120,5 @@ class User extends \Knetwork\Libs\ORM
     {
         // On setup la session
         $_SESSION['id'] = $this->id;
-        // $_SESSION['firstname'] = $this->firstname;
-        // $_SESSION['lastname'] = $this->lastname;
-        // $_SESSION['email'] = $this->email;
-        // $_SESSION['job'] = $this->job;
-        // $_SESSION['address'] = $this->address;
-        // $_SESSION['birthday'] = $this->birthdayDate;
-        // $_SESSION['gender'] = $this->gender;
-        // $_SESSION['image_profile'] = $this->profileImage;
-        // $_SESSION['image_cover'] = $this->coverImage;
     }
 }
