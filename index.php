@@ -1,5 +1,7 @@
 <?php
 
+use Knetwork\Models\User;
+
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -54,7 +56,7 @@ try {
                 $content = htmlspecialchars($_POST['new-article-edit']);
                 $articleController->addArticle($content, $_FILES['image-article']);
             } else {
-                header('location: index.php');
+                new \Exception("Erreur lors de la création de l'article", 3);
             }
         }
         // Suppression d'article
@@ -66,10 +68,13 @@ try {
             $frontController->profile($_SESSION['id']);
         }
     } else {
+        // var_dump(User::getInstance());die;
+
         // On check si l'utilisateur est connecté
         // Si oui, on affiche la page accueil correspondante au rôle
         // Si non, on affiche la pge de login
         if (isset($_SESSION['id'])) {
+            // var_dump(User::getInstance());die;
             $frontController->home($_SESSION['id']);
             // TODO: rediriger si admin
         } else {

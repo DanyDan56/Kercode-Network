@@ -4,6 +4,8 @@ namespace Knetwork\Models;
 
 class User extends \Knetwork\Libs\ORM
 {
+    private static $instance = null;
+
     private int $id;
     private string $firstname;
     private string $lastname;
@@ -15,8 +17,18 @@ class User extends \Knetwork\Libs\ORM
     private string $profileImage;
     private string $coverImage;
 
-    public static function login(string $email, string $password): self
+    public static function getInstance()
     {
+        if (isset(self::$instance)) {
+            return self::$instance;
+        }
+
+        return false;
+    }
+
+    public static function login(string $email, string $password): User
+    {
+        // TODO: Passer par l'ORM
         $pdo = self::connect();
         $req = $pdo->prepare("SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover
                               FROM user WHERE email = :email");
@@ -34,11 +46,15 @@ class User extends \Knetwork\Libs\ORM
             throw new \Exception("Le compte n'existe pas", 3);
         }
 
-        return new self($user);
+        // On instancie
+        self::$instance = new User($user);
+
+        return self::$instance;
     }
 
     public static function register(array $data): bool
     {
+        // TODO: Passer par l'ORM
         $pdo = self::connect();
         $req = $pdo->prepare("INSERT INTO user(lastname, firstname, email, password, birthday_date, created_at, updated_at)
                              VALUES (:lastname, :firstname, :email, :password, :birthday, NOW(), NOW())");
@@ -66,7 +82,7 @@ class User extends \Knetwork\Libs\ORM
         return str_replace($englishMonths, $frenchMonths, date($format, strtotime($date)));
     }
 
-    public function __construct(array $data)
+    private function __construct(array $data)
     {
         $this->id = $data['id'];
         $this->firstname = $data['firstname'];

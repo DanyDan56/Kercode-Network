@@ -9,6 +9,7 @@ class FrontController extends Controller
 {
     public function home(int $id): void
     {
+        // var_dump(User::getInstance());die;
         $user = \Knetwork\Models\User::find($id);
 
         $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];

@@ -6,18 +6,13 @@ use \Knetwork\Models\User;
 
 class UserController extends Controller
 {
-    private $user;
+    private $user = null;
 
     private static function createDirUser(int $id): void
     {
         if(!mkdir('app/private/images/users/' . $id . "/articles", 0644, true)) {
             throw new \Exception("Création de l'espace de stockage dédié échoué", 3);
         }
-    }
-
-    public function __construct()
-    {
-        $this->user = null;
     }
 
     public function __get(string $property): mixed
@@ -38,8 +33,10 @@ class UserController extends Controller
         // Sinon on gère les exceptions
         try {
             $this->user = User::login($email, $password);
+            // var_dump(User::getInstance());die;
+
             if($this->user) {
-                header('location: index.php');
+                header("location: index.php");
             }
         } catch (\Exception $e) {
             require 'app/views/front/login.php';

@@ -2,9 +2,11 @@
 
 namespace Knetwork\Controllers;
 
+use Knetwork\Models\User;
+
 class Controller 
 {
-    public function view(string $name)
+    public function view(string $name): string
     {
         return 'app/views/front/' . $name . '.php';
     }
