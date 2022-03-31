@@ -15,10 +15,10 @@ class Controller
         if ($image['error']) {
             switch ($image['error']) {
                 case 1: // UPLOAD_ERR_INIT_SIZE
-                    throw new \Exception("L'image dépasse la taille autorisée par le serveur", 3);
+                    throw new \Exception("Le fichier dépasse la taille autorisée par le serveur", 3);
                     break;
                 case 2: // UPLOAD_ERR_FORM_SIZE
-                    throw new \Exception("L'image dépasse la taille autorisée par le formulaire", 3);
+                    throw new \Exception("Le fichier dépasse la taille autorisée par le formulaire", 3);
                     break;
                 case 3: // UPLOAD_ERR_PARTIAL
                     throw new \Exception("L'envoi du fichier a été interrompu pendant le transfert", 3);
@@ -42,7 +42,7 @@ class Controller
         return $name;
     }
 
-    public static function uploadImages(int $user_id, int $article_id, array $images): array
+    public static function uploadImages(int $userId, int $articleId, array $images): array
     {
         // On vérifie si il y a eu une erreur
         for ($i = 0; $i < count($images['error']); $i++) {
@@ -65,7 +65,7 @@ class Controller
         }
 
         // Création du dossier pour la sauvegarde
-        $dest = 'app/private/images/users/' . $user_id . "/articles/" . $article_id . "/";
+        $dest = 'app/private/images/users/' . $userId . "/articles/" . $articleId . "/";
         if (!mkdir($dest, 0644, true)) {
             throw new \Exception("Création de l'espace de stockage dédié échoué", 3);
         }
@@ -117,5 +117,17 @@ class Controller
         $result['day'] = $tmp;
 
         return $result;
+    }
+
+    public static function deleteDirArticle($userId, $articleId): void
+    {
+        $dest = 'app/private/images/users/' . $userId . "/articles/" . $articleId . "/";
+
+        // On efface tous les fichiers contenus dans le dossier
+        foreach (glob($dest . '/*') as $file) {
+            unlink($file) ?? new \Exception("Erreur lors de la supression du fichier", 3);
+        }
+
+        rmdir(($dest)) ?? new \Exception("Erreur lors de la supression du dossier", 3);
     }
 }

@@ -1,10 +1,10 @@
 <!-- On charge les modules requis pour la page d'acceuil -->
 <?php
-require_once 'modules/profile_card.php';
-require_once 'modules/new_article.php';
-require_once 'modules/list_articles.php';
-require_once 'modules/events_upcoming.php';
-require_once 'modules/friends_request.php';
+include 'modules/profile_card.php';
+include 'modules/new_article.php';
+include 'modules/list_articles.php';
+include 'modules/events_upcoming.php';
+include 'modules/friends_request.php';
 ?>
 
 
@@ -43,6 +43,6 @@ require_once 'modules/friends_request.php';
 
 <?php $content = ob_get_clean(); ?>
 
-<!-- Load the navbar & the template -->
-<?php require_once 'modules/navbar.php'; ?>
-<?php require_once 'templates/template.php'; ?>
+<!-- On récupère la navbar & the template -->
+<?php require 'modules/navbar.php'; ?>
+<?php require 'templates/template.php'; ?>

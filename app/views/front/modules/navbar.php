@@ -39,7 +39,7 @@
                 <img src="app/private/images/users/<?= $user->__get('id') . "/" . $user->__get('profileImage'); ?>" alt="<?= $user->__get('firstname') . ' ' . $user->__get('lastname'); ?>" class="circle">
             </a>
             <div class="dropdown-content dropdown-content-right dropdown-anim white card-4">
-                <a href="#">Mon profil</a>
+                <a href="index.php?action=profile">Mon profil</a>
                 <a href="#">Paramètres</a>
                 <a href="index.php?action=disconnect" class="text-red hover-red">Se déconnecter</a>
             </div>

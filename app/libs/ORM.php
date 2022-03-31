@@ -112,7 +112,7 @@ abstract class ORM
         return $objects;
     }
 
-    public static function findById(int $id, array $data): mixed 
+    public static function findById(int $id, array $data): array 
     {
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
@@ -214,20 +214,36 @@ abstract class ORM
         return $req->fetch()['id'];
     }
 
-    public static function limit(int $limit): mixed
+    // public static function limit(int $limit): mixed
+    // {
+    //     // On récupère le nom de la classe appelante et on lui enlève son namespace
+    //     $child = explode("\\", get_called_class());
+    //     $child = $child[array_key_last($child)];
+
+    //     // Création de la requête
+    //     $sqlQuery = "SELECT id, name FROM $child LIMIT :limit";
+
+    //     // Excécution de la requête
+    //     $pdo = self::connect();
+    //     $req = $pdo->prepare($sqlQuery);
+    //     $req->execute(['limit' => $limit]);
+
+    //     return new $child($req->fetch());
+    // }
+
+    public static function delete(int $id): bool
     {
         // On récupère le nom de la classe appelante et on lui enlève son namespace
         $child = explode("\\", get_called_class());
         $child = $child[array_key_last($child)];
 
         // Création de la requête
-        $sqlQuery = "SELECT id, name FROM $child LIMIT :limit";
+        $sqlQuery = "DELETE FROM $child WHERE id = :id";
 
         // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
-        $req->execute(['id' => $limit]);
-
-        return new $child($req->fetch());
+        
+        return $req->execute(['id' => $id]);
     }
 }

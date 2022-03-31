@@ -19,6 +19,10 @@
     color: #757575 !important;
 }
 
+.hover-gray:hover {
+    background-color: #CCC !important;
+}
+
 .text-green,
 .hover-text-green:hover {
     color: #4caf50 !important;
@@ -248,7 +252,7 @@ input[type="radio"]:checked:before {
 }
 
 .fill {
-    object-fit: fill;
+    object-fit: cover;
 }
 
 .no-decoration {
@@ -372,6 +376,14 @@ input[type="radio"]:checked:before {
     margin-bottom: 16px;
 }
 
+.bold {
+    font-weight: bold;
+}
+
+.space-letters {
+    letter-spacing: .2em;
+}
+
 .font-small {
     font-size: 12px;
 }
@@ -409,6 +421,10 @@ input[type="radio"]:checked:before {
 
 .float-right {
     float: right;
+}
+
+.top {
+    margin-bottom: auto;
 }
 
 .white, .hover-white:hover {
@@ -532,6 +548,38 @@ input[type="radio"]:checked:before {
 }
 
 /****************************************
+                ARTICLES
+*****************************************/
+
+.article-options {
+    width: 30px;
+    height: 30px;
+    background-color: #fff;
+}
+
+.article-options:hover {
+    background-color: #CCC;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 3px 10px 0 rgba(0, 0, 0, .19);
+
+    transition: background-color .3s, color .15s, box-shadow .3s;
+}
+
+/****************************************
+                 PROFILE
+*****************************************/
+
+.profile-cover {
+    display: block;
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.profile-image {
+    
+}
+
+/****************************************
                  MODAL
 *****************************************/
 
@@ -546,6 +594,14 @@ input[type="radio"]:checked:before {
     overflow: auto;
     background-color: rgba(0, 0, 0, .7);
 
+}
+
+.modal-image {
+    display: block;
+    position: relative;
+    margin: 2% auto;
+    height: 90vh;
+    border: 10px solid #fefefe;
 }
 
 .modal-content {

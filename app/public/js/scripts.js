@@ -91,25 +91,24 @@ function validFileType(file) {
 
 
 /*************************************************************************
+ *                            MODIFY ARTICLE
+ *************************************************************************/
+
+
+
+
+/*************************************************************************
  *                              IMAGE MODAL
  *************************************************************************/
 
 // On récupère les éléments de la modal
 let modal = document.querySelector('.modal');
-let modalContent = document.querySelector('.modal-content');
-let btnModalClose = document.querySelector('.btn-modal-close');
-
-// Ajoute un event quand on clic sur la croix pour fermer la modal
-btnModalClose.addEventListener('click', function() {
-    modal.style.display = 'none';
-    modalContent.removeChild(modalContent.lastChild);
-});
 
 // Ajoute un event si on clic en dehors de la modal
 window.addEventListener('click', function(e) {
     if (e.target == modal) {
         modal.style.display = 'none';
-        modalContent.removeChild(modalContent.lastChild);
+        modal.removeChild(modal.lastChild);
     }
 });
 
@@ -117,9 +116,8 @@ window.addEventListener('click', function(e) {
 function displayImage(path) {
     let image = document.createElement('img');
     image.src = path;
-    image.style.height = '100%';
-    image.style.width = '100%';
+    image.classList = 'modal-image';
     
-    modalContent.appendChild(image);
+    modal.appendChild(image);
     modal.style.display = "block";
 }

@@ -20,4 +20,17 @@ class ArticleController extends Controller
 
         header('location: index.php');
     }
+
+    public function deleteArticle(int $id): void
+    {
+        $article = Article::find($id);
+
+        if ($article->haveImages()) {
+            self::deleteDirArticle($_SESSION['id'], $id);
+        }
+
+        Article::delete($id) ?? new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+
+        header('location: index.php');
+    }
 }

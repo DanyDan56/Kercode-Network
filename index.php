@@ -1,9 +1,6 @@
 <?php
 
 // On charge les packages nécessaires fourni par Composer
-
-use Knetwork\Models\User;
-
 require_once __DIR__ . '/vendor/autoload.php';
 
 // On démarre la session
@@ -42,7 +39,7 @@ try {
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
 
-            $user = $userController->login($email, $password);
+            $userController->login($email, $password);
         }
         // Déconnexion
         else if ($_GET['action'] == 'disconnect') {
@@ -60,7 +57,15 @@ try {
                 header('location: index.php');
             }
         }
-    } else { 
+        // Suppression d'article
+        else if ($_GET['action'] == 'deletearticle') {
+            $articleController->deleteArticle($_GET['id']);
+        }
+        // Affichage de la page de profil
+        else if ($_GET['action'] == 'profile') {
+            $frontController->profile($_SESSION['id']);
+        }
+    } else {
         // On check si l'utilisateur est connecté
         // Si oui, on affiche la page accueil correspondante au rôle
         // Si non, on affiche la pge de login

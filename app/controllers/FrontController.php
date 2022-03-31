@@ -2,6 +2,9 @@
 
 namespace Knetwork\Controllers;
 
+use Knetwork\Models\User;
+use Knetwork\Controllers\UserController;
+
 class FrontController extends Controller
 {
     public function home(int $id): void
@@ -16,11 +19,19 @@ class FrontController extends Controller
 
     public function login(): void
     {
+        
         include $this->view('login');
     }
 
     public function register(): void
     {
         include $this->view('register');
+    }
+
+    public function profile(int $id): void
+    {
+        $user = \Knetwork\Models\User::find($id);
+
+        include $this->view('profile');
     }
 }

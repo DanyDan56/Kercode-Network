@@ -27,6 +27,13 @@ class Article extends \Knetwork\Libs\ORM
         return new self($data);
     }
 
+    public static function find(int $id): self
+    {
+        $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
+
+        return new self(self::findById($id, $data));
+    }
+
     public function __construct(array $data)
     {
         $this->user_id = $data['user_id'];

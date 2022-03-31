@@ -6,10 +6,28 @@ use \Knetwork\Models\User;
 
 class UserController extends Controller
 {
+    private $user;
+
     private static function createDirUser(int $id): void
     {
         if(!mkdir('app/private/images/users/' . $id . "/articles", 0644, true)) {
             throw new \Exception("Création de l'espace de stockage dédié échoué", 3);
+        }
+    }
+
+    public function __construct()
+    {
+        $this->user = null;
+    }
+
+    public function __get(string $property): mixed
+    {
+        switch ($property) {
+            case 'user':
+                return $this->user ? $this->user : null;
+                break;
+            default:
+                throw new \Exception('Propriété invalide !', 3);
         }
     }
 
@@ -19,9 +37,8 @@ class UserController extends Controller
         // Si tout se passe bien, on redirige vers la page d'accueil
         // Sinon on gère les exceptions
         try {
-            $user = User::login($email, $password);
-
-            if($user) {
+            $this->user = User::login($email, $password);
+            if($this->user) {
                 header('location: index.php');
             }
         } catch (\Exception $e) {

@@ -7,28 +7,48 @@
     <article class="container card-2 white round margin">
         <br>
         <div class="flex">
+            <!-- Photo du profil -->
             <img src="app/private/images/users/<?= $articleUser->__get('id') . '/' . $articleUser->__get('profileImage'); ?>" alt="<?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="circle margin-right w60px">
-            <h4><?= $articleUser->__get('firstname') . " " . $articleUser->__get('lastname'); ?></h4>
             
-            <!-- On calcul le temps écoulé depuis la publication de l'article -->
-            <?php $time = \Knetwork\Controllers\ArticleController::dateDiff(time(), $article->__get('created_at')); ?>
-            <span class="right opacity">
-                <?php
-                    $str = "";
-                    if ($time['day'] > 0) {
-                        $str .= $time['day'] . " jour";
-                        $time['day'] > 1 ? $str .= "s" : "";
-                    } elseif ($time['minute'] < 1) {
-                        $str = "À l'instant";
-                    } else {
-                        $time['hour'] > 0 ? $str .= $time['hour'] . " h " : "";
-                        $time['minute'] > 0 ? $str .= $time['minute'] . " min" : "";
-                    }
-                    echo $str;
-                ?>
-            </span>
+            <div>
+                <!-- Nom et prénom du profil -->
+                <h4 class="no-margin"><?= $articleUser->__get('firstname') . " " . $articleUser->__get('lastname'); ?></h4>
+                
+                <span class="opacity">
+                    <!-- On calcul le temps écoulé depuis la publication de l'article -->
+                    <?php $time = \Knetwork\Controllers\ArticleController::dateDiff(time(), $article->__get('created_at')); ?>
+                        <?php
+                            $str = "";
+                            if ($time['day'] > 0) {
+                                $str .= $time['day'] . " jour";
+                                $time['day'] > 1 ? $str .= "s" : "";
+                            } elseif ($time['minute'] < 1 && $time['hour'] < 1 && $time['day'] < 1) {
+                                $str = "À l'instant";
+                            } else {
+                                $time['hour'] > 0 ? $str .= $time['hour'] . " h " : "";
+                                $time['minute'] > 0 ? $str .= $time['minute'] . " min" : "";
+                            }
+                            echo $str;
+                        ?>
+                </span>
+            </div>
+
+            <!-- Menu d'édition et de suppression -->
+            <!-- On affiche seulement le menu si l'article appartient à l'utlisateur -->
+            <?php if ($article->__get('user_id') === $_SESSION['id']): ?>
+                <div class="article-options dropdown-hover circle pointer center right top">
+                    <span class="text-gray bold space-letters">...</span>
+                    <div class="dropdown-content dropdown-content-right dropdown-anim white card-4">
+                        <a href="#" class="hover-gray" onclick="modifyArticle(<?= $article->__get('id'); ?>)">Modifier</a>
+                        <a href="index.php?action=deletearticle&id=<?= $article->__get('id'); ?>" class="text-red hover-red">Supprimer</a>
+                    </div>
+                </div>
+            <?php endif; ?>
         </div>
+        
         <hr>
+        
+        <!-- Contenu -->
         <p><?= $article->__get('content'); ?></p>
         <?php if ($article->haveImages()): ?>
             <?php $images = $article->getImages(); ?>
@@ -67,17 +87,21 @@
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        
+        <!-- Boutons d'intéractions -->
         <button type="button" class="btn theme-d1 margin-bottom"><i class="fa fa-thumbs-up"></i>&nbsp;J'aime</button>
         <button type="button" class="btn theme-d1 margin-bottom"><i class="fa fa-comment"></i>&nbsp;Commenter</button>
+        
+        <!-- Infos d'intéractions -->
         <span class="float-right opacity">0 commentaire</span>
     </article>
 
 <?php endforeach; ?>
 
 <div id="modal-image" class="modal">
-    <div class="modal-content">
+    <!-- <div class="modal-content">
         <span class="btn-modal-close">&times;</span>
-    </div>
+    </div> -->
 </div>
 
 <?php $articlesList = ob_get_clean(); ?>
