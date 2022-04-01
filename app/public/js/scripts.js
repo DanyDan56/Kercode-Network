@@ -94,7 +94,26 @@ function validFileType(file) {
  *                            MODIFY ARTICLE
  *************************************************************************/
 
+// Affichage du menu
+function displayMenuArticle(id) {
+    let menuArticle = document.querySelector('#menu-article-' + id);
+    menuArticle.classList.toggle("hide");
 
+    // TODO: Ajouter un event pour fermer le menu lors d'un clic hors du menu
+}
+
+// Modification de l'article
+function modifyArticle(id) {
+    let articleText = document.querySelector('#article-' + id);
+    let articleEdit = document.querySelector('#article-edit-' + id);
+    let buttonsArticleEdit = document.querySelector("#buttons-article-edit-" + id);
+    
+    articleEdit.value = articleText.textContent;
+    articleText.classList.toggle("hide");
+    articleEdit.classList.toggle("hide");
+    buttonsArticleEdit.classList.toggle("hide");
+    articleEdit.focus();
+}
 
 
 /*************************************************************************
@@ -104,7 +123,7 @@ function validFileType(file) {
 // On récupère les éléments de la modal
 let modal = document.querySelector('.modal');
 
-// Ajoute un event si on clic en dehors de la modal
+// Ajout d'un event si on clic en dehors de la modal
 window.addEventListener('click', function(e) {
     if (e.target == modal) {
         modal.style.display = 'none';

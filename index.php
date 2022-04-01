@@ -18,6 +18,8 @@ try {
     // Si oui, on la traite,
     // Sinon, on affiche soit la page login ou home en fonction si il y a une session de setup ou pas
     if (isset($_GET['action'])) {
+
+        //*************************** GESTION DE L'ENREGISTREMENT **********************************/
         // Affichage de la page d'enregistrement de compte
         if ($_GET['action'] == 'register') {
             $frontController->register();
@@ -36,6 +38,8 @@ try {
 
             $userController->register($data);
         }
+
+        //*************************** GESTION DE LA CONNEXION **********************************/
         // Traitement de la connexion à un compte
         else if ($_GET['action'] == 'loginpost') {
             $email = htmlspecialchars($_POST['email']);
@@ -49,6 +53,8 @@ try {
             session_destroy();
             header('location: index.php');
         }
+
+        //*************************** GESTION DES ARTICLES **********************************/
         // Nouvel article
         else if ($_GET['action'] == 'newarticle') {
             // Si il y a aucun contenu, on redirige vers l'index
@@ -59,17 +65,23 @@ try {
                 new \Exception("Erreur lors de la création de l'article", 3);
             }
         }
+        // Modification d'article
+        else if ($_GET['action'] == 'modifyarticle') {
+            $content = htmlspecialchars($_POST['article-edit-' . $_GET['id']]);
+            $articleController->modifyArticle($_GET['id'], $content);
+        }
         // Suppression d'article
         else if ($_GET['action'] == 'deletearticle') {
             $articleController->deleteArticle($_GET['id']);
         }
+
+        //*************************** GESTION DU PROFIL **********************************/
         // Affichage de la page de profil
         else if ($_GET['action'] == 'profile') {
             $frontController->profile($_SESSION['id']);
         }
-    } else {
-        // var_dump(User::getInstance());die;
 
+    } else {
         // On check si l'utilisateur est connecté
         // Si oui, on affiche la page accueil correspondante au rôle
         // Si non, on affiche la pge de login

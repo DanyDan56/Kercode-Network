@@ -36,10 +36,10 @@
             <!-- Menu d'édition et de suppression -->
             <!-- On affiche seulement le menu si l'article appartient à l'utlisateur -->
             <?php if ($article->__get('user_id') === $_SESSION['id']): ?>
-                <div class="article-options dropdown-hover circle pointer center right top">
+                <div class="article-options circle pointer center right top" onclick="displayMenuArticle(<?= $article->__get('id'); ?>)">
                     <span class="text-gray bold space-letters">...</span>
-                    <div class="dropdown-content dropdown-content-right dropdown-anim white card-4">
-                        <a href="#" class="hover-gray" onclick="modifyArticle(<?= $article->__get('id'); ?>)">Modifier</a>
+                    <div id="menu-article-<?= $article->__get('id'); ?>" class="dropdown-content dropdown-content-right white card-4 hide">
+                        <a class="hover-gray" onclick="modifyArticle(<?= $article->__get('id'); ?>)">Modifier</a>
                         <a href="index.php?action=deletearticle&id=<?= $article->__get('id'); ?>" class="text-red hover-red">Supprimer</a>
                     </div>
                 </div>
@@ -48,8 +48,20 @@
         
         <hr>
         
-        <!-- Contenu -->
-        <p><?= $article->__get('content'); ?></p>
+        <!-- Texte -->
+        <p id="article-<?= $article->__get('id'); ?>"><?= $article->__get('content'); ?></p>
+
+        <!-- Texte édition -->
+        <form action="index.php?action=modifyarticle&id=<?= $article->__get('id'); ?>" method="POST">
+            <textarea name="article-edit-<?= $article->__get('id'); ?>" id="article-edit-<?= $article->__get('id'); ?>" rows="4" class="w100 hide" style="resize: none" placeholder="Exprimez-vous !"></textarea>
+            <div id="buttons-article-edit-<?= $article->__get('id'); ?>" class="flex hide">
+                <button type="submit" class="btn btn-block green margin-bottom-small" title="Publier"><i class="fa fa-check"></i></button>
+                <button class="btn btn-block red margin-bottom-small" title="Annuler" onclick="modifyArticle(<?= $article->__get('id'); ?>)"><i class="fa fa-remove"></i></button>
+            </div>
+        </form>
+
+        <!-- Images -->
+        <!-- Disposition différente en fonction du nombre d'images -->
         <?php if ($article->haveImages()): ?>
             <?php $images = $article->getImages(); ?>
             <div class="flex flex-wrap flex-justify-between">

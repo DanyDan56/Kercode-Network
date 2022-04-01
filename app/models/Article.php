@@ -11,12 +11,12 @@ class Article extends \Knetwork\Libs\ORM
     private string $created_at;
     private string $updated_at;
 
-    public static function save(array $temp): self
+    public static function save(array $data): self
     {
         $data = [
             'user_id' => $_SESSION['id'],
-            'content' => $temp['content'],
-            'images' => $temp['images'],
+            'content' => $data['content'],
+            'images' => $data['images'],
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
@@ -62,6 +62,11 @@ class Article extends \Knetwork\Libs\ORM
             default:
                 throw new \Exception('Propriété invalide !', 3);
         }
+    }
+
+    public function modify(string $content): bool
+    {
+        return self::updateById($this->id, ['content' => $content]);
     }
 
     public function haveImages(): bool

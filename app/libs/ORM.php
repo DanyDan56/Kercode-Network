@@ -161,12 +161,15 @@ abstract class ORM
         // Création de la requête
         $column = join("", array_keys($data));
         $value = join("", array_values($data));
-        $sqlQuery = "UPDATE $child SET $column = :value WHERE id = :id";
+        $sqlQuery = "UPDATE $child SET $column = :value, updated_at = NOW() WHERE id = :id";
 
         // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
-        return $req->execute(['value' => $value, 'id' => $id]);
+        return $req->execute([
+            'value' => $value,
+            'id' => $id
+        ]);
     }
 
     public static function exist(array $data): bool 

@@ -23,7 +23,7 @@ class User extends \Knetwork\Libs\ORM
             return self::$instance;
         }
 
-        return false;
+        throw new \Exception("Erreur lors de la récupération de l'instance de l'utilisateur", 3);
     }
 
     public static function login(string $email, string $password): User
