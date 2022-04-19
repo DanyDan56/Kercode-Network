@@ -16,9 +16,9 @@ include 'modules/friends_request.php';
 <!-- Container de la page-->
 <div class="container content">
     <!-- Grille perso -->
-    <div class="row">
+    <div class="flex">
         <!-- Colonne gauche -->
-        <div class="col m3">
+        <div class="hide-small col m3">
             <!-- Module carte de profil -->
             <?= $profileCard; ?>
         </div>
@@ -32,7 +32,7 @@ include 'modules/friends_request.php';
         </div>
 
         <!-- Colonne droite -->
-        <div class="col m2">
+        <div class="hide-small col m2">
             <!-- Module pour les évènements à venir -->
             <?= $eventsUpcoming; ?>
             <!-- Module pour les demandes d'amis -->

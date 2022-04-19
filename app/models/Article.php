@@ -34,6 +34,13 @@ class Article extends \Knetwork\Libs\ORM
         return new self(self::findById($id, $data));
     }
 
+    public static function getAll(): array
+    {
+        $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
+
+        return parent::last($data, 'created_at', 100);
+    }
+
     public function __construct(array $data)
     {
         $this->user_id = $data['user_id'];

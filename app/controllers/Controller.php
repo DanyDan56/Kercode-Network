@@ -11,6 +11,11 @@ class Controller
         return 'app/views/front/' . $name . '.php';
     }
 
+    public function viewAdmin(string $name): string
+    {
+        return 'app/views/back/' . $name . '.php';
+    }
+
     public static function uploadImage(int $id, array $image): string
     {
         // On vérifie si il y a eu une erreur
@@ -101,6 +106,14 @@ class Controller
         return $names;
     }
 
+    public static function dateToFrench(string $date, string $format = "d F Y"): string
+    {
+        $englishMonths = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+        $frenchMonths = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+
+        return str_replace($englishMonths, $frenchMonths, date($format, strtotime($date)));
+    }
+
     public static function dateDiff($date1, $date2): array
     {
         $diff = abs($date1 - strtotime($date2));
@@ -121,6 +134,17 @@ class Controller
         return $result;
     }
 
+    public static function dateLastWeek(): array
+    {
+        $dates = [];
+
+        for ($i = 6; $i >= 0; $i--) {
+            array_push($dates, date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-$i, date('Y'))));
+        }
+
+        return $dates;
+    }
+
     public static function deleteDirArticle($userId, $articleId): void
     {
         $dest = 'app/private/images/users/' . $userId . "/articles/" . $articleId . "/";
@@ -131,5 +155,36 @@ class Controller
         }
 
         rmdir(($dest)) ?? new \Exception("Erreur lors de la supression du dossier", 3);
+    }
+
+    public static function folderSize($path): int
+    {
+        $totalSize = 0;
+        $files = scandir($path);
+
+        foreach ($files as $file) {
+            if (is_dir(rtrim($path, '/') . '/' . $file)) {
+                if ($file != "." && $file != "..") {
+                    $size = self::folderSize(rtrim($path, '/') . '/' . $file);
+                    $totalSize += $size;
+                }
+            } else {
+                $size = filesize(rtrim($path, '/') . '/' . $file);
+                $totalSize += $size;
+            }
+        }
+
+        return $totalSize;
+    }
+
+    public static function formatSize($size) : string
+    {
+        $mod = 1024;
+        $units = explode(" ", 'o Ko Mo Go To Po');
+        for ($i = 0; $size > $mod; $i++) {
+            $size /= $mod;
+        }
+
+        return round($size, 2) . ' ' . $units[$i];
     }
 }

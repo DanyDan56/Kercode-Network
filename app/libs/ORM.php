@@ -12,6 +12,13 @@ abstract class ORM
     // Singleton
     private static $pdo = null;
 
+    private static function getTableName(string $calledClass): string
+    {
+        // On récupère le nom de la classe appelante et on lui enlève son namespace
+        $table = explode("\\", $calledClass);
+        return $table[array_key_last($table)];
+    }
+
     protected static function connect(): \PDO
     {
         if (isset(self::$pdo)) {
@@ -29,14 +36,7 @@ abstract class ORM
 
     public static function insert(array $data, string $table = null): bool
     {
-        // Si on lui a passé le nom d'une table en paramètre
-        if ($table) {
-            $child = $table;
-        } else {
-            // On récupère le nom de la classe appelante et on lui enlève son namespace
-            $child = explode("\\", get_called_class());
-            $child = $child[array_key_last($child)];
-        }
+        $table ? $child = $table : $child = self::getTableName(get_called_class());
 
         // Préparation des données
         $keys = array_keys($data);
@@ -57,9 +57,7 @@ abstract class ORM
 
     public static function all(array $data): array
     {
-        // On récupère le nom de la classe appelante et on lui enlève son namespace
-        $child = explode("\\", get_called_class());
-        $child = $child[array_key_last($child)];
+        $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $columns = join(",", $data);
@@ -85,9 +83,7 @@ abstract class ORM
 
     public static function last(array $data, string $order, int $limit): array
     {
-        // On récupère le nom de la classe appelante et on lui enlève son namespace
-        $child = explode("\\", get_called_class());
-        $child = $child[array_key_last($child)];
+        $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $columns = array_values($data);
@@ -114,9 +110,7 @@ abstract class ORM
 
     public static function findById(int $id, array $data): array 
     {
-        // On récupère le nom de la classe appelante et on lui enlève son namespace
-        $child = explode("\\", get_called_class());
-        $child = $child[array_key_last($child)];
+        $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $columns = join(",", $data);
@@ -132,13 +126,7 @@ abstract class ORM
 
     public static function findAllById(int $id, array $data, string $table = null): array 
     {
-        if ($table) {
-            $child = $table;
-        } else {
-            // On récupère le nom de la classe appelante et on lui enlève son namespace
-            $child = explode("\\", get_called_class());
-            $child = $child[array_key_last($child)];
-        }
+        $table ? $child = $table : $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $columns = join(",", $data);
@@ -154,29 +142,28 @@ abstract class ORM
 
     public static function updateById(int $id, array $data): bool
     {
-        // On récupère le nom de la classe appelante et on lui enlève son namespace
-        $child = explode("\\", get_called_class());
-        $child = $child[array_key_last($child)];
+        $child = self::getTableName(get_called_class());
 
         // Création de la requête
-        $column = join("", array_keys($data));
-        $value = join("", array_values($data));
-        $sqlQuery = "UPDATE $child SET $column = :value, updated_at = NOW() WHERE id = :id";
+        // $column = join("", array_keys($data));
+        // $value = join("", array_values($data));
+        // $sqlQuery = "UPDATE $child SET $column = :value, updated_at = NOW() WHERE id = :id";
+        $sqlQuery = "UPDATE $child SET ";
+        foreach ($data as $key => $value) {
+            $sqlQuery .= $key . "=:" . $key . ",";
+        }
+        $sqlQuery .= "updated_at = NOW() WHERE id = :id";
+        $data['id'] = $id;
 
         // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
-        return $req->execute([
-            'value' => $value,
-            'id' => $id
-        ]);
+        return $req->execute($data);
     }
 
     public static function exist(array $data): bool 
     {
-        // On récupère le nom de la classe appelante et on lui enlève son namespace
-        $child = explode("\\", get_called_class());
-        $child = $child[array_key_last($child)];
+        $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $column = join("", array_keys($data));
@@ -193,9 +180,7 @@ abstract class ORM
 
     public static function getId(array $data): int
     {
-        // On récupère le nom de la classe appelante et on lui enlève son namespace
-        $child = explode("\\", get_called_class());
-        $child = $child[array_key_last($child)];
+        $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $columns = array_keys($data);
@@ -236,9 +221,7 @@ abstract class ORM
 
     public static function delete(int $id): bool
     {
-        // On récupère le nom de la classe appelante et on lui enlève son namespace
-        $child = explode("\\", get_called_class());
-        $child = $child[array_key_last($child)];
+        $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $sqlQuery = "DELETE FROM $child WHERE id = :id";
@@ -248,5 +231,76 @@ abstract class ORM
         $req = $pdo->prepare($sqlQuery);
         
         return $req->execute(['id' => $id]);
+    }
+
+    public static function count(string $table = null): int
+    {
+        $table ? $child = $table : $child = self::getTableName(get_called_class());
+
+        // Création de la requête
+        $sqlQuery = "SELECT COUNT(*) FROM {$child}";
+
+        // Excécution de la requête
+        $pdo = self::connect();
+        $req = $pdo->prepare($sqlQuery);
+        $req->execute();
+        
+        return $req->fetch()[0];
+    }
+
+    public static function countBetween(string $column, string $value1, string $value2): int
+    {
+        $child = self::getTableName(get_called_class());
+
+        // Création de la requête
+        $sqlQuery = "SELECT COUNT(*) FROM {$child} WHERE {$column} BETWEEN '{$value1}' AND '{$value2}'";
+
+        // Excécution de la requête
+        $pdo = self::connect();
+        $req = $pdo->prepare($sqlQuery);
+        $req->execute();
+        
+        return $req->fetch()[0];
+    }
+
+    public static function countWhere(string $column, mixed $value): int
+    {
+        $child = self::getTableName(get_called_class());
+
+        // Création de la requête
+        $sqlQuery = "SELECT COUNT(*) FROM {$child} WHERE {$column} = :value";
+
+        // Excécution de la requête
+        $pdo = self::connect();
+        $req = $pdo->prepare($sqlQuery);
+        $req->execute([
+            'value' => $value
+        ]);
+
+        return  $req->fetch()[0];
+    }
+
+    /**
+     * Récupère le nombre de données créés en fonction des dates envoyées
+     *
+     * @param array $dates - Tableau de dates pour lesquelles on veut récupérer les statistiques
+     * @return void
+     */
+    public static function chart(array $dates)
+    {
+        $data = [];
+        $first = true;
+
+        for ($i = 0; $i < count($dates); $i++) {
+            if ($first) {
+                $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime('2000-01-01')), date('Y-m-d H:i:s', strtotime($dates[$i])));
+                $first = false;
+            } else {
+                $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime($dates[$i-1])),
+                                    date('Y-m-d H:i:s', $i != 6 ? strtotime($dates[$i]) : time()));
+            }
+        }
+
+        return $data;
     }
 }

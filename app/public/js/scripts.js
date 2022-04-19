@@ -11,22 +11,24 @@ let newArticleEdit = document.querySelector('#new-article-edit');
 
 // Quand l'utlisateur focus le textarea pour écrire un nouvel article
 // On l'agrandi à 4 ligne
-newArticleEdit.addEventListener('focusin', function() {
-    // Si l'utilisateur commence un nouvel article
-    if(newArticleEdit.value == newArticleEdit.defaultValue) {
-        newArticleEdit.rows = 4;
-    }
-});
+if (newArticleEdit) {
+    newArticleEdit.addEventListener('focusin', function() {
+        // Si l'utilisateur commence un nouvel article
+        if(newArticleEdit.value == newArticleEdit.defaultValue) {
+            newArticleEdit.rows = 4;
+        }
+    });
 
-// Quand le textarea perd le focus,
-// On vérifie si il y a du contenu dedans,
-// Si aucun contenu n'est détecté, on remet sa taille par défaut
-newArticleEdit.addEventListener('focusout', function() {
-    // Si le textarea est vide, on le remet à sa hauteur initiale
-    if(newArticleEdit.value == newArticleEdit.defaultValue) {
-        newArticleEdit.rows = 1;
-    }
-});
+    // Quand le textarea perd le focus,
+    // On vérifie si il y a du contenu dedans,
+    // Si aucun contenu n'est détecté, on remet sa taille par défaut
+    newArticleEdit.addEventListener('focusout', function() {
+        // Si le textarea est vide, on le remet à sa hauteur initiale
+        if(newArticleEdit.value == newArticleEdit.defaultValue) {
+            newArticleEdit.rows = 1;
+        }
+    });
+};
 
 /************************** SELECTION IMAGES *************************/
 
@@ -34,44 +36,46 @@ newArticleEdit.addEventListener('focusout', function() {
 let articleImage = document.querySelector("#image-article");
 let previewImage = document.querySelector(".image-preview");
 
-// On rend invisible. On préfère opacity = 0 que display = hidden pour l'accessibilité
-articleImage.style.opacity = 0;
+if (articleImage) {
+    // On rend invisible. On préfère opacity = 0 que display = hidden pour l'accessibilité
+    articleImage.style.opacity = 0;
 
-// Ajout du gestionnaire d'évènement au bouton de sélection d'images
-articleImage.addEventListener('change', function() {
-    // On vide le contenu de la div
-    while (previewImage.firstChild) {
-        previewImage.removeChild(previewImage.firstChild);
-    }
-
-    // On récupère les informations des images sélectionnées
-    let curFiles = articleImage.files;
-
-    // Si des images sont sélectionnées
-    if (curFiles.length > 0) {
-        let list = document.createElement('ul');
-        previewImage.appendChild(list);
-
-        // On parcours toutes les images
-        for (let i = 0; i < curFiles.length; i++) {
-            console.log(curFiles);
-            let listItem = document.createElement('li');
-
-            // Si l'image est du bon type
-            if (validFileType(curFiles[i])) {
-                let image = document.createElement('img');
-                image.src = window.URL.createObjectURL(curFiles[i]);
-                listItem.appendChild(image);
-            } else {
-                let para = document.createElement('p');
-                para.textContent = "Le fichier " + curFiles[i].name + " n'est pas dans un format valide.";
-                listItem.appendChild(para);
-            }
-
-            list.appendChild(listItem);
+    // Ajout du gestionnaire d'évènement au bouton de sélection d'images
+    articleImage.addEventListener('change', function() {
+        // On vide le contenu de la div
+        while (previewImage.firstChild) {
+            previewImage.removeChild(previewImage.firstChild);
         }
-    }
-});
+
+        // On récupère les informations des images sélectionnées
+        let curFiles = articleImage.files;
+
+        // Si des images sont sélectionnées
+        if (curFiles.length > 0) {
+            let list = document.createElement('ul');
+            previewImage.appendChild(list);
+
+            // On parcours toutes les images
+            for (let i = 0; i < curFiles.length; i++) {
+                console.log(curFiles);
+                let listItem = document.createElement('li');
+
+                // Si l'image est du bon type
+                if (validFileType(curFiles[i])) {
+                    let image = document.createElement('img');
+                    image.src = window.URL.createObjectURL(curFiles[i]);
+                    listItem.appendChild(image);
+                } else {
+                    let para = document.createElement('p');
+                    para.textContent = "Le fichier " + curFiles[i].name + " n'est pas dans un format valide.";
+                    listItem.appendChild(para);
+                }
+
+                list.appendChild(listItem);
+            }
+        }
+    });
+};
 
 let fileTypes = [
     'image/jpeg',
@@ -140,3 +144,16 @@ function displayImage(path) {
     modal.appendChild(image);
     modal.style.display = "block";
 }
+
+/*************************************************************************
+ *                             ADMINISTRATION
+ *************************************************************************/
+
+setTimeout(() => {
+    // On cache l'info box après 5s
+    let infoBoxAdmin = document.querySelector("#info-box-admin");
+    if (infoBoxAdmin) {
+        infoBoxAdmin.style.display = 'none';
+    }
+}, 5000);
+

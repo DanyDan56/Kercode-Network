@@ -5,8 +5,16 @@ use Knetwork\Models\User;
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
+/* TODO:
+- Responsive Design
+- Remplacer les onclic par des eventListener
+*/
+
 // On démarre la session
 session_start();
+
+// gc_disable();
+// var_dump(gc_status());
 
 try {
     // On récupère les controllers
@@ -20,6 +28,7 @@ try {
     if (isset($_GET['action'])) {
 
         //*************************** GESTION DE L'ENREGISTREMENT **********************************/
+        
         // Affichage de la page d'enregistrement de compte
         if ($_GET['action'] == 'register') {
             $frontController->register();
@@ -40,6 +49,7 @@ try {
         }
 
         //*************************** GESTION DE LA CONNEXION **********************************/
+
         // Traitement de la connexion à un compte
         else if ($_GET['action'] == 'loginpost') {
             $email = htmlspecialchars($_POST['email']);
@@ -55,6 +65,7 @@ try {
         }
 
         //*************************** GESTION DES ARTICLES **********************************/
+
         // Nouvel article
         else if ($_GET['action'] == 'newarticle') {
             // Si il y a aucun contenu, on redirige vers l'index
@@ -76,6 +87,7 @@ try {
         }
 
         //*************************** GESTION DU PROFIL **********************************/
+        
         // Affichage de la page de profil
         else if ($_GET['action'] == 'profile') {
             $frontController->profile($_SESSION['id']);

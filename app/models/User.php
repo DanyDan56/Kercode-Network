@@ -16,6 +16,9 @@ class User extends \Knetwork\Libs\ORM
     private int $gender;
     private string $profileImage;
     private string $coverImage;
+    private string $createdAt;
+    private string $updatedAt;
+    private bool $admin;
 
     public static function getInstance()
     {
@@ -30,7 +33,7 @@ class User extends \Knetwork\Libs\ORM
     {
         // TODO: Passer par l'ORM
         $pdo = self::connect();
-        $req = $pdo->prepare("SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover
+        $req = $pdo->prepare("SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover, created_at, updated_at, admin
                               FROM user WHERE email = :email");
         $req->execute(['email' => $email]);
         $user = $req->fetch();
@@ -55,9 +58,11 @@ class User extends \Knetwork\Libs\ORM
     public static function register(array $data): bool
     {
         // TODO: Passer par l'ORM
+        try {
         $pdo = self::connect();
         $req = $pdo->prepare("INSERT INTO user(lastname, firstname, email, password, birthday_date, created_at, updated_at)
                              VALUES (:lastname, :firstname, :email, :password, :birthday, NOW(), NOW())");
+        
         return $req->execute([
             'lastname' => $data['lastname'],
             'firstname' => $data['firstname'],
@@ -65,24 +70,50 @@ class User extends \Knetwork\Libs\ORM
             'password' => password_hash($data['password'], PASSWORD_DEFAULT),
             'birthday' => $data['birthday']
         ]);
+    } catch (\Exception $e) {
+        throw new \Exception($e->getMessage());
+    }
     }
 
     public static function find(int $id): self
     {
-        $data = ['id', 'firstname', 'lastname', 'email', 'password', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover'];
+        $data = ['id', 'firstname', 'lastname', 'email', 'password', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover', 'created_at', 'updated_at', 'admin'];
 
         return new self(self::findById($id, $data));
     }
 
-    public static function dateToFrench(string $date, string $format): string
+    public static function getAll(): array
     {
-        $englishMonths = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-        $frenchMonths = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+        $data = ['id', 'firstname', 'lastname', 'email', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover', 'created_at', 'updated_at', 'admin'];
 
-        return str_replace($englishMonths, $frenchMonths, date($format, strtotime($date)));
+        return parent::last($data, 'created_at', 100);
     }
 
-    private function __construct(array $data)
+    /**
+     * Récupère le nombre de comptes créés en fonction des dates envoyées
+     *
+     * @param array $dates - Tableau de dates pour lesquelles on veut récupérer les statistiques
+     * @return void
+     */
+    // public static function chart(array $dates)
+    // {
+    //     $data = [];
+    //     $first = true;
+
+    //     for ($i = 0; $i < count($dates); $i++) {
+    //         if ($first) {
+    //             $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime('2000-01-01')), date('Y-m-d H:i:s', strtotime($dates[$i])));
+    //             $first = false;
+    //         } else {
+    //             $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime($dates[$i-1])),
+    //                                 date('Y-m-d H:i:s', $i != 6 ? strtotime($dates[$i]) : time()));
+    //         }
+    //     }
+
+    //     return $data;
+    // }
+
+    protected function __construct(array $data)
     {
         $this->id = $data['id'];
         $this->firstname = $data['firstname'];
@@ -90,9 +121,13 @@ class User extends \Knetwork\Libs\ORM
         $this->email = $data['email'];
         $this->job = $data['job'];
         $this->address = $data['address'];
-        $this->birthdayDate = $this::dateToFrench($data['birthday_date'], "d F Y");
+        $this->birthdayDate = $data['birthday_date'];
+        $this->gender = $data['gender'];
         $this->profileImage = $data['image_profile'];
         $this->coverImage = $data['image_cover'];
+        $this->createdAt = $data['created_at'];
+        $this->updatedAt = $data['updated_at'];
+        $this->admin = $data['admin'];
 
         // On créé la session
         if (!isset($_SESSION['id'])) {
@@ -123,6 +158,10 @@ class User extends \Knetwork\Libs\ORM
                 return $this->profileImage;
             case 'coverImage':
                 return $this->coverImage;
+            case 'createdAt':
+                return $this->createdAt;
+            case 'updatedAt':
+                return $this->updatedAt;
             default:
                 throw new \Exception('Propriété invalide !', 3);
         }
@@ -132,5 +171,10 @@ class User extends \Knetwork\Libs\ORM
     {
         // On setup la session
         $_SESSION['id'] = $this->id;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->admin;
     }
 }
