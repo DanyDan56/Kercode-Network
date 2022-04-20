@@ -18,13 +18,21 @@ include 'modules/friends_request.php';
     <!-- Grille perso -->
     <div class="flex">
         <!-- Colonne gauche -->
-        <div class="hide-small col m3">
+        <div class="hide-small col l3 m4 margin-top-large">
             <!-- Module carte de profil -->
             <?= $profileCard; ?>
+
+            <!-- On affiche seulement au format medium -->
+            <div class="hide-large show-medium margin-top-medium">
+                <!-- Module pour les évènements à venir -->
+                <?= $eventsUpcoming; ?>
+                <!-- Module pour les demandes d'amis -->
+                <?= $friendsRequest; ?>
+            </div>
         </div>
 
         <!-- Colonne du milieu-->
-        <div class="col m7">
+        <div class="col l7 m8 margin-top-large">
             <!-- Module pour la création d'un nouvel article -->
             <?= $newArticle; ?>
             <!-- On affiche les articles des amis -->
@@ -32,7 +40,7 @@ include 'modules/friends_request.php';
         </div>
 
         <!-- Colonne droite -->
-        <div class="hide-small col m2">
+        <div class="hide-small hide-medium col l2 margin-top-large">
             <!-- Module pour les évènements à venir -->
             <?= $eventsUpcoming; ?>
             <!-- Module pour les demandes d'amis -->

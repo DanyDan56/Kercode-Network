@@ -9,7 +9,7 @@
             </a>
         </li>
         <li class="">
-            <a href="#" class="padding-large hover-white" title="Actualités">
+            <a href="index.php" class="padding-large hover-white" title="Actualités">
                 <i class="fa fa-globe"></i>
             </a>
         </li>

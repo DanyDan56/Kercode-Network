@@ -9,6 +9,7 @@ class User extends \Knetwork\Libs\ORM
     private int $id;
     private string $firstname;
     private string $lastname;
+    private string $password;
     private string $email;
     private string $job;
     private string $address;
@@ -20,6 +21,7 @@ class User extends \Knetwork\Libs\ORM
     private string $updatedAt;
     private bool $admin;
 
+    // FIXME: Erreur avec le singleton   
     public static function getInstance()
     {
         if (isset(self::$instance)) {
@@ -89,29 +91,14 @@ class User extends \Knetwork\Libs\ORM
         return parent::last($data, 'created_at', 100);
     }
 
-    /**
-     * Récupère le nombre de comptes créés en fonction des dates envoyées
-     *
-     * @param array $dates - Tableau de dates pour lesquelles on veut récupérer les statistiques
-     * @return void
-     */
-    // public static function chart(array $dates)
-    // {
-    //     $data = [];
-    //     $first = true;
-
-    //     for ($i = 0; $i < count($dates); $i++) {
-    //         if ($first) {
-    //             $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime('2000-01-01')), date('Y-m-d H:i:s', strtotime($dates[$i])));
-    //             $first = false;
-    //         } else {
-    //             $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime($dates[$i-1])),
-    //                                 date('Y-m-d H:i:s', $i != 6 ? strtotime($dates[$i]) : time()));
-    //         }
-    //     }
-
-    //     return $data;
-    // }
+    public static function check(int $id, string $password, bool $admin = null): bool
+    {
+        $data = ['password' => $password, 'id' => $id];
+        if (isset($admin)) {
+            $data['admin'] = $admin;
+        }
+        return parent::exist($data);
+    }
 
     protected function __construct(array $data)
     {
@@ -128,6 +115,9 @@ class User extends \Knetwork\Libs\ORM
         $this->createdAt = $data['created_at'];
         $this->updatedAt = $data['updated_at'];
         $this->admin = $data['admin'];
+        if (isset($data['password'])) {
+            $this->password = $data['password'];
+        }
 
         // On créé la session
         if (!isset($_SESSION['id'])) {
@@ -144,6 +134,8 @@ class User extends \Knetwork\Libs\ORM
                 return $this->firstname;
             case 'lastname':
                 return $this->lastname;
+            case 'password':
+                return $this->password;
             case 'email':
                 return $this->email;
             case 'job':
@@ -171,6 +163,8 @@ class User extends \Knetwork\Libs\ORM
     {
         // On setup la session
         $_SESSION['id'] = $this->id;
+        $_SESSION['password'] = $this->password;
+        $_SESSION['admin'] = $this->admin;
     }
 
     public function isAdmin(): bool

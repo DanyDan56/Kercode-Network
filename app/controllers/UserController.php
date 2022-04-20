@@ -33,7 +33,6 @@ class UserController extends Controller
         // Sinon on gère les exceptions
         try {
             $this->user = User::login($email, $password);
-            // var_dump(User::getInstance());die;
 
             if($this->user) {
                 header("location: index.php");

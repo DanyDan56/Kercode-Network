@@ -166,14 +166,20 @@ abstract class ORM
         $child = self::getTableName(get_called_class());
 
         // Création de la requête
-        $column = join("", array_keys($data));
-        $value = join("", array_values($data));
-        $sqlQuery = "SELECT $column FROM $child WHERE $column = :value";
+        $columns = join(", ", array_keys($data));
+        // $value = join("", array_values($data));
+        $sqlQuery = "SELECT {$columns} FROM {$child} WHERE ";
+        // $sqlQuery = "SELECT ";
+        foreach ($data as $key => $value) {
+            $sqlQuery .= $key . "=:" . $key . " AND ";
+        }
+        $sqlQuery = substr($sqlQuery, !strlen($sqlQuery), -5);
+        // $sqlQuery .= " FROM {$child} WHERE id = :id";
 
         // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
-        $req->execute(['value' => $value]);
+        $req->execute($data);
 
         return empty($req->fetch()) ? false : true;
     }

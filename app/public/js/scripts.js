@@ -135,6 +135,11 @@ window.addEventListener('click', function(e) {
     }
 });
 
+let modalables = document.querySelectorAll('.modalable');
+modalables.forEach(modalable => {
+    modalable.addEventListener('click', (modalable) => {displayImage(modalable.target.dataset.path)});
+});
+
 // On affiche l'image désirée
 function displayImage(path) {
     let image = document.createElement('img');

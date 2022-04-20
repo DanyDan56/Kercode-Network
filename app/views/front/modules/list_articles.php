@@ -66,34 +66,35 @@
             <?php $images = $article->getImages(); ?>
             <div class="flex flex-wrap flex-justify-between">
                 <!-- Si une seule image -->
+                <!-- TODO: modalable -->
                 <?php if (count($images) === 1): ?>
                     <div class="w100">
-                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 btn-modal" onclick="displayImage('<?= $images[0] ?>')">
+                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0] ?>'">
                     </div>
                 <!-- Si 2 images -->
                 <?php elseif (count($images) === 2): $i = 0; ?>
                     <?php foreach ($images as $image): $i++; ?>
                         <div class="w49">
-                            <img src="<?= $image ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100" onclick="displayImage('<?= $image ?>')">
+                            <img src="<?= $image ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $image ?>'">
                         </div>
                     <?php endforeach; ?>
                 <!-- Si 3 images -->
                 <?php elseif (count($images) === 3): ?>
                     <div class="w67">
-                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100" onclick="displayImage('<?= $images[0]; ?>')">
+                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0]; ?>'">
                     </div>
                     <div class="w33">
                         <?php for($i = 1; $i < 3; $i++): ?>
-                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 <?= $i === 2 ? 'margin-bottom' : ''; ?>" onclick="displayImage('<?= $images[$i] ?>')">
+                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable <?= $i === 2 ? 'margin-bottom' : ''; ?>" data-path='<?= $images[$i] ?>'">
                         <?php endfor; ?>
                     </div>
                 <?php else: ?>
                     <div class="w100">
-                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100" onclick="displayImage('<?= $images[0] ?>')">
+                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable" data-path='<?= $images[0] ?>'">
                     </div>
                     <?php for($i = 1; $i < count($images); $i++): ?>
                         <div class="w25">
-                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 margin-bottom" onclick="displayImage('<?= $images[$i] ?>')">
+                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 margin-bottom modalable" data-path='<?= $images[$i] ?>'">
                         </div>
                     <?php endfor; ?>
                 <?php endif; ?>

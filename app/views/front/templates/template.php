@@ -24,9 +24,10 @@
 
     <!-- Le contenu de la page -->
     <?= $content; ?>
+
+    <!-- Custom Scripts -->
+    <script src="./app/public/js/scripts.js"></script>
     
 </body>
-    <!-- Custom Scripts -->
-    <script src="app/public/js/scripts.js"></script>
 
 </html>

@@ -3,22 +3,21 @@
 namespace Knetwork\Controllers;
 
 use Knetwork\Models\User;
-use Knetwork\Controllers\UserController;
+use Knetwork\Models\Article;
 
 class FrontController extends Controller
 {
-    public function home(int $id): void
+    public function home(): void
     {
-        // var_dump(User::getInstance());die;
-        $user = \Knetwork\Models\User::find($id);
+        $user = User::find($_SESSION['id']);
 
         $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
-        $articles = \Knetwork\Models\Article::last($data, 'created_at', 10);
+        $articles = Article::last($data, 'created_at', 10);
 
         include $this->view('home');
     }
 
-    public function login(): void
+    public function login(\Exception $e = null): void
     {
         
         include $this->view('login');
@@ -29,9 +28,9 @@ class FrontController extends Controller
         include $this->view('register');
     }
 
-    public function profile(int $id): void
+    public function profile(): void
     {
-        $user = \Knetwork\Models\User::find($id);
+        $user = User::find($_SESSION['id']);
 
         include $this->view('profile');
     }
