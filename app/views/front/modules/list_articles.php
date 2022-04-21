@@ -36,10 +36,10 @@
             <!-- Menu d'édition et de suppression -->
             <!-- On affiche seulement le menu si l'article appartient à l'utlisateur -->
             <?php if ($article->__get('user_id') === $_SESSION['id']): ?>
-                <div class="article-options circle pointer center right top" onclick="displayMenuArticle(<?= $article->__get('id'); ?>)">
+                <div class="article-options circle pointer center right top" data-id="<?= $article->__get('id'); ?>">
                     <span class="text-gray bold space-letters">...</span>
                     <div id="menu-article-<?= $article->__get('id'); ?>" class="dropdown-content dropdown-content-right white card-4 hide">
-                        <a class="hover-gray" onclick="modifyArticle(<?= $article->__get('id'); ?>)">Modifier</a>
+                        <a class="hover-gray">Modifier</a>
                         <a href="index.php?action=deletearticle&id=<?= $article->__get('id'); ?>" class="text-red hover-red">Supprimer</a>
                     </div>
                 </div>
@@ -56,7 +56,7 @@
             <textarea name="article-edit-<?= $article->__get('id'); ?>" id="article-edit-<?= $article->__get('id'); ?>" rows="4" class="w100 hide" style="resize: none" placeholder="Exprimez-vous !"></textarea>
             <div id="buttons-article-edit-<?= $article->__get('id'); ?>" class="flex hide">
                 <button type="submit" class="btn btn-block green margin-bottom-small" title="Publier"><i class="fa fa-check"></i></button>
-                <button class="btn btn-block red margin-bottom-small" title="Annuler" onclick="modifyArticle(<?= $article->__get('id'); ?>)"><i class="fa fa-remove"></i></button>
+                <button class="btn btn-block red margin-bottom-small" title="Annuler"><i class="fa fa-remove"></i></button>
             </div>
         </form>
 
@@ -66,35 +66,34 @@
             <?php $images = $article->getImages(); ?>
             <div class="flex flex-wrap flex-justify-between">
                 <!-- Si une seule image -->
-                <!-- TODO: modalable -->
                 <?php if (count($images) === 1): ?>
                     <div class="w100">
-                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0] ?>'">
+                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0] ?>'>
                     </div>
                 <!-- Si 2 images -->
                 <?php elseif (count($images) === 2): $i = 0; ?>
                     <?php foreach ($images as $image): $i++; ?>
                         <div class="w49">
-                            <img src="<?= $image ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $image ?>'">
+                            <img src="<?= $image ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $image ?>'>
                         </div>
                     <?php endforeach; ?>
                 <!-- Si 3 images -->
                 <?php elseif (count($images) === 3): ?>
                     <div class="w67">
-                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0]; ?>'">
+                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0]; ?>'>
                     </div>
                     <div class="w33">
                         <?php for($i = 1; $i < 3; $i++): ?>
-                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable <?= $i === 2 ? 'margin-bottom' : ''; ?>" data-path='<?= $images[$i] ?>'">
+                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable <?= $i === 2 ? 'margin-bottom' : ''; ?>" data-path='<?= $images[$i] ?>'>
                         <?php endfor; ?>
                     </div>
                 <?php else: ?>
                     <div class="w100">
-                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable" data-path='<?= $images[0] ?>'">
+                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable" data-path='<?= $images[0] ?>'>
                     </div>
                     <?php for($i = 1; $i < count($images); $i++): ?>
                         <div class="w25">
-                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 margin-bottom modalable" data-path='<?= $images[$i] ?>'">
+                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 margin-bottom modalable" data-path='<?= $images[$i] ?>'>
                         </div>
                     <?php endfor; ?>
                 <?php endif; ?>

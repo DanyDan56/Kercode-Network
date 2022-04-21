@@ -670,11 +670,6 @@ input[type="radio"]:checked:before {
     height: 100vh;
     overflow: auto;
     background-color: rgba(0, 0, 0, .7);
-
-}
-
-.modalable {
-    
 }
 
 .modal-image {
@@ -864,6 +859,13 @@ input[type="radio"]:checked:before {
 
     .dropdown-content {
         right: 0;
+    }
+
+    .modal-image {
+        width: 100vw;
+        height: auto;
+        border: 3px solid white;
+        margin-top: 30%;
     }
 }
 

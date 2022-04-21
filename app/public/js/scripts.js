@@ -67,7 +67,7 @@ if (articleImage) {
                     listItem.appendChild(image);
                 } else {
                     let para = document.createElement('p');
-                    para.textContent = "Le fichier " + curFiles[i].name + " n'est pas dans un format valide.";
+                    para.textContent = `Le fichier ${curFiles[i].name} n'est pas dans un format valide.`;
                     listItem.appendChild(para);
                 }
 
@@ -98,9 +98,19 @@ function validFileType(file) {
  *                            MODIFY ARTICLE
  *************************************************************************/
 
+let articlesOptions = document.querySelectorAll('.article-options');
+articlesOptions.forEach(articleOpt => {
+    let id = articleOpt.dataset.id;
+    let menuModify = document.querySelector(`#menu-article-${id}`).firstElementChild;
+    let cancelEdit = document.querySelector(`#buttons-article-edit-${id}`).lastElementChild;
+    articleOpt.addEventListener('click', () => {displayMenuArticle(id)});
+    menuModify.addEventListener('click', () => {modifyArticle(id)});
+    cancelEdit.addEventListener('click', () => {modifyArticle(id)});
+});
+
 // Affichage du menu
 function displayMenuArticle(id) {
-    let menuArticle = document.querySelector('#menu-article-' + id);
+    let menuArticle = document.querySelector(`#menu-article-${id}`);
     menuArticle.classList.toggle("hide");
 
     // TODO: Ajouter un event pour fermer le menu lors d'un clic hors du menu
@@ -108,9 +118,9 @@ function displayMenuArticle(id) {
 
 // Modification de l'article
 function modifyArticle(id) {
-    let articleText = document.querySelector('#article-' + id);
-    let articleEdit = document.querySelector('#article-edit-' + id);
-    let buttonsArticleEdit = document.querySelector("#buttons-article-edit-" + id);
+    let articleText = document.querySelector(`#article-${id}`);
+    let articleEdit = document.querySelector(`#article-edit-${id}`);
+    let buttonsArticleEdit = document.querySelector(`#buttons-article-edit-${id}`);
     
     articleEdit.value = articleText.textContent;
     articleText.classList.toggle("hide");

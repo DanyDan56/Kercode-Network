@@ -10,10 +10,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 /* TODO:
 - Responsive Design
-- Remplacer les onclic par des eventListener
-- Sécurité utilisateurs
 - Helpers
 - Services
+- Réécriture des urls (.htaccess)
 */
 
 // On démarre la session
