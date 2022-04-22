@@ -1,6 +1,7 @@
 <?php ob_start() ?>
 
 <div class="admin-content margin-top">
+    <h2 class="center">Statistiques de la semaine</h2>
     <div class="flex flex-justify-between flex-wrap">
         <div id="chartUsers" class="chart card-2"></div>
         <div id="chartArticles" class="chart card-2"></div>

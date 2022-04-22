@@ -40,6 +40,15 @@ class AdminController extends Controller
         include $this->viewAdmin('home');
     }
 
+    public function editArticle(int $articleId, \Exception $e = null): void
+    {
+        $user = User::find($_SESSION['id']);
+        $article = Article::find($articleId);
+        $articleUser = User::find($article->__get('user_id'));
+
+        include $this->viewAdmin('home');
+    }
+
     public function editUserPost(int $userId, array $data): void
     { 
         try {
@@ -48,6 +57,17 @@ class AdminController extends Controller
                 throw new \Exception("Erreur lors de la mise à jour de l'utilisateur", 3);
         } catch (\Exception $e) {
             $this->editUser($userId, $e);
+        }
+    }
+
+    public function editArticlePost(int $articleId, array $data): void
+    { 
+        try {
+            Article::updateById($articleId, $data) ? 
+                throw new \Exception("L'article a été mis à jour", 0) :
+                throw new \Exception("Erreur lors de la mise à jour de l'article", 3);
+        } catch (\Exception $e) {
+            $this->editArticle($articleId, $e);
         }
     }
 }

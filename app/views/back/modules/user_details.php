@@ -5,7 +5,7 @@
         <div class="flex flex-wrap">
             <h1>
                 <a href="indexadmin.php?action=users"><i class="fa fa-arrow-left"></i></a>
-                <?= $userToEdit->__get('lastname'); ?> <?= $userToEdit->__get('firstname'); ?>
+                <?= $userToEdit->__get('lastname'); ?> <?= $userToEdit->__get('firstname'); ?> (<?= $userToEdit->__get('id'); ?>)
             </h1>
             <button type="submit" class="btn green right h40px bottom">Enregistrer</button>
         </div>
@@ -25,8 +25,8 @@
 
         <div class="theme-l3 flex">
             <p class="bold margin">
-                Compte créé le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('createdAt'), "d F Y h:i:s"); ?><br>
-                Dernière mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('updatedAt'), "d F Y h:i:s"); ?>
+                Compte créé le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('createdAt'), "d F Y H:i:s"); ?><br>
+                Dernière mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('updatedAt'), "d F Y H:i:s"); ?>
             </p>
             <div class="right margin">
                 <select name="role" id="role">
@@ -81,8 +81,8 @@
         <p class="margin">
             Poids des images uploadées sur le serveur: 
             <strong><?= \Knetwork\Controllers\Controller::formatSize(\Knetwork\Controllers\Controller::folderSize("app/private/images/users/" . $userToEdit->__get('id'))) ?></strong><br>
-            Nombres d'articles créés: <strong><?= $nbArticles ?></strong><br>
-            Nombres de commentaires: <strong>A venir</strong>
+            Nombre d'articles créés: <strong><?= $nbArticles ?></strong><br>
+            Nombre de commentaires: <strong>A venir</strong>
         </p>
     </div>
 </div>

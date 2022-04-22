@@ -56,7 +56,7 @@ try {
         elseif ($_GET['action'] == 'articles') {
             $adminController->articles();
         }
-        // Affichage d'édition d'un utilisateur
+        // Affichage de la page d'édition d'un utilisateur
         elseif ($_GET['action'] == 'useredit') {
             $adminController->editUser($_GET['id']);
         }
@@ -74,6 +74,18 @@ try {
             ];
 
             $adminController->editUserPost($_GET['id'], $data);
+        }
+        // Affichage de la pge d'édition d'un article
+        elseif ($_GET['action'] == 'articleedit') {
+            $adminController->editArticle($_GET['id']);
+        }
+        // Mise à jour d'un article
+        elseif ($_GET['action'] == 'articleeditpost') {
+            $data = [
+                'content' => htmlspecialchars($_POST['content'])
+            ];
+
+            $adminController->editArticlePost($_GET['id'], $data);
         }
     } else {
         $adminController->home();

@@ -349,12 +349,16 @@ input[type="radio"]:checked:before {
     text-decoration: none;
 }
 
-.opacity {
-    opacity: .60;
+.no-resize {
+    resize: none;
 }
 
 .no-wrap {
     white-space: nowrap;
+}
+
+.opacity {
+    opacity: .60;
 }
 
 .hfit {
@@ -395,6 +399,10 @@ input[type="radio"]:checked:before {
 
 .h100 {
     height: 100%;
+}
+
+.w20 {
+    width: 20%;
 }
 
 .w25 {

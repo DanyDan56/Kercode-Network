@@ -290,9 +290,9 @@ abstract class ORM
      * Récupère le nombre de données créés en fonction des dates envoyées
      *
      * @param array $dates - Tableau de dates pour lesquelles on veut récupérer les statistiques
-     * @return void
+     * @return array
      */
-    public static function chart(array $dates)
+    public static function chart(array $dates): array
     {
         $data = [];
         $first = true;

@@ -38,6 +38,14 @@ include_once 'modules/dashboard.php';
                     include_once 'modules/user_details.php';
                     echo $userDetails;
                     break;
+                case 'articleedit':
+                    include_once 'modules/article_details.php';
+                    echo $articleDetails;
+                    break;
+                case 'articleeditpost':
+                    include_once 'modules/article_details.php';
+                    echo $articleDetails;
+                    break;
                 default:
                     echo $dashboard;
                     include_once 'modules/charts.php';
