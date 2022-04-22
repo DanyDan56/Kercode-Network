@@ -27,7 +27,6 @@
                 <td class="center">
                     <a href="#" title="Voir le profil"><i class="fa fa-eye text-blue"></i></a>
                     <a href="#"><i class="fa fa-pen text-green"></i></a>
-                    <!-- TODO: Corbeille -->
                     <a href="#" title="Supprimer"><i class="fa fa-trash text-red"></i></a>
                 </td>
             </tr>

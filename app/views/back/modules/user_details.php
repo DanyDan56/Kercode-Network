@@ -2,7 +2,7 @@
 
 <div class="admin-content">
     <form action="indexadmin.php?action=usereditpost&id=<?= $userToEdit->__get('id'); ?>" id="user-edit" method="POST">
-        <div class="flex">
+        <div class="flex flex-wrap">
             <h1>
                 <a href="indexadmin.php?action=users"><i class="fa fa-arrow-left"></i></a>
                 <?= $userToEdit->__get('lastname'); ?> <?= $userToEdit->__get('firstname'); ?>
@@ -28,7 +28,7 @@
                 Compte créé le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('createdAt'), "d F Y h:i:s"); ?><br>
                 Dernière mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('updatedAt'), "d F Y h:i:s"); ?>
             </p>
-            <div class="m1 right margin">
+            <div class="right margin">
                 <select name="role" id="role">
                     <option value="1" <?php if ($userToEdit->isAdmin()) { echo 'selected'; } ?>>Admin</option>
                     <option value="0" <?php if (!$userToEdit->isAdmin()) { echo 'selected'; } ?>>Utilisateur</option>
@@ -37,16 +37,16 @@
         </div>
 
         <!-- Infos générales -->
-        <div class="flex w100">
-            <div class="col m4 margin">
+        <div class="flex flex-wrap w100">
+            <div class="col l4 m5 margin">
                 <label for="lastname" class="">Nom</label>
                 <input type="text" id="lastname" name="lastname" value="<?= $userToEdit->__get('lastname'); ?>" class="w100">
             </div>
-            <div class="col m4 margin">
+            <div class="col l4 m5 margin">
                 <label for="firstname">Prénom</label>
                 <input type="text" id="firstname" name="firstname" value="<?= $userToEdit->__get('firstname'); ?>" class="w100">
             </div>
-            <div class="col m1 margin">
+            <div class="col l1 m12 margin order-medium-1 order-small-1">
                 <label for="gender">Civilité</label>
                 <select name="gender" id="gender">
                     <option value="0" <?php if ($userToEdit->__get('gender') == 0) { echo 'selected'; } ?>>M.</option>
@@ -54,22 +54,22 @@
                 </select>
             </div>
         </div>
-        <div class="flex w100">
-            <div class="col m4 margin">
+        <div class="flex flex-wrap w100">
+            <div class="col l4 m5 margin">
                 <label for="email">Email</label>
                 <input type="email" id="email" name="email" value="<?= $userToEdit->__get('email'); ?>" class="w100">
             </div>
-            <div class="col m4 margin">
+            <div class="col l4 m5 margin">
                 <label for="birthday">Date de naissance</label>
                 <input type="date" id="birthday" name="birthday" value="<?= $userToEdit->__get('birthdayDate'); ?>" class="w100">
             </div>
         </div>
-        <div class="flex w100">
-            <div class="col m4 margin">
+        <div class="flex flex-wrap w100">
+            <div class="col l4 m5 margin">
                 <label for="address">Ville</label>
                 <input type="text" id="address" name="address" value="<?= $userToEdit->__get('address'); ?>" class="w100">
             </div>
-            <div class="col m4 margin">
+            <div class="col l4 m5 margin">
                 <label for="job">Travail</label>
                 <input type="text" id="job" name="job" value="<?= $userToEdit->__get('job'); ?>" class="w100">
             </div>

@@ -1,9 +1,9 @@
 <?php ob_start() ?>
 
 <div class="admin-content margin-top">
-    <div class="flex flex-justify-between">
-    <div id="chartUsers" class="card-2" style="height: 300px; width: 49%;"></div>
-    <div id="chartArticles" class="card-2" style="height: 300px; width: 49%;"></div>
+    <div class="flex flex-justify-between flex-wrap">
+        <div id="chartUsers" class="chart card-2"></div>
+        <div id="chartArticles" class="chart card-2"></div>
     </div>
 
     <?php $chartUsers = \Knetwork\Models\User::chart(self::dateLastWeek()); ?>

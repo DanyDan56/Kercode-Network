@@ -45,6 +45,7 @@
             <a href="#" class="font-small right" style="width:min-content"><i class="fa fa-right-from-bracket float-right"></i></a>
         </li>
     </ul>
+    <div class="btn navbar-admin-burger hide-large"><i class="fa fa-bars"></i></div>
 </nav>
 
 <?php $navbarAdmin = ob_get_clean(); ?>

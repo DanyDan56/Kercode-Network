@@ -3,7 +3,11 @@
 
 <?php ob_start(); ?>
 
-<section class="container content w30 margin-top">
+<div class="container content margin-top">
+    <h1 class="center">Bienvenue sur Kercode Network</h1>
+</div>
+
+<section class="container content col l4 m8 margin-top">
     <div class="card-2 round white">
         <div class=" padding-large">
             <h2 class="center">Inscrivez-vous dès maintenant</h2>
@@ -28,9 +32,9 @@
                     <input type="radio" name="gender" id="woman" value="0"><label for="woman">Femme</label>
                 </div> -->
                 <!-- Firstname -->
-                <input type="text" name="firstname" id="firstname" class="w48 margin-bottom" placeholder="Prénom" required>
+                <input type="text" name="firstname" id="firstname" class="col m6 margin-bottom" placeholder="Prénom" required>
                 <!-- Lastname -->
-                <input type="text" name="lastname" id="lastname" class="w48 margin-bottom" placeholder="Nom de famille" required>
+                <input type="text" name="lastname" id="lastname" class="col m6 margin-bottom" placeholder="Nom de famille" required>
                 <!-- Email -->
                 <input type="email" name="email" id="email" class="w100 margin-bottom" placeholder="Entrez votre email" required>
                 <!-- Password -->
@@ -51,6 +55,11 @@
         </div>
     </div>
 </section>
+
+<!-- Footer - Copyright -->
+<footer class="theme-l3 margin-top">
+    <p class="center">Copyright Kercode Network &copy; Daniel Goulard - Tous droits réservés </p>
+</footer>
 
 <?php $content = ob_get_clean(); ?>
 

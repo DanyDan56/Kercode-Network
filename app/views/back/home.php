@@ -10,13 +10,13 @@ include_once 'modules/dashboard.php';
 <?php ob_start(); ?>
 
 <div class="container-full">
-    <div class="row">
+    <div class="flex">
         <!-- Menu -->
-        <div class="col m2">
+        <div>
             <?= $navbarAdmin ?>
         </div>
 
-        <div class="col m10">
+        <div class="col m12">
             <!-- On affiche le module en fonction de la page -->
             <?php
             switch ($page) {
