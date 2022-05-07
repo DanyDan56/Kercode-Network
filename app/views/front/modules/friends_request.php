@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 
-<aside class="card-2 round white center">
-    <div class="container margin">
+<aside class="card-2 round white center margin-top-small">
+    <div class="container">
         <p>Demande en amis</p>
         <img src="app/public/images/examples/img_avatar6.png" alt="Photo de profil" class="w50">
         <br>

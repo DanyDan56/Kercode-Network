@@ -10,6 +10,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 /* TODO:
 - Responsive Design
+- Commentaires
 - Helpers
 - Services
 - Réécriture des urls (.htaccess)
@@ -125,6 +126,38 @@ try {
             User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
 
             $articleController->deleteArticle($_GET['id']);
+        }
+
+        //************************* GESTION DES COMMENTAIRES ********************************/
+
+        // Novueau commentaire
+        else if ($_GET['action'] == 'newcomment') {
+            // On check l'utilisateur
+            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+
+            // Si il n'y a aucun contenu, on regirige vers l'index
+            if (empty($_POST['new-comment-edit'])) {
+                header('Location: index.php');
+            } else {
+                // On enregistre le nouveau commentaire
+                $comment = htmlspecialchars($_POST['new-comment-edit']);
+                $articleController->addComment($comment, $_GET['idarticle']);
+            }
+        }
+        // Modification d'un commentaire
+        else if ($_GET['action'] == 'modifycomment') {
+            // On check l'utilisateur
+            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+
+            $content = htmlspecialchars($_POST['comment-edit-' . $_GET['id']]);
+            $articleController->modifyComment($_GET['id'], $content);
+        }
+        // Suppression d'un commentaire
+        else if ($_GET['action'] == 'deletecomment') {
+            // On check l'utilisateur
+            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+
+            $articleController->deleteComment($_GET['id']);
         }
 
         //*************************** GESTION DU PROFIL **********************************/

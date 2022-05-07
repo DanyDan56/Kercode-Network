@@ -2,6 +2,7 @@
 
 namespace Knetwork\Controllers;
 
+use Knetwork\Models\Comment;
 use \Knetwork\Models\Article;
 
 class ArticleController extends Controller
@@ -30,7 +31,7 @@ class ArticleController extends Controller
             $this->deleteArticle($id);
         }
 
-        $article->modify($content) ?? new \Exception("Erreur lors de la modification de l'article dans la base de donnée", 3);
+        $article->modify($content) ?? throw new \Exception("Erreur lors de la modification de l'article dans la base de donnée", 3);
 
         header('location: index.php');
     }
@@ -43,7 +44,32 @@ class ArticleController extends Controller
             self::deleteDirArticle($_SESSION['id'], $id);
         }
 
-        Article::delete($id) ?? new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+        Article::delete($id) ?? throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+
+        header('location: index.php');
+    }
+
+    public function addComment(string $content, int $articleId): void
+    {
+        Comment::save($content, $articleId);
+
+        header('location: index.php');
+    }
+
+    public function modifyComment(int $id, string $content): void
+    {
+        $comment = Comment::find($id);
+
+        $comment->modify($content) ?? throw new \Exception("Erreur lors de la modification du commentaire dans la base de donnée", 3);
+
+        header('location: index.php');
+    }
+
+    public function deleteComment(int $id): void
+    {
+        $comment = Comment::find($id);
+
+        Comment::delete($id) ?? throw new \Exception("Erreur lors de la supression du commentaire dans la base de donnée", 3);
 
         header('location: index.php');
     }

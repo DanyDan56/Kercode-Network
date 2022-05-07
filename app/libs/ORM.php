@@ -55,18 +55,20 @@ abstract class ORM
         return $req->execute();
     }
 
-    public static function all(array $data): array
+    public static function all(array $data, string $where = null, mixed $value = null): array
     {
         $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $columns = join(",", $data);
         $sqlQuery = "SELECT {$columns} FROM {$child}";
+        
+        if ($where && $value) $sqlQuery .= " WHERE {$where} = :{$where}";
 
         // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
-        $req->execute();
+        ($where && $value) ? $req->execute([$where => $value]) : $req->execute();
 
         // Instanciation des objets
         $objects = [];
@@ -81,19 +83,25 @@ abstract class ORM
         return $objects;
     }
 
-    public static function last(array $data, string $order, int $limit): array
+    public static function last(array $data, string $order, int $limit, bool $desc = true, string $key = null, mixed $value = null): array
     {
         $child = self::getTableName(get_called_class());
 
         // Création de la requête
         $columns = array_values($data);
         $columns = join(",", $columns);
-        $sqlQuery = "SELECT {$columns} FROM {$child} ORDER BY {$order} DESC LIMIT {$limit}";
+        $sqlQuery = "SELECT {$columns} FROM {$child} ";
+        if ($key && $value) {
+            $sqlQuery .= "WHERE {$key} = :{$key} ";
+        }
+        $sqlQuery .= "ORDER BY {$order} ";
+        $desc ? $sqlQuery .= "DESC " : "ASC ";
+        $sqlQuery .= "LIMIT {$limit}";
 
         // Excécution de la requête
         $pdo = self::connect();
         $req = $pdo->prepare($sqlQuery);
-        $req->execute();
+        ($key && $value) ? $req->execute([$key => $value]) : $req->execute();
 
         // Instanciation des objets
         $objects = [];
@@ -145,9 +153,6 @@ abstract class ORM
         $child = self::getTableName(get_called_class());
 
         // Création de la requête
-        // $column = join("", array_keys($data));
-        // $value = join("", array_values($data));
-        // $sqlQuery = "UPDATE $child SET $column = :value, updated_at = NOW() WHERE id = :id";
         $sqlQuery = "UPDATE $child SET ";
         foreach ($data as $key => $value) {
             $sqlQuery .= $key . "=:" . $key . ",";
@@ -308,5 +313,52 @@ abstract class ORM
         }
 
         return $data;
+    }
+
+    public static function select(array $data): string
+    {
+        $child = self::getTableName(get_called_class());
+
+        $columns = join(',', $data);
+
+        return "SELECT {$columns} FROM {$child} ";
+    }
+
+    public static function where(string $name, mixed $value): string
+    {
+        return "WHERE {$name} = {$value} ";
+    }
+
+    public static function order(string $name, bool $desc = false): string
+    {
+        $str = "ORDER BY {$name} ";
+        if ($desc) $str .= "DESC ";
+        return  $str;
+    }
+
+    public static function execute(string $query, bool $many = false, array $data = null): mixed
+    {
+        $pdo = self::connect();
+        $req = $pdo->prepare($query);
+        $req->execute($data);
+
+        // Instanciation des objets
+        $child = get_called_class();
+        if ($many) {
+            $objects = [];
+
+            foreach ($req->fetchAll() as $result) {
+                array_push(
+                    $objects,
+                    new $child($result)
+                );
+            }
+
+            return $objects;
+        } else {
+            return new $child($req->fetch());
+        }
+
+        // return $many ? $req->fetchAll() : $req->fetch();
     }
 }

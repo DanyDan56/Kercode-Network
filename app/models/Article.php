@@ -2,6 +2,8 @@
 
 namespace Knetwork\Models;
 
+use Exception;
+
 class Article extends \Knetwork\Libs\ORM
 {
     private int $id;
@@ -21,8 +23,7 @@ class Article extends \Knetwork\Libs\ORM
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
-        // TODO: Faire une exception
-        self::insert($data);
+        parent::insert($data) ?? throw new Exception("Erreur lors de la sauvegarde de l'article dans la base de donnée", 3);
 
         return new self($data);
     }
@@ -41,6 +42,17 @@ class Article extends \Knetwork\Libs\ORM
         return parent::last($data, 'created_at', 100);
     }
 
+    public static function getAllByUser(int $id): array
+    {
+        $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
+        $pdo = parent::select($data) . parent::where('user_id', $id) . parent::order('created_at', true);
+        
+        $pdo = parent::execute($pdo, true);
+
+        // return parent::last($data, 'created_at', 100);
+        return $pdo;
+    }
+
     public function __construct(array $data)
     {
         $this->user_id = $data['user_id'];
@@ -48,7 +60,7 @@ class Article extends \Knetwork\Libs\ORM
         $this->images = $data['images'];
         $this->created_at = $data['created_at'];
         $this->updated_at = $data['updated_at'];
-        $this->id = self::getId(get_object_vars($this));
+        $this->id = parent::getId(get_object_vars($this));
     }
 
     public function __get(string $property): mixed
@@ -67,7 +79,7 @@ class Article extends \Knetwork\Libs\ORM
             case 'updated_at':
                 return $this->updated_at;
             default:
-                throw new \Exception('Propriété invalide !', 3);
+                throw new Exception('Propriété invalide !', 3);
         }
     }
 

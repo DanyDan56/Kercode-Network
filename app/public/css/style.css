@@ -255,7 +255,8 @@ h5 {
     font-size: 18px;
 }
 
-h6 {
+h6,
+#new-article h1 {
     font-size: 16px;
 }
 
@@ -357,8 +358,16 @@ input[type="radio"]:checked:before {
     white-space: nowrap;
 }
 
+.no-events {
+    pointer-events: none;
+}
+
 .opacity {
     opacity: .60;
+}
+
+.hover-underline:hover {
+    text-decoration: underline;
 }
 
 .hfit {
@@ -465,8 +474,12 @@ input[type="radio"]:checked:before {
     padding: 12px 24px !important;
 }
 
+.padding-top {
+    padding-top: 20px;
+}
+
 .no-margin {
-    margin: 0 !important;
+    margin: 0;
 }
 
 .margin {
@@ -498,12 +511,17 @@ input[type="radio"]:checked:before {
 }
 
 .margin-right-small {
-    margin-right: 5px !important;
+    margin-right: 5px;
 }
 
 .margin-right {
-    margin-right: 16px !important;
+    margin-right: 16px;
 }
+
+.margin-left-small {
+    margin-left: 5px;
+}
+
 
 .margin-left {
     margin-left: 16px;
@@ -727,10 +745,48 @@ input[type="radio"]:checked:before {
 }
 
 /****************************************
+                COMMEENTS
+*****************************************/
+
+.comment-options {
+    position: relative;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    /* background-color: #fff; */
+    user-select: none;
+    line-height: 4px;
+}
+
+.comment-options:hover {
+    background-color: #CCC;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, .2), 0 3px 10px 0 rgba(0, 0, 0, .19);
+
+    transition: background-color .3s, color .15s, box-shadow .3s;
+}
+
+/* .comments-content {
+    background-color:#dfe5e8;
+} */
+
+.comments-content:hover {
+    background-color:#becbd2;
+    transition: background-color .3s, color .15s;
+}
+
+/****************************************
                  PROFILE
 *****************************************/
 
-.profile-cover {
+#profile-header {
+    position: relative;
+}
+
+#profile-infos {
+    margin-left: 350px;
+}
+
+.profile-cover {    
     display: block;
     width: 100%;
     height: 500px;
@@ -738,7 +794,12 @@ input[type="radio"]:checked:before {
 }
 
 .profile-image {
-    height: 100vh;
+    display: block;
+    position: absolute;
+    left: 50px;
+    bottom: -200px;
+    width: 250px;
+    background-color: #fff;
 }
 
 /****************************************

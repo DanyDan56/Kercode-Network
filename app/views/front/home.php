@@ -35,8 +35,9 @@ include 'modules/friends_request.php';
         <div class="col l7 m8 margin-top-large">
             <!-- Module pour la création d'un nouvel article -->
             <?= $newArticle; ?>
+            <div class="margin">
             <!-- On affiche les articles des amis -->
-            <?= $articlesList; ?>
+            <?= $articlesList; ?></div>
         </div>
 
         <!-- Colonne droite -->

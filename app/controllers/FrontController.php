@@ -19,7 +19,6 @@ class FrontController extends Controller
 
     public function login(\Exception $e = null): void
     {
-        
         include $this->view('login');
     }
 
@@ -31,6 +30,7 @@ class FrontController extends Controller
     public function profile(): void
     {
         $user = User::find($_SESSION['id']);
+        $articles = Article::getAllByUser($_SESSION['id']);
 
         include $this->view('profile');
     }

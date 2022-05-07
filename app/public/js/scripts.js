@@ -145,6 +145,7 @@ window.addEventListener('click', function(e) {
     }
 });
 
+// On ajoute un event sur le click pour toutes les images
 let modalables = document.querySelectorAll('.modalable');
 modalables.forEach(modalable => {
     modalable.addEventListener('click', (modalable) => {displayImage(modalable.target.dataset.path)});
@@ -159,6 +160,115 @@ function displayImage(path) {
     modal.appendChild(image);
     modal.style.display = "block";
 }
+
+/*************************************************************************
+ *                              COMMENTS
+ *************************************************************************/
+
+/************************** NEW COMMENT *************************/
+
+// On focus le textarea si l'utilisateur clique sur le bouton commenter
+let btnComments = document.querySelectorAll('.btn-comment');
+btnComments.forEach(btnComment => {
+    btnComment.addEventListener('click', (e) => {
+        let areaComment = document.querySelector(`#new-comment-edit-${e.target.dataset.articleid}`);
+        
+        // On focus le textarea
+        areaComment.focus();
+    });
+});
+
+// On ajoute un event sur chaque textarea pour envoyer le formulaire si l'utilisateur appui sur la touche Enter
+let areaComments = document.querySelectorAll('.comment-edit');
+areaComments.forEach(areaComment => {
+    areaComment.addEventListener('keypress', (e) => {
+        switch (e.code) {
+            case 'Shift':
+                // TODO: Faire en sorte que si Shift est appuyé, on puisse aller à la ligne en appuyant sur Enter
+                break;
+            case 'Enter':
+                e.preventDefault();
+                document.querySelector(`#form-comment-${e.target.dataset.articleid}`).submit();
+                break;
+        }
+    });
+});
+
+/************************** DISPLAY COMMENTS *************************/
+
+// On affiche les commentaires cachés lors que l'on clique sur l'élément pour les afficher
+let showComments = document.querySelectorAll('.show-comments');
+showComments.forEach(showComment => {
+    showComment.addEventListener('click', (e) => {
+        comments = document.querySelectorAll(`.comment-${e.target.dataset.articleid}`);
+
+        // On cache l'élément
+        e.target.classList.add('hide');
+        
+        // On affiche les commentaires cachés
+        comments.forEach(comment => {
+            comment.classList.remove('hide');
+            comment.classList.add('flex');
+        });
+    });
+});
+
+/************************** EDIT COMMENTS *************************/
+
+let comments = document.querySelectorAll('.comments-content');
+let currentCommentEdit = 0;
+
+comments.forEach(comment => {
+    // On affiche les actions au survol de la souris du commentaire
+    comment.addEventListener('mouseenter', (e) => {
+        commentId = e.target.parentNode.dataset.commentid;
+        commentActions = document.querySelector(`#comment-actions-${commentId}`);
+        commentActions.classList.remove('hide');
+
+        // On ajoute un eventListener du clic souris sur le bouton d'édition
+        commentActionEdit =document.querySelector(`#comment-action-edit-${commentId}`);
+        if (commentActionEdit) {
+            commentActionEdit = document.querySelector(`#comment-action-edit-${commentId}`);
+            commentActionEdit.addEventListener('click', () => {
+                // Si un commentaire est déjà en cours d'édition, on cache le formulaire
+                if (currentCommentEdit) {
+                    currentCommentContent = document.querySelector(`#comment-content-${currentCommentEdit}`);
+                    currentCommentForm = document.querySelector(`#comment-edit-${currentCommentEdit}`);
+                    currentCommentForm.classList.add('hide');
+                    currentCommentContent.classList.remove('hide');
+                }
+
+                commentContent = document.querySelector(`#comment-content-${commentId}`);
+                commentEditForm = document.querySelector(`#comment-edit-${commentId}`);
+                commentEdit = commentEditForm.firstElementChild;
+                currentCommentEdit = commentId;
+
+                commentEdit.value = commentContent.textContent;
+                commentContent.classList.add('hide');
+                commentEditForm.classList.remove('hide');
+
+                // On ajoute un eventListener pour valider l'édition du commentaire
+                commentEdit.addEventListener('keypress', (e) => {
+                    switch (e.code) {
+                        case 'Shift':
+                            // TODO: Faire en sorte que si Shift est appuyé, on puisse aller à la ligne en appuyant sur Enter
+                            break;
+                        case 'Enter':
+                            e.preventDefault();
+                            commentEditForm.submit();
+                            break;
+                    }
+                });
+            });
+        }
+    });
+
+    // // On cache les actions si la souris n'est plus sur le commentaire 
+    comment.addEventListener('mouseleave', (e) => {
+        commentActions = document.querySelector(`#comment-actions-${e.target.parentNode.dataset.commentid}`);
+        commentActions.classList.add('hide');
+    });
+});
 
 /*************************************************************************
  *                             ADMINISTRATION

@@ -171,4 +171,14 @@ class User extends \Knetwork\Libs\ORM
     {
         return $this->admin;
     }
+
+    public function getNames(): string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
+    public function getProfileImage(): string
+    {
+        return "app/private/images/users/" . $this->id . '/' . $this->profileImage;
+    }
 }
