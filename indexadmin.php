@@ -1,7 +1,9 @@
 <?php
 
-use Knetwork\Controllers\AdminController;
 use Knetwork\Models\User;
+use Knetwork\Controllers\UserController;
+use Knetwork\Controllers\AdminController;
+use Knetwork\Controllers\ArticleController;
 
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
@@ -42,22 +44,25 @@ try {
     }
 
     $adminController = new AdminController();
+    $userController = new UserController();
 
     // On vérifie si il y a une action,
     // Si oui, on la traite,
     // Sinon, on affiche dashboard
     if (isset($_GET['action'])) {
 
+        //*************************** GESTION DES UTILISATEURS **********************************/
+
         // Affichage de la page d'administration des utilisateurs
         if ($_GET['action'] == 'users') {
+            $userController->auth(true);
+
             $adminController->users();
-        }
-        // Affichage de la page d'administration des articles
-        elseif ($_GET['action'] == 'articles') {
-            $adminController->articles();
         }
         // Affichage de la page d'édition d'un utilisateur
         elseif ($_GET['action'] == 'useredit') {
+            $userController->auth(true);
+
             $adminController->editUser($_GET['id']);
         }
         // Mise à jour d'un utilisateur
@@ -75,8 +80,19 @@ try {
 
             $adminController->editUserPost($_GET['id'], $data);
         }
-        // Affichage de la pge d'édition d'un article
+
+        //*************************** GESTION DES ARTICLES **********************************/
+
+        // Affichage de la page d'administration des articles
+        elseif ($_GET['action'] == 'articles') {
+            $userController->auth(true);
+
+            $adminController->articles();
+        }
+        // Affichage de la page d'édition d'un article
         elseif ($_GET['action'] == 'articleedit') {
+            $userController->auth(true);
+
             $adminController->editArticle($_GET['id']);
         }
         // Mise à jour d'un article
@@ -87,7 +103,24 @@ try {
 
             $adminController->editArticlePost($_GET['id'], $data);
         }
+         // Suppression d'un article
+        elseif ($_GET['action'] == 'articledelete') {
+            $userController->auth(true);
+
+            $adminController->deleteArticle($_GET['id']);
+        }
+
+        //*************************** GESTION DES COMMENTAIRES **********************************/
+
+        // Affichage de la page d'administration des commentaires
+        elseif ($_GET['action'] == 'comments') {
+            $userController->auth(true);
+
+            $adminController->comments();
+        }
     } else {
+        $userController->auth(true);
+
         $adminController->home();
     }
 }

@@ -91,11 +91,11 @@ class User extends \Knetwork\Libs\ORM
         return parent::last($data, 'created_at', 100);
     }
 
-    public static function check(int $id, string $password, bool $admin = null): bool
+    public static function check(int $id, string $password, bool $admin): bool
     {
         $data = ['password' => $password, 'id' => $id];
-        if (isset($admin)) {
-            $data['admin'] = $admin;
+        if ($admin) {
+            $data['admin'] = 1;
         }
         return parent::exist($data);
     }

@@ -4,6 +4,7 @@ namespace Knetwork\Controllers;
 
 use Knetwork\Models\User;
 use Knetwork\Models\Article;
+use Knetwork\Models\Comment;
 use Knetwork\Controllers\Controller;
 
 class AdminController extends Controller
@@ -31,6 +32,14 @@ class AdminController extends Controller
         include $this->viewAdmin('home');
     }
 
+    public function comments(): void
+    {
+        $user = User::find($_SESSION['id']);
+        $comments = Comment::getAll();
+
+        include $this->viewAdmin('home');
+    }
+
     public function editUser(int $userId, \Exception $e = null): void
     {
         $user = User::find($_SESSION['id']);
@@ -38,6 +47,17 @@ class AdminController extends Controller
         $nbArticles = Article::countWhere('user_id', $userToEdit->__get('id'));
 
         include $this->viewAdmin('home');
+    }
+
+    public function editUserPost(int $userId, array $data): void
+    { 
+        try {
+            throw User::updateById($userId, $data) ?
+                new \Exception("L'utilisateur a été mis à jour", 0) :
+                new \Exception("Erreur lors de la mise à jour de l'utilisateur", 3);
+        } catch (\Exception $e) {
+            $this->editUser($userId, $e);
+        }
     }
 
     public function editArticle(int $articleId, \Exception $e = null): void
@@ -49,25 +69,28 @@ class AdminController extends Controller
         include $this->viewAdmin('home');
     }
 
-    public function editUserPost(int $userId, array $data): void
-    { 
-        try {
-            User::updateById($userId, $data) ? 
-                throw new \Exception("L'utilisateur a été mis à jour", 0) :
-                throw new \Exception("Erreur lors de la mise à jour de l'utilisateur", 3);
-        } catch (\Exception $e) {
-            $this->editUser($userId, $e);
-        }
-    }
-
     public function editArticlePost(int $articleId, array $data): void
     { 
         try {
-            Article::updateById($articleId, $data) ? 
-                throw new \Exception("L'article a été mis à jour", 0) :
-                throw new \Exception("Erreur lors de la mise à jour de l'article", 3);
+            throw Article::updateById($articleId, $data) ? 
+                new \Exception("L'article a été mis à jour", 0) :
+                new \Exception("Erreur lors de la mise à jour de l'article", 3);
         } catch (\Exception $e) {
             $this->editArticle($articleId, $e);
         }
+    }
+
+    public function deleteArticle(int $id): void
+    {
+        $user = User::find($_SESSION['id']);
+        $article = Article::find($id);
+
+        if ($article->haveImages()) {
+            self::deleteDirArticle($_SESSION['id'], $id);
+        }
+
+        Article::delete($id) ?? throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+
+        header('Location: indexadmin.php?action=articles');
     }
 }

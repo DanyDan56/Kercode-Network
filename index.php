@@ -56,7 +56,7 @@ try {
     // Sinon, on affiche soit la page login ou home en fonction si il y a une session de setup ou pas
     if (isset($_GET['action'])) {
 
-        //*************************** GESTION DE L'ENREGISTREMENT **********************************/
+        //*************************** GESTION DE L'ENREGISTREMENT D'UN COMPTE **********************************/
         
         // Affichage de la page d'enregistrement de compte
         if ($_GET['action'] == 'register') {
@@ -96,8 +96,7 @@ try {
 
         // Nouvel article
         else if ($_GET['action'] == 'newarticle') {
-            // On check l'utilisateur
-            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+            $userController->auth();
 
             // Si il y a aucun contenu, on redirige vers l'index
             if ($_POST['new-article-edit'] == "" && $_FILES['image-article']['size'][0] == 0) {
@@ -114,16 +113,14 @@ try {
         }
         // Modification d'article
         else if ($_GET['action'] == 'modifyarticle') {
-            // On check l'utilisateur
-            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+            $userController->auth();
 
             $content = htmlspecialchars($_POST['article-edit-' . $_GET['id']]);
             $articleController->modifyArticle($_GET['id'], $content);
         }
         // Suppression d'article
         else if ($_GET['action'] == 'deletearticle') {
-            // On check l'utilisateur
-            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+            $userController->auth();
 
             $articleController->deleteArticle($_GET['id']);
         }
@@ -132,8 +129,7 @@ try {
 
         // Novueau commentaire
         else if ($_GET['action'] == 'newcomment') {
-            // On check l'utilisateur
-            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+            $userController->auth();
 
             // Si il n'y a aucun contenu, on regirige vers l'index
             if (empty($_POST['new-comment-edit'])) {
@@ -146,16 +142,14 @@ try {
         }
         // Modification d'un commentaire
         else if ($_GET['action'] == 'modifycomment') {
-            // On check l'utilisateur
-            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+            $userController->auth();
 
             $content = htmlspecialchars($_POST['comment-edit-' . $_GET['id']]);
             $articleController->modifyComment($_GET['id'], $content);
         }
         // Suppression d'un commentaire
         else if ($_GET['action'] == 'deletecomment') {
-            // On check l'utilisateur
-            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+            $userController->auth();
 
             $articleController->deleteComment($_GET['id']);
         }
@@ -164,8 +158,7 @@ try {
         
         // Affichage de la page de profil
         else if ($_GET['action'] == 'profile') {
-            // On check l'utilisateur
-            User::check($_SESSION['id'], $_SESSION['password']) ?? throw new Exception("L'utilisateur n'est pas valide", 3);
+            $userController->auth();
 
             $frontController->profile();
         }
@@ -177,11 +170,9 @@ try {
         if (isset($_SESSION['id'])) {
             // On vérifie que l'utilisateur est valide
             try {
-                if (\Knetwork\Models\User::check($_SESSION['id'], $_SESSION['password'])) {
-                    $frontController->home();
-                } else {
-                    throw new Exception("L'utilisateur n'est pas valide", 3);
-                }
+                $userController->auth();
+
+                $frontController->home();
             } catch (\Exception $e) {
                 $frontController->login($e);
             }

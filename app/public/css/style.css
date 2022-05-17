@@ -103,11 +103,11 @@
 }
 
 @keyframes slide-in-burger {
-    100% { transform: translateX(260px); }
+    100% { transform: translateX(258px); }
 }
 
 @-webkit-keyframes slide-in-burger {
-    100% { -webkit-transform: translateX(260px); }
+    100% { -webkit-transform: translateX(258px); }
 }
 
 @keyframes slide-out {
@@ -121,12 +121,12 @@
 }
 
 @keyframes slide-out-burger {
-    0% { transform: translateX(260px); }
+    0% { transform: translateX(258px); }
     100% { transform: translateX(0%); }
 }
 
 @-webkit-keyframes slide-out-burger {
-    0% { -webkit-transform: translateX(260px); }
+    0% { -webkit-transform: translateX(258px); }
     100% { -webkit-transform: translateX(0%); }
 }
 
@@ -476,6 +476,10 @@ input[type="radio"]:checked:before {
 
 .padding-top {
     padding-top: 20px;
+}
+
+.padding-bottom-large {
+    padding-bottom: 80px;
 }
 
 .no-margin {

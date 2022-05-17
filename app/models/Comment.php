@@ -35,11 +35,11 @@ class Comment extends \Knetwork\Libs\ORM
         return array_reverse(parent::last($data, 'created_at', 2, true, 'article_id', $id));
     }
 
-    public static function getAll(int $id): array
+    public static function getAll(int $id = null): array
     {
         $data = ['id', 'article_id', 'user_id', 'content', 'created_at', 'updated_at'];
 
-        return parent::all($data, 'article_id', $id);
+        return $id ? parent::all($data, 'article_id', $id) : parent::all($data);
     }
 
     public static function find(int $id): self

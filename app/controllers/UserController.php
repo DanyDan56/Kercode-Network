@@ -42,6 +42,12 @@ class UserController extends Controller
         }
     }
 
+    public function auth(bool $admin = false): void
+    {
+        // On check l'utilisateur
+        User::check($_SESSION['id'], $_SESSION['password'], $admin) ?? throw new \Exception("L'utilisateur n'est pas valide", 3);
+    }
+
     public function register(array $data): void
     {
         // On enregistre le nouveau compte
