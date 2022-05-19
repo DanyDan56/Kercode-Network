@@ -4,6 +4,7 @@ use Knetwork\Models\User;
 use Knetwork\Controllers\UserController;
 use Knetwork\Controllers\FrontController;
 use Knetwork\Controllers\ArticleController;
+use Knetwork\Controllers\CommentController;
 
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
@@ -54,6 +55,7 @@ try {
     $frontController = new FrontController();
     $userController = new UserController();
     $articleController = new ArticleController();
+    $commentController = new CommentController();
 
     // On vérifie si il y a une action,
     // Si oui, on la traite,
@@ -141,7 +143,7 @@ try {
             } else {
                 // On enregistre le nouveau commentaire
                 $comment = htmlspecialchars($_POST['new-comment-edit']);
-                $articleController->addComment($comment, $_GET['idarticle']);
+                $commentController->addComment($comment, $_GET['idarticle']);
             }
         }
         // Modification d'un commentaire
@@ -149,13 +151,13 @@ try {
             $userController->auth();
 
             $content = htmlspecialchars($_POST['comment-edit-' . $_GET['id']]);
-            $articleController->modifyComment($_GET['id'], $content);
+            $commentController->modifyComment($_GET['id'], $content);
         }
         // Suppression d'un commentaire
         else if ($_GET['action'] == 'deletecomment') {
             $userController->auth();
 
-            $articleController->deleteComment($_GET['id']);
+            $commentController->deleteComment($_GET['id']);
         }
 
         //*************************** GESTION DU PROFIL **********************************/
