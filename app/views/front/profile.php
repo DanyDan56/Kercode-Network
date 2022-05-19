@@ -20,8 +20,17 @@ include 'modules/friends_request.php';
     </header>
     <div class="flex">
         <div class="col m3 margin-top-large">
-            <?= $eventsUpcoming; ?>
-            <?= $friendsRequest; ?>
+            <?php
+            // Si on est sur la page de profil d'une autre personne
+            if (isset($_GET['id'])) {
+                include 'modules/profile_card.php';
+                echo $profileCard;
+            }
+            // Sinon, c'est qu'on est sur notre propre page de profil
+            else {
+                echo $eventsUpcoming;
+                echo $friendsRequest;
+            } ?>
         </div>
         <div class="col m9 margin margin-top-large">
             <?= $articlesList; ?>

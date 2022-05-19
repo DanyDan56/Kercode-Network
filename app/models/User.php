@@ -182,4 +182,14 @@ class User extends \Knetwork\Libs\ORM
     {
         return "app/private/images/users/" . $this->id . '/' . $this->profileImage;
     }
+
+    public function countArticles(): int
+    {
+        return Article::countWhere('user_id', $this->id);
+    }
+
+    public function countComments(): int
+    {
+        return Comment::countWhere('user_id', $this->id);
+    }
 }

@@ -81,8 +81,8 @@
         <p class="margin">
             Poids des images uploadées sur le serveur: 
             <strong><?= \Knetwork\Controllers\Controller::formatSize(\Knetwork\Controllers\Controller::folderSize("app/private/images/users/" . $userToEdit->__get('id'))) ?></strong><br>
-            Nombre d'articles créés: <strong><?= $nbArticles ?></strong><br>
-            Nombre de commentaires: <strong>A venir</strong>
+            Nombre d'articles créés: <strong><?= $userToEdit->countArticles(); ?></strong><br>
+            Nombre de commentaires: <strong><?= $userToEdit->countComments(); ?></strong>
         </p>
     </div>
 </div>

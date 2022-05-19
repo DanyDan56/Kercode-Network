@@ -27,10 +27,10 @@ class FrontController extends Controller
         include $this->view('register');
     }
 
-    public function profile(): void
+    public function profile(int $id): void
     {
-        $user = User::find($_SESSION['id']);
-        $articles = Article::getAllByUser($_SESSION['id']);
+        $user = User::find($id);
+        $articles = Article::getAllByUser($id);
 
         include $this->view('profile');
     }

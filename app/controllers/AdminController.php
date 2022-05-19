@@ -44,7 +44,6 @@ class AdminController extends Controller
     {
         $user = User::find($_SESSION['id']);
         $userToEdit = User::find($userId);
-        $nbArticles = Article::countWhere('user_id', $userToEdit->__get('id'));
 
         include $this->viewAdmin('home');
     }

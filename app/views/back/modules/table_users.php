@@ -7,6 +7,8 @@
                 <th>Id</th>
                 <th>Profil</th>
                 <th>Email</th>
+                <th># articles</th>
+                <th># commentaires</th>
                 <th>Créé le&nbsp;&nbsp;<i class="fa fa-sort-up"></i></th>
                 <th>Mise à jour le</th>
                 <th>Actions</th>
@@ -26,10 +28,12 @@
                     <?= $u->__get('firstname') . " " . $u->__get('lastname'); ?>
                 </td>
                 <td><?= $u->__get('email'); ?></td>
+                <td><?= $u->countArticles(); ?></td>
+                <td><?= $u->countComments(); ?></td>
                 <td><?= $u->__get('createdAt'); ?></td>
                 <td><?= $u->__get('updatedAt'); ?></td>
                 <td class="center">
-                    <a href="#" title="Voir le profil"><i class="fa fa-eye text-blue"></i></a>
+                    <a href="index.php?action=profile&id=<?= $u->__get('id'); ?>" title="Voir le profil" target="_blank"><i class="fa fa-eye text-blue"></i></a>
                     <a href="indexadmin.php?action=useredit&id=<?= $u->__get('id'); ?>" title="Editer le profil"><i class="fa fa-pen text-green"></i></a>
                     <!-- TODO: Corbeille -->
                     <a href="#" title="Bannir"><i class="fa fa-ban text-red"></i></a>

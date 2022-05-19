@@ -166,7 +166,7 @@ try {
         else if ($_GET['action'] == 'profile') {
             $userController->auth();
 
-            $frontController->profile();
+            $frontController->profile(isset($_GET['id']) ? $_GET['id'] : $_SESSION['id']);
         }
 
     } else {
