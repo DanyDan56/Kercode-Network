@@ -7,7 +7,8 @@
                 <a href="indexadmin.php?action=articles"><i class="fa fa-arrow-left"></i></a>
                 Edition d'article (<?= $article->__get('id'); ?>)
             </h1>
-            <button type="submit" class="btn green right h40px bottom">Enregistrer</button>
+            <a href="indexadmin.php?action=articledelete&id=<?= $article->__get('id'); ?>" class="btn red right h40px bottom">Supprimer</a>
+            <button type="submit" class="btn green h40px bottom margin-left">Enregistrer</button>
         </div>
         <hr>
     
@@ -50,7 +51,11 @@
     <div class="theme-l4">
         <p class="margin">
             Poids des images uploadées sur le serveur: 
-            <strong><?= \Knetwork\Controllers\Controller::formatSize(\Knetwork\Controllers\Controller::folderSize("app/private/images/users/" . $articleUser->__get('id') . "/articles/" . $article->__get('id'))) ?></strong><br>
+            <?php if ($article->haveImages()): ?>
+                <strong><?= \Knetwork\Controllers\Controller::formatSize(\Knetwork\Controllers\Controller::folderSize("app/private/images/users/" . $articleUser->__get('id') . "/articles/" . $article->__get('id'))) ?></strong><br>
+            <?php else: ?>
+                <strong>0 Ko</strong><br>
+            <?php endif; ?>
             Nombre de commentaires: <strong><?= $article->countComments(); ?></strong><br>
             Nombre de likes: <strong>A venir</strong>
         </p>

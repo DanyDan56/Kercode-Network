@@ -7,7 +7,8 @@
                 <a href="indexadmin.php?action=comments"><i class="fa fa-arrow-left"></i></a>
                 Edition d'article (<?= $comment->__get('id'); ?>)
             </h1>
-            <button type="submit" class="btn green right h40px bottom">Enregistrer</button>
+            <a href="indexadmin.php?action=commentdelete&id=<?= $comment->__get('id'); ?>" class="btn red right h40px bottom">Supprimer</a>
+            <button type="submit" class="btn green h40px bottom margin-left">Enregistrer</button>
         </div>
         <hr>
     
