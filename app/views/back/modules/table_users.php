@@ -7,15 +7,17 @@
                 <th>Id</th>
                 <th>Profil</th>
                 <th>Email</th>
-                <th>Créé le</th>
+                <th>Créé le&nbsp;&nbsp;<i class="fa fa-sort-up"></i></th>
                 <th>Mise à jour le</th>
                 <th>Actions</th>
             </tr>
         </thead>
 
         <tbody>
-            <?php foreach($users as $u): ?>
-            <tr class="theme-l3">
+            <?php
+            $i = 0;
+            foreach($users as $u): ?>
+            <tr class="<?= $i % 2 ? 'theme-l3' : 'theme-l2'; ?>">
                 <td class="center"><?= $u->__get('id'); ?></td>
                 <td>
                     <?php if ($u->__get('profileImage') != ""): ?>
@@ -33,7 +35,7 @@
                     <a href="#" title="Bannir"><i class="fa fa-ban text-red"></i></a>
                 </td>
             </tr>
-            <?php endforeach; ?>
+            <?php $i++; endforeach; ?>
         </tbody>
     </table>
 </section>

@@ -6,21 +6,22 @@
             <tr>
                 <th>Id</th>
                 <th>Contenu</th>
-                <th>Créé le</th>
+                <th>Créé le&nbsp;&nbsp;<i class="fa fa-sort-up"></i></th>
                 <th>Mise à jour le</th>
                 <th>Actions</th>
             </tr>
         </thead>
 
         <tbody>
-            <?php foreach($comments as $c): ?>
-            <tr class="theme-l3">
+            <?php
+            $i = 0;
+            foreach($comments as $c): ?>
+            <tr class="<?= $i % 2 ? 'theme-l3' : 'theme-l2'; ?>">
                 <td class="center"><?= $c->__get('id'); ?></td>
                 <td>
-                    <?= substr($c->__get('content'), 0, 80); ?>
+                    <?= substr($c->__get('content'), 0, 100); ?>
                     <?= strlen($c->__get('content')) > 80 ? "..." : "" ?>
                 </td>
-                <td class="center"><i class="fa <?= $c->__get('images') ? "fa-circle-check text-green" : "fa-circle-xmark text-red"; ?>"></i></td>
                 <td><?= $c->__get('created_at'); ?></td>
                 <td><?= $c->__get('updated_at'); ?></td>
                 <td class="center">
@@ -29,7 +30,7 @@
                     <a href="#" title="Supprimer"><i class="fa fa-trash text-red"></i></a>
                 </td>
             </tr>
-            <?php endforeach; ?>
+            <?php $i++; endforeach; ?>
         </tbody>
     </table>
 </section>

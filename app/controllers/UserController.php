@@ -35,7 +35,8 @@ class UserController extends Controller
             $this->user = User::login($email, $password);
 
             if($this->user) {
-                header("location: index.php");
+                if ($this->user->isAdmin()) header("location: indexadmin.php");
+                else header("location: indexadmin.php");
             }
         } catch (\Exception $e) {
             require 'app/views/front/login.php';
@@ -45,7 +46,7 @@ class UserController extends Controller
     public function auth(bool $admin = false): void
     {
         // On check l'utilisateur
-        User::check($_SESSION['id'], $_SESSION['password'], $admin) ?? throw new \Exception("L'utilisateur n'est pas valide", 3);
+        if (!User::check($_SESSION['id'], $_SESSION['password'], $admin)) throw new \Exception("L'utilisateur n'est pas valide", 3);
     }
 
     public function register(array $data): void

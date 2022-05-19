@@ -25,11 +25,6 @@ include_once 'modules/dashboard.php';
                     include_once 'modules/table_users.php';
                     echo $tableUsers;
                     break;
-                case 'articles':
-                    echo $dashboard;
-                    include_once 'modules/table_articles.php';
-                    echo $tableArticles;
-                    break;
                 case 'useredit':
                     include_once 'modules/user_details.php';
                     echo $userDetails;
@@ -38,6 +33,11 @@ include_once 'modules/dashboard.php';
                     include_once 'modules/user_details.php';
                     echo $userDetails;
                     break;
+                case 'articles':
+                    echo $dashboard;
+                    include_once 'modules/table_articles.php';
+                    echo $tableArticles;
+                    break;
                 case 'articleedit':
                     include_once 'modules/article_details.php';
                     echo $articleDetails;
@@ -45,6 +45,11 @@ include_once 'modules/dashboard.php';
                 case 'articleeditpost':
                     include_once 'modules/article_details.php';
                     echo $articleDetails;
+                    break;
+                case 'comments':
+                    echo $dashboard;
+                    include_once 'modules/table_comments.php';
+                    echo $tableComments;
                     break;
                 default:
                     echo $dashboard;

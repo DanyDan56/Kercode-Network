@@ -116,4 +116,14 @@ class Article extends \Knetwork\Libs\ORM
 
         return $names;
     }
+
+    public function countComments(): int
+    {
+        return Comment::countByArticle($this->id);
+    }
+
+    public function getComments(): array
+    {
+        return Comment::getAll($this->id);
+    }
 }

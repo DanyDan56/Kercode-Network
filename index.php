@@ -16,6 +16,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 - Réécriture des urls (.htaccess)
 */
 
+/* COMMIT:
+- Connexion avec compte admin = indexadmin.php
+*/
+
 // On démarre la session
 session_start();
 

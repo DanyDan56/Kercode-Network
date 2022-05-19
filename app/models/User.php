@@ -97,6 +97,7 @@ class User extends \Knetwork\Libs\ORM
         if ($admin) {
             $data['admin'] = 1;
         }
+        
         return parent::exist($data);
     }
 

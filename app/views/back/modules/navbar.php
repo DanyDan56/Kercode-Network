@@ -24,7 +24,7 @@
                 <i class="fa fa-users margin-right"></i>Utilisateurs
             </a>
         </li>
-        <li class="navbar-item navbar-subitem font-medium <?= $page == 'articles' ? 'selected' : '' ?>">
+        <li class="navbar-item navbar-subitem font-medium <?= $page == 'articles' || $page == 'articleedit' || $page == 'articleeditpost' ? 'selected' : '' ?>">
             <a href="indexadmin.php?action=articles" class="padding-large">
                 <i class="fa fa-newspaper margin-right"></i>Articles
             </a>
@@ -42,7 +42,7 @@
         <li class="navbar-item bottom">
             <div class="margin-right-small"><img src="./app/private/images/users/<?= $user->__get('id'); ?>/<?= $user->__get('profileImage'); ?>" alt="Profil" class="w25px circle float-left"></div>
             <p class="no-margin"><?= $user->__get('firstname'); ?></p>
-            <a href="#" class="font-small right" style="width:min-content"><i class="fa fa-right-from-bracket float-right"></i></a>
+            <a href="index.php?action=disconnect" class="font-small right" style="width:min-content"><i class="fa fa-right-from-bracket float-right"></i></a>
         </li>
     </ul>
     <div class="btn navbar-admin-burger hide-large"><i class="fa fa-bars"></i></div>

@@ -15,7 +15,7 @@ use Knetwork\Models\Comment;
             
             <div>
                 <!-- Nom et prénom du profil -->
-                <h4 class="no-margin"><a class="bold no-decoration hover-underline" href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><?= $articleUser->getNames(); ?></a></h4>
+                <h4 class="no-margin"><a class="no-decoration hover-underline" href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><?= $articleUser->getNames(); ?></a></h4>
                 
                 <span class="opacity">
                     <!-- On calcul le temps écoulé depuis la publication de l'article -->

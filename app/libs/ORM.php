@@ -315,27 +315,44 @@ abstract class ORM
         return $data;
     }
 
+    /************************ NOUVEAU ORM ********************************/
+
     public static function select(array $data): string
     {
         $child = self::getTableName(get_called_class());
 
         $columns = join(',', $data);
 
-        return "SELECT {$columns} FROM {$child} ";
+        return "SELECT {$columns} FROM {$child}";
+    }
+
+    public static function countNew(): string
+    {
+        $child = self::getTableName(get_called_class());
+
+        return "SELECT COUNT('id') FROM {$child}";
     }
 
     public static function where(string $name, mixed $value): string
     {
-        return "WHERE {$name} = {$value} ";
+        return " WHERE {$name} = {$value} ";
     }
 
     public static function order(string $name, bool $desc = false): string
     {
-        $str = "ORDER BY {$name} ";
-        if ($desc) $str .= "DESC ";
+        $str = " ORDER BY {$name}";
+        if ($desc) $str .= " DESC ";
         return  $str;
     }
 
+    /**
+     * Exécute la requête et retourne un ou des objets de la classe appelante
+     *
+     * @param string $query La reqûete à exécuter
+     * @param boolean $many [optionnel] - Détermine si un ou plusieurs objets sont attendus
+     * @param array|null $data [optionnel] - Données de liaison pour la requête
+     * @return mixed
+     */
     public static function execute(string $query, bool $many = false, array $data = null): mixed
     {
         $pdo = self::connect();
@@ -358,7 +375,20 @@ abstract class ORM
         } else {
             return new $child($req->fetch());
         }
+    }
 
-        // return $many ? $req->fetchAll() : $req->fetch();
+    /**
+     * Exécute une simple requête et retourne un simple résultat
+     *
+     * @param string $query La requête à exécuter
+     * @return mixed
+     */
+    public static function result(string $query): mixed
+    {
+        $pdo = self::connect();
+        $req = $pdo->prepare($query);
+        $req->execute();
+
+        return $req->fetch()[0];
     }
 }

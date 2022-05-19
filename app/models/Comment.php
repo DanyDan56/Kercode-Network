@@ -49,6 +49,13 @@ class Comment extends \Knetwork\Libs\ORM
         return new self(self::findById($id, $data));
     }
 
+    public static function countByArticle(int $id): int
+    {
+        $query = parent::countNew() . parent::where('article_id', $id);
+
+        return parent::result($query);
+    }
+
     public function __construct(array $data)
     {
         $this->article_id = $data['article_id'];
