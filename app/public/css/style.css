@@ -8,10 +8,20 @@
     background-color: #4caf50 !important;
 }
 
+.text-green,
+.hover-text-green:hover {
+    color: #4caf50 !important;
+}
+
 .red,
 .hover-red:hover {
     color: #fff !important;
     background-color: #f44336 !important;
+}
+
+.text-red,
+.hover-text-red:hover {
+    color: #f44336 !important;
 }
 
 .blue,
@@ -20,10 +30,14 @@
     background-color: #298dff !important;
 }
 
-.white,
-.hover-white:hover {
-    color: #000;
-    background-color: #fff !important;
+.text-blue,
+.hover-text-blue:hover {
+    color: #298dff;
+}
+
+.gray,
+.hover-gray:hover {
+    background-color: #CCC !important;
 }
 
 .text-gray,
@@ -31,23 +45,16 @@
     color: #757575 !important;
 }
 
-.hover-gray:hover {
-    background-color: #CCC !important;
+.white,
+.hover-white:hover {
+    color: #000;
+    background-color: #fff !important;
 }
 
-.text-green,
-.hover-text-green:hover {
-    color: #4caf50 !important;
-}
-
-.text-red,
-.hover-text-red:hover {
-    color: #f44336 !important;
-}
-
-.text-blue,
-.hover-text-blue:hover {
-    color: #298dff;
+.yellow,
+.hover-yellow:hover {
+    color: #000;
+    background-color: #ffff00;
 }
 
 /****************************************
@@ -604,7 +611,7 @@ input[type="radio"]:checked:before {
 }
 
 .bottom {
-    margin-top: auto !important;
+    margin-top: auto;
 }
 
 .border {

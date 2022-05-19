@@ -9,9 +9,9 @@
                 <!-- <th>Contenu</th> -->
                 <th>Longueur</th>
                 <th>Image(s)</th>
-                <th># commentaires</th>
-                <th># likes</th>
-                <th># intéractions</th>
+                <th>Commentaires</th>
+                <th>Likes</th>
+                <th>Signalement</th>
                 <th>Créé le&nbsp;&nbsp;<i class="fa fa-sort-up"></i></th>
                 <th>Mise à jour le</th>
                 <th>Actions</th>
@@ -37,7 +37,7 @@
                 <td><?= $a->__get('created_at'); ?></td>
                 <td><?= $a->__get('updated_at'); ?></td>
                 <td class="center">
-                    <a href="#" title="Voir le profil"><i class="fa fa-eye text-blue"></i></a>
+                    <a href="#" title="Voir l'article (WIP)"><i class="fa fa-eye text-blue"></i></a>
                     <a href="indexadmin.php?action=articleedit&id=<?= $a->__get('id'); ?>"><i class="fa fa-pen text-green"></i></a>
                     <a href="indexadmin.php?action=articledelete&id=<?= $a->__get('id'); ?>" title="Supprimer"><i class="fa fa-trash text-red"></i></a>
                 </td>

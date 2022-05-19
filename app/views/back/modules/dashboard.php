@@ -27,7 +27,7 @@
             </a>
         </div>
         <div class="card-2 card-stat round white">
-            <a href="#" class="no-decoration" title="Commentaires">
+            <a href="indexadmin.php?action=comments" class="no-decoration" title="Commentaires">
                 <div class="container flex no-margin">
                     <div>
                         <p class="text-gray">Commentaires</p>

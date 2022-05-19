@@ -103,7 +103,7 @@ try {
 
             $adminController->editArticlePost($_GET['id'], $data);
         }
-         // Suppression d'un article
+        // Suppression d'un article
         elseif ($_GET['action'] == 'articledelete') {
             $userController->auth(true);
 
@@ -117,6 +117,26 @@ try {
             $userController->auth(true);
 
             $adminController->comments();
+        }
+        // Affichage de la page d'édition d'un commentaire
+        elseif ($_GET['action'] == 'commentedit') {
+            $userController->auth(true);
+
+            $adminController->editComment($_GET['id']);
+        }
+        // Mise à jour d'un commentaire
+        elseif ($_GET['action'] == 'commenteditpost') {
+            $data = [
+                'content' => htmlspecialchars($_POST['content'])
+            ];
+
+            $adminController->editCommentPost($_GET['id'], $data);
+        }
+        // Suppression d'un commentaire
+        elseif ($_GET['action'] == 'commentdelete') {
+            $userController->auth(true);
+
+            $adminController->deleteComment($_GET['id']);
         }
     } else {
         $userController->auth(true);

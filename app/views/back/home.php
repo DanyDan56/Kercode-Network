@@ -51,6 +51,14 @@ include_once 'modules/dashboard.php';
                     include_once 'modules/table_comments.php';
                     echo $tableComments;
                     break;
+                case 'commentedit':
+                    include_once 'modules/comment_details.php';
+                    echo $commentDetails;
+                    break;
+                case 'commenteditpost':
+                    include_once 'modules/comment_details.php';
+                    echo $commentDetails;
+                    break;
                 default:
                     echo $dashboard;
                     include_once 'modules/charts.php';

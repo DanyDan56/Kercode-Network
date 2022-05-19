@@ -27,8 +27,8 @@
         <div class="theme-l3 flex">
             <p class="bold margin">
                 Publié par <a href="indexadmin.php?action=useredit&id=<?= $articleUser->__get('id'); ?>"><?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?></a><br>
-                Article créé le <?= \Knetwork\Controllers\Controller::dateToFrench($article->__get('created_at'), "d F Y H:i:s"); ?><br>
-                Dernière mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($article->__get('updated_at'), "d F Y H:i:s"); ?>
+                Créé le <?= \Knetwork\Controllers\Controller::dateToFrench($article->__get('created_at'), "d F Y H:i:s"); ?><br>
+                Mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($article->__get('updated_at'), "d F Y H:i:s"); ?>
             </p>
         </div>
 

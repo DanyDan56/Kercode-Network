@@ -88,8 +88,37 @@ class AdminController extends Controller
             self::deleteDirArticle($_SESSION['id'], $id);
         }
 
-        Article::delete($id) ?? throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+        if (!Article::delete($id)) throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
 
         header('Location: indexadmin.php?action=articles');
+    }
+
+    public function editComment(int $commentId, \Exception $e = null): void
+    {
+        $user = User::find($_SESSION['id']);
+        $comment = Comment::find($commentId);
+        $commentUser = User::find($comment->__get('user_id'));
+
+        include $this->viewAdmin('home');
+    }
+
+    public function editCommentPost(int $commentId, array $data): void
+    { 
+        try {
+            throw Comment::updateById($commentId, $data) ? 
+                new \Exception("Le commentaire a été mis à jour", 0) :
+                new \Exception("Erreur lors de la mise à jour du commentaire", 3);
+        } catch (\Exception $e) {
+            $this->editComment($commentId, $e);
+        }
+    }
+
+    public function deleteComment(int $id): void
+    {
+        $user = User::find($_SESSION['id']);
+
+        if (!Comment::delete($id)) throw new \Exception("Erreur lors de la supression du commentaire dans la base de donnée", 3);
+
+        header('Location: indexadmin.php?action=comments');
     }
 }
