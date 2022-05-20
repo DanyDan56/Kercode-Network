@@ -12,7 +12,7 @@ class FrontController extends Controller
         $user = User::find($_SESSION['id']);
 
         $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
-        $articles = Article::last($data, 'created_at', 10);
+        $articles = Article::getAll(null, 'created_at', true, 10);
 
         include $this->view('home');
     }
@@ -30,7 +30,7 @@ class FrontController extends Controller
     public function profile(int $id): void
     {
         $user = User::find($id);
-        $articles = Article::getAllByUser($id);
+        $articles = Article::getAll($id, 'created_at', true);
 
         include $this->view('profile');
     }

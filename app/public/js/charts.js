@@ -40,7 +40,7 @@ function displayChartUsers(data) {
     chartUsers.render();
 }
 
-// Affichage du graphique pour le nombre d'articles'
+// Affichage du graphique pour le nombre d'articles
 function displayChartArticles(data) {
     labels = [];
     values = [];
@@ -82,7 +82,7 @@ function displayChartArticles(data) {
     chartArticles.render();
 }
 
-// Affichage du graphique pour le nombre d'images'
+// Affichage du graphique pour le nombre d'images
 function displayChartImages(data) {
     labels = [];
     values = [];

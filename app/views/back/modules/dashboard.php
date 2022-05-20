@@ -9,7 +9,7 @@
                 <div class="container flex no-margin">
                     <div>
                         <p class="text-gray">Utilisateurs</p>
-                        <p class="bold font-large no-wrap"><?= \Knetwork\Models\User::count(); ?><span class="tag round green margin-left font-small">+2</span></p>
+                        <p class="bold font-large no-wrap"><?= $nbUsers; ?><span class="tag round green margin-left font-small">+2</span></p>
                     </div>
                     <div class="icon right"><i class="fa fa-users text-gray"></i></div>
                 </div>
@@ -20,7 +20,7 @@
                 <div class="container flex no-margin">
                     <div>
                         <p class="text-gray">Articles</p>
-                        <p class="bold font-large no-wrap"><?= \Knetwork\Models\Article::count(); ?><span class="tag round green margin-left font-small">+5</span></p>
+                        <p class="bold font-large no-wrap"><?= $nbArticles ?><span class="tag round green margin-left font-small">+5</span></p>
                     </div>
                     <div class="icon right"><i class="fa fa-newspaper text-gray"></i></div>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="container flex no-margin">
                     <div>
                         <p class="text-gray">Commentaires</p>
-                        <p class="bold font-large no-wrap">35<span class="tag round green margin-left font-small">+17</span></p>
+                        <p class="bold font-large no-wrap"><?= $nbComments ?><span class="tag round green margin-left font-small">+17</span></p>
                     </div>
                     <div class="icon right"><i class="fa fa-comments text-gray"></i></div>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="container flex no-margin">
                     <div>
                         <p class="text-gray">Photos</p>
-                        <p class="bold font-large no-wrap"><?= \Knetwork\Models\Article::count('article_image'); ?><span class="tag round green margin-left font-small">+9</span></p>
+                        <p class="bold font-large no-wrap"><?= $nbPictures ?><span class="tag round green margin-left font-small">+9</span></p>
                     </div>
                     <div class="icon right"><i class="fa fa-image text-gray"></i></div>
                 </div>

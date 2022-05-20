@@ -2,9 +2,11 @@
 
 namespace Knetwork\Models;
 
-class User extends \Knetwork\Libs\ORM
+class User extends Model
 {
-    private static $instance = null;
+    private static ?User $instance = null;
+    private static array $data =
+    ['user.id as id', 'firstname', 'lastname', 'email', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover', 'admin', 'user.created_at as created_at', 'user.updated_at as updated_at'];
 
     private int $id;
     private string $firstname;
@@ -15,37 +17,37 @@ class User extends \Knetwork\Libs\ORM
     private string $address;
     private string $birthdayDate;
     private int $gender;
-    private string $profileImage;
-    private string $coverImage;
+    private ?string $profileImage;
+    private ?string $coverImage;
+    private bool $admin;
     private string $createdAt;
     private string $updatedAt;
-    private bool $admin;
+    
+    private int $countArticles;
+    private int $countComments;
 
     // FIXME: Erreur avec le singleton   
     public static function getInstance()
     {
-        if (isset(self::$instance)) {
-            return self::$instance;
-        }
+        // On vérifie que l'instance existe et on la retourne
+        if (isset(self::$instance)) return self::$instance;
 
         throw new \Exception("Erreur lors de la récupération de l'instance de l'utilisateur", 3);
     }
 
     public static function login(string $email, string $password): User
     {
-        // TODO: Passer par l'ORM
-        $pdo = self::connect();
-        $req = $pdo->prepare("SELECT id, firstname, lastname, email, password, address, job, birthday_date, gender, image_profile, image_cover, created_at, updated_at, admin
-                              FROM user WHERE email = :email");
-        $req->execute(['email' => $email]);
-        $user = $req->fetch();
+        $data = array_slice(self::$data, 0);
+        array_push($data, 'password');
+
+        $query = parent::select($data) . parent::where(['email']);
+        $user = parent::result($query, false, ['email' => $email]);
+        
 
         // On vérifie que le compte existe bien
         if($user) {
             // Si le mot de passe ne correspond pas
-            if(!password_verify($password, $user['password'])){
-                throw new \Exception("Le mot de passe ne correspond pas", 3);
-            }
+            if(!password_verify($password, $user['password'])) throw new \Exception("Le mot de passe ne correspond pas", 3);
         } else {
             // Si le compte n'existe pas
             throw new \Exception("Le compte n'existe pas", 3);
@@ -59,36 +61,57 @@ class User extends \Knetwork\Libs\ORM
 
     public static function register(array $data): bool
     {
-        // TODO: Passer par l'ORM
         try {
-        $pdo = self::connect();
-        $req = $pdo->prepare("INSERT INTO user(lastname, firstname, email, password, birthday_date, created_at, updated_at)
-                             VALUES (:lastname, :firstname, :email, :password, :birthday, NOW(), NOW())");
-        
-        return $req->execute([
-            'lastname' => $data['lastname'],
-            'firstname' => $data['firstname'],
-            'email' => $data['email'],
-            'password' => password_hash($data['password'], PASSWORD_DEFAULT),
-            'birthday' => $data['birthday']
-        ]);
-    } catch (\Exception $e) {
-        throw new \Exception($e->getMessage());
-    }
+            $data = [
+                'lastname' => $data['lastname'],
+                'firstname' => $data['firstname'],
+                'email' => $data['email'],
+                'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+                'birthday_date' => $data['birthday']
+            ];
+            
+            return parent::insert($data);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage(), 3);
+        }
     }
 
     public static function find(int $id): self
     {
-        $data = ['id', 'firstname', 'lastname', 'email', 'password', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover', 'created_at', 'updated_at', 'admin'];
+        $query = parent::select(self::$data) . parent::where(['id']);
 
-        return new self(self::findById($id, $data));
+        return parent::execute($query, false, ['id' => $id]);
     }
 
-    public static function getAll(): array
+    public static function getAll(int $limit = 0): array
     {
-        $data = ['id', 'firstname', 'lastname', 'email', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover', 'created_at', 'updated_at', 'admin'];
+        $query = parent::select(self::$data).
+                 parent::order('created_at', true);
+        
+        if ($limit) parent::limit($limit);
 
-        return parent::last($data, 'created_at', 100);
+        return parent::execute($query, true);
+    }
+
+    public static function getAllWithStats(int $limit = 0): array
+    {
+        // On copie le tableau de correspondance et on lui ajoute les stats qu'on veut récupérer en plus
+        $data = array_slice(self::$data, 0);
+        array_push($data, 'COUNT(article.id) as countArticles', 'req.comment_id as countComments');
+
+        $subQuery = parent::select(['COUNT(comment.id) as comment_id', 'user_id'], 'comment').
+                    parent::rightJoin('user', 'comment.user_id', 'user.id').
+                    parent::groupBy('user.id');
+
+        $query = parent::select($data).
+                 parent::leftJoin('article', 'user.id', 'article.user_id').
+                 parent::leftJoinSubQuery($subQuery, 'req', 'req.user_id', 'user.id').
+                 parent::groupBy('user.id').
+                 parent::order('user.created_at', true);
+        
+        if ($limit) parent::limit($limit);
+        
+        return parent::execute($query, true);
     }
 
     public static function check(int $id, string $password, bool $admin): bool
@@ -116,14 +139,12 @@ class User extends \Knetwork\Libs\ORM
         $this->createdAt = $data['created_at'];
         $this->updatedAt = $data['updated_at'];
         $this->admin = $data['admin'];
-        if (isset($data['password'])) {
-            $this->password = $data['password'];
-        }
+        if (isset($data['password'])) $this->password = $data['password'];/*  : $this->password = ""; */
+        if (isset($data['countArticles'])) $this->countArticles = $data['countArticles'];/*  : $this->countArticles = 0; */
+        if (isset($data['countComments'])) $this->countComments = $data['countComments'];/*  : $this->countComments = 0; */
 
         // On créé la session
-        if (!isset($_SESSION['id'])) {
-            $this->createSession();
-        }
+        if (!isset($_SESSION['id'])) $this->createSession();
     }
 
     public function __get(string $property): mixed
@@ -155,6 +176,10 @@ class User extends \Knetwork\Libs\ORM
                 return $this->createdAt;
             case 'updatedAt':
                 return $this->updatedAt;
+            case 'countArticles':
+                return $this->countArticles();
+            case 'countComments':
+                return $this->countComments();
             default:
                 throw new \Exception('Propriété invalide !', 3);
         }
@@ -180,16 +205,34 @@ class User extends \Knetwork\Libs\ORM
 
     public function getProfileImage(): string
     {
-        return "app/private/images/users/" . $this->id . '/' . $this->profileImage;
+        isset($this->profileImage) ?
+            $path = "app/private/images/users/" . $this->id . '/' . $this->profileImage :
+            $path = "app/public/images/examples/img_avatar2.png";
+        
+        return $path;
     }
 
-    public function countArticles(): int
+    private function countArticles(): int
     {
-        return Article::countWhere('user_id', $this->id);
+        // Si la valeur existe déjà, on la retourne
+        if (isset($this->countArticles)) return $this->countArticles;
+
+        $query = Article::count('id') . parent::where(['user_id']);
+        
+        $this->countArticles = parent::result($query, false, ['user_id' => $this->id])[0];
+        
+        return $this->countArticles;
     }
 
-    public function countComments(): int
+    private function countComments(): int
     {
-        return Comment::countWhere('user_id', $this->id);
+        // Si la valeur existe déjà, on la retourne
+        if (isset($this->countComments)) return $this->countComments;
+
+        $query = Comment::count('id') . parent::where(['user_id']);
+        
+        $this->countComments = parent::result($query, false, ['user_id' => $this->id])[0];
+
+        return $this->countComments;
     }
 }

@@ -37,8 +37,8 @@
         <textarea name="content" id="content" class="w100 margin-top no-resize"><?= $article->__get('content'); ?></textarea>
 
         <!-- Images -->
-        <?php if ($article->haveImages()): ?>
-            <?php $images = $article->getImages(); ?>
+        <?php if ($article->havePictures()): ?>
+            <?php $images = $article->getPictures(); ?>
             <div class="flex margin-top">
                 <?php foreach ($images as $image): ?>
                     <img src="<?= $image; ?>" alt="Photo de <?= $articleUser->__get('firstname'); ?> <?= $articleUser->__get('lastname'); ?>" class="w20 pointer modalable" data-path='<?= $image ?>'>
@@ -51,7 +51,7 @@
     <div class="theme-l4">
         <p class="margin">
             Poids des images uploadées sur le serveur: 
-            <?php if ($article->haveImages()): ?>
+            <?php if ($article->havePictures()): ?>
                 <strong><?= \Knetwork\Controllers\Controller::formatSize(\Knetwork\Controllers\Controller::folderSize("app/private/images/users/" . $articleUser->__get('id') . "/articles/" . $article->__get('id'))) ?></strong><br>
             <?php else: ?>
                 <strong>0 Ko</strong><br>

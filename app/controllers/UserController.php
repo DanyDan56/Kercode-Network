@@ -36,7 +36,7 @@ class UserController extends Controller
 
             if($this->user) {
                 if ($this->user->isAdmin()) header("location: indexadmin.php");
-                else header("location: indexadmin.php");
+                else header("location: index.php");
             }
         } catch (\Exception $e) {
             require 'app/views/front/login.php';
@@ -56,31 +56,21 @@ class UserController extends Controller
         try {
             // On vérifie que tous les champs sont bien remplis
             foreach ($data as $res) {
-                if (empty($res)) {
-                    throw new \Exception("Tous les champs sont requis", 3); 
-                }
+                if (empty($res)) throw new \Exception("Tous les champs sont requis", 3);
             }
 
             // On vérifie que l'adresse email est au bon format
-            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
-                throw new \Exception("L'email n'est pas valide", 3);
-            }
+            if (!filter_var($data['email'], FILTER_VALIDATE_EMAIL)) throw new \Exception("L'email n'est pas valide", 3);
 
             // On check si les mots de passe sont identique
-            if ($data['password'] != $data['confirmPassword']) {
-                throw new \Exception("Les mots de passe ne sont pas identiques", 3);
-            }
+            if ($data['password'] != $data['confirmPassword']) throw new \Exception("Les mots de passe ne sont pas identiques", 3);
 
             // Si le compte existe déjà
-            if (User::exist(['email' => $data['email']])) {
-                throw new \Exception("Ce compte existe déjà", 3);
-            }
+            if (User::exist(['email' => $data['email']])) throw new \Exception("Ce compte existe déjà", 3);
             
             // On enregistre le nouveau compte
-            if (!User::register($data)) {
-                throw new \Exception("Il y a eu une erreur lors de la création de votre compte.<br>Veuillez réessayer plus tard.", 3);
-            }
-
+            if (!User::register($data)) throw new \Exception("Il y a eu une erreur lors de la création de votre compte.<br>Veuillez réessayer plus tard.", 3);
+            
             // Si tout se passe bien, on créé un espace utilisateur dédié sur le serveur
             $id = User::getId(['email' => $data['email']]);
             self::createDirUser($id);
@@ -88,12 +78,10 @@ class UserController extends Controller
             // Si une image de profil a été sélectionnée, on l'enregistre
             if ($data['imageProfile']['name'] != "") {
                 // Upload
-                $name = $this::uploadImage($id, $data['imageProfile']);
+                $name = parent::uploadImage($id, $data['imageProfile']);
 
                 // Sauvegarde dans la base de donnée
-                if (!User::updateById($id, ['image_profile' => $name])) {
-                    throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);
-                }
+                if (!User::updateById($id, ['image_profile' => $name])) throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);
             }
 
             // On redirige l'utilisateur vers la page de login avec un message informatif (code = 0)

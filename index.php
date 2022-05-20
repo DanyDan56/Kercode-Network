@@ -9,16 +9,14 @@ use Knetwork\Controllers\CommentController;
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
+date_default_timezone_set('Europe/Paris');
+
 /* TODO:
-- Responsive Design
-- Commentaires
+- Chart commentaires
+- Likes
 - Helpers
 - Services
 - Réécriture des urls (.htaccess)
-*/
-
-/* COMMIT:
-- Connexion avec compte admin = indexadmin.php
 */
 
 // On démarre la session

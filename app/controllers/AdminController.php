@@ -12,6 +12,13 @@ class AdminController extends Controller
     public function home(): void
     {
         $user = User::find($_SESSION['id']);
+        $nbUsers = User::total();
+        $nbArticles = Article::total();
+        $nbComments = Comment::total();
+        $nbPictures = Article::totalPictures();
+
+        $chartUsers = User::chart(parent::dateLastWeek());
+        $chartArticles = Article::chart(parent::dateLastWeek());
 
         include $this->viewAdmin('home');
     }
@@ -19,7 +26,11 @@ class AdminController extends Controller
     public function users(): void
     {
         $user = User::find($_SESSION['id']);
-        $users = User::getAll();
+        $users = User::getAllWithStats();
+        $nbUsers = count($users);
+        $nbArticles = Article::total();
+        $nbComments = Comment::total();
+        $nbPictures = Article::totalPictures();
 
         include $this->viewAdmin('home');
     }
@@ -27,7 +38,11 @@ class AdminController extends Controller
     public function articles(): void
     {
         $user = User::find($_SESSION['id']);
-        $articles = Article::getAll();
+        $articles = Article::getAll(null, 'created_at', true);
+        $nbUsers = User::total();
+        $nbArticles = count($articles);
+        $nbComments = Comment::total();
+        $nbPictures = Article::totalPictures();
 
         include $this->viewAdmin('home');
     }
@@ -36,6 +51,10 @@ class AdminController extends Controller
     {
         $user = User::find($_SESSION['id']);
         $comments = Comment::getAll();
+        $nbUsers = User::total();
+        $nbArticles = Article::total();
+        $nbComments = count($comments);
+        $nbPictures = Article::totalPictures();
 
         include $this->viewAdmin('home');
     }
@@ -68,14 +87,15 @@ class AdminController extends Controller
         include $this->viewAdmin('home');
     }
 
-    public function editArticlePost(int $articleId, array $data): void
+    public function editArticlePost(int $id, string $content): void
     { 
         try {
-            throw Article::updateById($articleId, $data) ? 
+            $article = Article::find($id);
+            throw $article->modify($content) ? 
                 new \Exception("L'article a été mis à jour", 0) :
                 new \Exception("Erreur lors de la mise à jour de l'article", 3);
         } catch (\Exception $e) {
-            $this->editArticle($articleId, $e);
+            $this->editArticle($id, $e);
         }
     }
 
@@ -84,7 +104,7 @@ class AdminController extends Controller
         $user = User::find($_SESSION['id']);
         $article = Article::find($id);
 
-        if ($article->haveImages()) {
+        if ($article->havePictures()) {
             self::deleteDirArticle($_SESSION['id'], $id);
         }
 

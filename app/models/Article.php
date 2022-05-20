@@ -4,8 +4,10 @@ namespace Knetwork\Models;
 
 use Exception;
 
-class Article extends \Knetwork\Libs\ORM
+class Article extends Model
 {
+    private static array $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
+
     private int $id;
     private int $user_id;
     private string $content;
@@ -23,34 +25,37 @@ class Article extends \Knetwork\Libs\ORM
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
-        parent::insert($data) ?? throw new Exception("Erreur lors de la sauvegarde de l'article dans la base de donnée", 3);
+        if (!parent::insert($data)) throw new Exception("Erreur lors de la sauvegarde de l'article dans la base de donnée", 3);
 
         return new self($data);
     }
 
     public static function find(int $id): self
     {
-        $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
+        $query = parent::select(self::$data) . parent::where(['id']);
 
-        return new self(self::findById($id, $data));
+        return new self(parent::result($query, false, ['id' => $id]));
     }
 
-    public static function getAll(): array
+    public static function getAll(?int $user_id = null, ?string $order = null, bool $desc = false, int $limit = 0): array
     {
-        $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
+        $data = null;
+        $query = parent::select(self::$data);
+        if (isset($user_id)) {
+            $query .= parent::where(['user_id']);
+            $data = ['user_id' => $user_id];
+        }
+        if (isset($order)) $query .= parent::order($order, $desc);
+        if ($limit) $query .= parent::limit($limit);
 
-        return parent::last($data, 'created_at', 100);
+        return parent::execute($query, true, $data);
     }
 
-    public static function getAllByUser(int $id): array
+    public static function totalPictures(): int
     {
-        $data = ['id', 'user_id', 'content', 'images', 'created_at', 'updated_at'];
-        $pdo = parent::select($data) . parent::where('user_id', $id) . parent::order('created_at', true);
+        $query = parent::count('id', 'article_image');
         
-        $pdo = parent::execute($pdo, true);
-
-        // return parent::last($data, 'created_at', 100);
-        return $pdo;
+        return parent::result($query)[0];
     }
 
     public function __construct(array $data)
@@ -85,36 +90,43 @@ class Article extends \Knetwork\Libs\ORM
 
     public function modify(string $content): bool
     {
-        return self::updateById($this->id, ['content' => $content]);
+        $query = parent::update(['content']) . parent::where(['id']);
+        
+        return parent::executeSimple($query, ['content' => $content, 'id' => $this->id]);
     }
 
-    public function haveImages(): bool
+    public function havePictures(): bool
     {
         return $this->images;
     }
 
-    public function saveImages(array $names): void
+    public function savePictures(array $names): void
     {
-        for ($i = 0; $i < count($names); $i++) {
+        foreach ($names as $name) {
             $data = [
-                'name' => $names[$i],
+                'name' => $name,
                 'id' => $this->id
             ];
-            self::insert($data, 'article_image');
+            parent::insert($data, 'article_image');
         }
     }
 
-    public function getImages(): array 
+    public function getPictures(): ?array 
     {
-        $images = $this::findAllById($this->id, ['name'], 'article_image');
-        $names = [];
+        // Si il n'y a aucune images, on retourne null
+        if (!$this->havePictures()) return null;
+
+        $query = parent::select(['name'], 'article_image') . parent::where(['id']);
+        $names = parent::result($query, true, ['id' => $this->id]);
+        
+        $paths = [];
         $i = 0;
-        foreach ($images as $image) {
-            $names[$i] = 'app/private/images/users/' . $this->user_id . '/articles/' . $this->id . '/' . $image['name'];
+        foreach ($names as $image) {
+            $paths[$i] = 'app/private/images/users/' . $this->user_id . '/articles/' . $this->id . '/' . $image['name'];
             $i++;
         }
 
-        return $names;
+        return $paths;
     }
 
     public function countComments(): int

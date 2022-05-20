@@ -47,7 +47,7 @@
                 </form>
             </div>
         </div>
-        <p class="center margin"><b>Kercode Network</b> est un petit site de réseau social créé pour le projet final de la formation du <i>GRETA Kercode 20222</i>.<br>
+        <p class="center margin"><b>Kercode Network</b> est un petit site de réseau social créé pour le projet final de la formation du <i>GRETA Kercode 2022</i>.<br>
         <a href="index.php?action=register"><strong>Inscrivez-vous</strong></a> dès maintenant pour découvrir les fonctionnalités du site.</p>
     </div>
 </section>

@@ -2,6 +2,7 @@
 
 namespace Knetwork\Libs;
 
+//TODO: changer l'url
 if ($_SERVER['HTTP_HOST'] != "coffee-k6.herokuapp.com") {
     $dotenv = \Dotenv\Dotenv::createImmuTable("./");
     $dotenv->load();
@@ -11,6 +12,8 @@ abstract class ORM
 {
     // Singleton
     private static $pdo = null;
+
+    #region MAIN
 
     private static function getTableName(string $calledClass): string
     {
@@ -33,119 +36,72 @@ abstract class ORM
 
         return self::$pdo;
     }
+    #endregion
 
-    public static function insert(array $data, string $table = null): bool
+    /************************ CONSTRUCTEUR DE REQUËTES SIMPLES ********************************/
+
+    #region CREATE
+
+    /**
+     * Enregistre les données dans la base de donnée.
+     *
+     * @param array $data Tableau associatif des données à enregistrer
+     * @param string|null $table Nom de la table dans laquelle les données doivent être enregistrées
+     * @return boolean Retourne true si l'enregistrement se passe bien; false sinon.
+     */
+    public static function insert(array $data, ?string $table = null): bool
     {
         $table ? $child = $table : $child = self::getTableName(get_called_class());
 
-        // Préparation des données
-        $keys = array_keys($data);
-        $columns = join(",", $keys);
-
-        $values = array_values($data);
-        $datas = join("','", $values);
-
-        // Création de la requête
-        $sqlQuery = "INSERT INTO {$child}({$columns}) VALUES ('{$datas}')";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-
-        return $req->execute();
-    }
-
-    public static function all(array $data, string $where = null, mixed $value = null): array
-    {
-        $child = self::getTableName(get_called_class());
-
-        // Création de la requête
-        $columns = join(",", $data);
-        $sqlQuery = "SELECT {$columns} FROM {$child}";
-        
-        if ($where && $value) $sqlQuery .= " WHERE {$where} = :{$where}";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        ($where && $value) ? $req->execute([$where => $value]) : $req->execute();
-
-        // Instanciation des objets
-        $objects = [];
-        $child = get_called_class();
-        foreach ($req->fetchAll() as $data) {
-            array_push(
-                $objects,
-                new $child($data)
-            );
+        // Mise en forme des données
+        $columns = join(",", array_keys($data));
+        $values = "";
+        foreach(array_keys($data) as $value) {
+            $values .= ':' . $value . ',';
         }
+        // On supprime la dernière virgule
+        $values = substr($values, !strlen($values), -1);
 
-        return $objects;
+        $query = "INSERT INTO {$child}({$columns}) VALUES ({$values})";
+
+        return self::executeSimple($query, $data);
     }
+    #endregion
 
-    public static function last(array $data, string $order, int $limit, bool $desc = true, string $key = null, mixed $value = null): array
-    {
-        $child = self::getTableName(get_called_class());
-
-        // Création de la requête
-        $columns = array_values($data);
-        $columns = join(",", $columns);
-        $sqlQuery = "SELECT {$columns} FROM {$child} ";
-        if ($key && $value) {
-            $sqlQuery .= "WHERE {$key} = :{$key} ";
-        }
-        $sqlQuery .= "ORDER BY {$order} ";
-        $desc ? $sqlQuery .= "DESC " : "ASC ";
-        $sqlQuery .= "LIMIT {$limit}";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        ($key && $value) ? $req->execute([$key => $value]) : $req->execute();
-
-        // Instanciation des objets
-        $objects = [];
-        $child = get_called_class();
-        foreach ($req->fetchAll() as $result) {
-            array_push(
-                $objects,
-                new $child($result)
-            );
-        }
-
-        return $objects;
-    }
-
-    public static function findById(int $id, array $data): array 
-    {
-        $child = self::getTableName(get_called_class());
-
-        // Création de la requête
-        $columns = join(",", $data);
-        $sqlQuery = "SELECT {$columns} FROM {$child} WHERE id = :id";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        $req->execute(['id' => $id]);
-        
-        return $req->fetch();
-    }
-
-    public static function findAllById(int $id, array $data, string $table = null): array 
+    #region READ
+    
+    public static function select(array $columns, ?string $table = null): string
     {
         $table ? $child = $table : $child = self::getTableName(get_called_class());
 
-        // Création de la requête
-        $columns = join(",", $data);
-        $sqlQuery = "SELECT {$columns} FROM {$child} WHERE id = :id";
+        $names = join(',', $columns);
 
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        $req->execute(['id' => $id]);
-        
-        return $req->fetchAll();
+        return "SELECT {$names} FROM {$child}";
+    }
+
+    public static function count(string $column, ?string $table = null): string
+    {
+        $table ? $child = $table : $child = self::getTableName(get_called_class());
+
+        return "SELECT COUNT({$column}) FROM {$child}";
+    }
+    #endregion
+
+    #region UPDATE
+
+    public static function update(array $columns, ?string $table = null): string
+    {
+        $table ? $child = $table : $child = self::getTableName(get_called_class());
+
+        // Mise en forme
+        $names = "";
+        foreach($columns as $column) {
+            $names .= $column . ' = :' . $column . ',';
+        }
+        // On supprime la dernière virgule
+        $names = substr($names, !strlen($names), -1);
+
+        return "UPDATE {$child} SET {$names}";
     }
 
     public static function updateById(int $id, array $data): bool
@@ -165,185 +121,85 @@ abstract class ORM
         $req = $pdo->prepare($sqlQuery);
         return $req->execute($data);
     }
+    #endregion
 
-    public static function exist(array $data): bool 
-    {
-        $child = self::getTableName(get_called_class());
-
-        // Création de la requête
-        $columns = join(", ", array_keys($data));
-        // $value = join("", array_values($data));
-        $sqlQuery = "SELECT {$columns} FROM {$child} WHERE ";
-        // $sqlQuery = "SELECT ";
-        foreach ($data as $key => $value) {
-            $sqlQuery .= $key . "=:" . $key . " AND ";
-        }
-        $sqlQuery = substr($sqlQuery, !strlen($sqlQuery), -5);
-        // $sqlQuery .= " FROM {$child} WHERE id = :id";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        $req->execute($data);
-
-        return empty($req->fetch()) ? false : true;
-    }
-
-    public static function getId(array $data): int
-    {
-        $child = self::getTableName(get_called_class());
-
-        // Création de la requête
-        $columns = array_keys($data);
-        $sqlQuery = "SELECT id FROM $child WHERE $columns[0] = :value0";
-        for ($i = 1; $i < count($columns); $i++) {
-            $sqlQuery .= " && " . $columns[$i] . " = :value" . $i;
-        }
-        $values = array_values($data);
-        $assoc = ['value0' => $values[0]];
-        for ($i = 1; $i < count($values); $i++) {
-            $assoc['value' . $i] = $values[$i];
-        }
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        $req->execute($assoc);
-
-        return $req->fetch()['id'];
-    }
-
-    // public static function limit(int $limit): mixed
-    // {
-    //     // On récupère le nom de la classe appelante et on lui enlève son namespace
-    //     $child = explode("\\", get_called_class());
-    //     $child = $child[array_key_last($child)];
-
-    //     // Création de la requête
-    //     $sqlQuery = "SELECT id, name FROM $child LIMIT :limit";
-
-    //     // Excécution de la requête
-    //     $pdo = self::connect();
-    //     $req = $pdo->prepare($sqlQuery);
-    //     $req->execute(['limit' => $limit]);
-
-    //     return new $child($req->fetch());
-    // }
+    #region DELETE
 
     public static function delete(int $id): bool
     {
         $child = self::getTableName(get_called_class());
 
-        // Création de la requête
-        $sqlQuery = "DELETE FROM $child WHERE id = :id";
+        $query = "DELETE FROM $child" . self::where(['id']);
 
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        
-        return $req->execute(['id' => $id]);
+        return self::executeSimple($query, ['id' => $id]);
     }
+    #endregion
 
-    public static function count(string $table = null): int
+    #region CONDITIONS
+
+    public static function where(array $columns): string
     {
-        $table ? $child = $table : $child = self::getTableName(get_called_class());
+        $query = " WHERE ";
 
-        // Création de la requête
-        $sqlQuery = "SELECT COUNT(*) FROM {$child}";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        $req->execute();
-        
-        return $req->fetch()[0];
-    }
-
-    public static function countBetween(string $column, string $value1, string $value2): int
-    {
-        $child = self::getTableName(get_called_class());
-
-        // Création de la requête
-        $sqlQuery = "SELECT COUNT(*) FROM {$child} WHERE {$column} BETWEEN '{$value1}' AND '{$value2}'";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        $req->execute();
-        
-        return $req->fetch()[0];
-    }
-
-    public static function countWhere(string $column, mixed $value): int
-    {
-        $child = self::getTableName(get_called_class());
-
-        // Création de la requête
-        $sqlQuery = "SELECT COUNT(*) FROM {$child} WHERE {$column} = :value";
-
-        // Excécution de la requête
-        $pdo = self::connect();
-        $req = $pdo->prepare($sqlQuery);
-        $req->execute([
-            'value' => $value
-        ]);
-
-        return  $req->fetch()[0];
-    }
-
-    /**
-     * Récupère le nombre de données créés en fonction des dates envoyées
-     *
-     * @param array $dates - Tableau de dates pour lesquelles on veut récupérer les statistiques
-     * @return array
-     */
-    public static function chart(array $dates): array
-    {
-        $data = [];
-        $first = true;
-
-        for ($i = 0; $i < count($dates); $i++) {
-            if ($first) {
-                $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime('2000-01-01')), date('Y-m-d H:i:s', strtotime($dates[$i])));
-                $first = false;
-            } else {
-                $data[$dates[$i]] = self::countBetween('created_at', date('Y-m-d H:i:s', strtotime($dates[$i-1])),
-                                    date('Y-m-d H:i:s', $i != 6 ? strtotime($dates[$i]) : time()));
-            }
+        foreach($columns as $column) {
+            $query .= $column . " = :" . $column . " AND ";
         }
 
-        return $data;
+        // On supprime le dernier " AND "
+        $query = substr($query, !strlen($query), -5);
+
+        return $query;
     }
 
-    /************************ NOUVEAU ORM ********************************/
-
-    public static function select(array $data): string
+    public static function between(string $column, mixed $value1, mixed $value2): string
     {
-        $child = self::getTableName(get_called_class());
-
-        $columns = join(',', $data);
-
-        return "SELECT {$columns} FROM {$child}";
+        return " WHERE {$column} BETWEEN '{$value1}' AND '{$value2}'";
     }
 
-    public static function countNew(): string
+    public static function order(string $column, bool $desc = false): string
     {
-        $child = self::getTableName(get_called_class());
-
-        return "SELECT COUNT('id') FROM {$child}";
+        $query = " ORDER BY {$column}";
+        
+        if ($desc) $query .= " DESC ";
+        
+        return  $query;
     }
 
-    public static function where(string $name, mixed $value): string
+    public static function groupBy(string $column): string
     {
-        return " WHERE {$name} = {$value} ";
+        return " GROUP BY {$column}";
     }
 
-    public static function order(string $name, bool $desc = false): string
+    public static function limit(int $limit): string
     {
-        $str = " ORDER BY {$name}";
-        if ($desc) $str .= " DESC ";
-        return  $str;
+        return " LIMIT {$limit}";
     }
+    #endregion
+
+    #region JOINTURES
+
+    public static function innerJoin(string $table, string $column1, string $column2): string
+    {
+        return " INNER JOIN {$table} ON {$column1} = {$column2}";
+    }
+
+    public static function leftJoin(string $table, string $column1, string $column2): string
+    {
+        return " LEFT JOIN {$table} ON {$column1} = {$column2}";
+    }
+
+    public static function leftJoinSubQuery(string $subQuery, string $name, $column1, $column2): string
+    {
+        return " LEFT JOIN ({$subQuery}) as {$name} ON {$column1} = {$column2}";
+    }
+
+    public static function rightJoin(string $table, string $column1, string $column2): string
+    {
+        return " RIGHT JOIN {$table} ON {$column1} = {$column2}";
+    }
+    #endregion
+
+    #region EXECUTIONS
 
     /**
      * Exécute la requête et retourne un ou des objets de la classe appelante
@@ -353,7 +209,7 @@ abstract class ORM
      * @param array|null $data [optionnel] - Données de liaison pour la requête
      * @return mixed
      */
-    public static function execute(string $query, bool $many = false, array $data = null): mixed
+    public static function execute(string $query, bool $many = false, ?array $data = null): mixed
     {
         $pdo = self::connect();
         $req = $pdo->prepare($query);
@@ -377,18 +233,58 @@ abstract class ORM
         }
     }
 
+    public static function executeSimple(string $query, ?array $data = null): bool
+    {
+        $pdo = self::connect();
+        $req = $pdo->prepare($query);
+
+        return $req->execute($data);
+    }
+
     /**
      * Exécute une simple requête et retourne un simple résultat
      *
      * @param string $query La requête à exécuter
+     * @param array|null $data Tableau associatif servant pour la liaison des clés / valeurs
      * @return mixed
      */
-    public static function result(string $query): mixed
+    public static function result(string $query, bool $many = false, ?array $data = null): mixed
     {
         $pdo = self::connect();
         $req = $pdo->prepare($query);
-        $req->execute();
+        $req->execute($data);
 
-        return $req->fetch()[0];
+        return $many ? $req->fetchAll() : $req->fetch();
     }
+    #endregion
+
+    /**************************** REQUËTES COMBINÉES ********************************/
+    
+    #region READ
+    /**
+     * Vérifie la concordance des données dans la base de donnée
+     *
+     * @param array $data Tableau associatif des données
+     * @return boolean
+     */
+    public static function exist(array $data): bool
+    {
+        $child = self::getTableName(get_called_class());
+        $columns = array_keys($data);
+
+        $query = self::select($columns, $child) . self::where($columns);
+
+        return empty(self::result($query, false, $data)) ? false : true;
+    }
+
+    public static function getId(array $data): int
+    {
+        $child = self::getTableName(get_called_class());
+        $columns = array_keys($data);
+        
+        $query = self::select(['id'], $child) . self::where($columns);
+
+        return self::result($query, false, $data)['id'];
+    }
+    #endregion
 }

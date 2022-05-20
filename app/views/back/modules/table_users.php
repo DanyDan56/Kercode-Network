@@ -22,14 +22,12 @@
             <tr class="<?= $i % 2 ? 'theme-l3' : 'theme-l2'; ?>">
                 <td class="center"><?= $u->__get('id'); ?></td>
                 <td>
-                    <?php if ($u->__get('profileImage') != ""): ?>
-                        <img src="./app/private/images/users/<?= $u->__get('id'); ?>/<?= $u->__get('profileImage'); ?>" alt="Profil" class="w22px circle float-left margin-right-small">
-                    <?php endif; ?>
-                    <?= $u->__get('firstname') . " " . $u->__get('lastname'); ?>
+                    <img src="<?= $u->getProfileImage(); ?>" alt="Profil" class="w22px circle float-left margin-right-small">
+                    <?= $u->getNames(); ?>
                 </td>
                 <td><?= $u->__get('email'); ?></td>
-                <td><?= $u->countArticles(); ?></td>
-                <td><?= $u->countComments(); ?></td>
+                <td><?= $u->__get('countArticles'); ?></td>
+                <td><?= $u->__get('countComments'); ?></td>
                 <td><?= $u->__get('createdAt'); ?></td>
                 <td><?= $u->__get('updatedAt'); ?></td>
                 <td class="center">

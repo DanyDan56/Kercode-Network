@@ -8,6 +8,8 @@ use Knetwork\Controllers\ArticleController;
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
+date_default_timezone_set('Europe/Paris');
+
 // On démarre la session
 session_start();
 
@@ -97,11 +99,7 @@ try {
         }
         // Mise à jour d'un article
         elseif ($_GET['action'] == 'articleeditpost') {
-            $data = [
-                'content' => htmlspecialchars($_POST['content'])
-            ];
-
-            $adminController->editArticlePost($_GET['id'], $data);
+            $adminController->editArticlePost($_GET['id'], htmlspecialchars($_POST['content']));
         }
         // Suppression d'un article
         elseif ($_GET['action'] == 'articledelete') {

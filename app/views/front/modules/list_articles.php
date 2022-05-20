@@ -1,7 +1,5 @@
 <?php
 
-use Knetwork\Models\Comment;
-
  ob_start() ?>
 
 <?php foreach ($articles as $article): ?>
@@ -18,6 +16,7 @@ use Knetwork\Models\Comment;
                 <h4 class="no-margin"><a class="no-decoration hover-underline" href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><?= $articleUser->getNames(); ?></a></h4>
                 
                 <span class="opacity">
+                    <!-- TODO: Mettre dans un helper -->
                     <!-- On calcul le temps écoulé depuis la publication de l'article -->
                     <?php $time = \Knetwork\Controllers\ArticleController::dateDiff(time(), $article->__get('created_at')); ?>
                         <?php
@@ -65,8 +64,8 @@ use Knetwork\Models\Comment;
 
         <!-- Images -->
         <!-- Disposition différente en fonction du nombre d'images -->
-        <?php if ($article->haveImages()): ?>
-            <?php $images = $article->getImages(); ?>
+        <?php if ($article->havePictures()): ?>
+            <?php $images = $article->getPictures(); ?>
             <div class="flex flex-wrap flex-justify-between">
                 <!-- Si une seule image -->
                 <?php if (count($images) === 1): ?>
@@ -108,7 +107,7 @@ use Knetwork\Models\Comment;
         <button type="button" class="btn btn-comment theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-comment"></i>&nbsp;Commenter</button>
         
         <!-- Infos d'intéractions -->
-        <?php $comments = Comment::getAll($article->__get('id')); ?>
+        <?php $comments = $article->getComments(); ?>
         <span class="float-right opacity"><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
 
         <hr class="no-margin">
@@ -120,16 +119,18 @@ use Knetwork\Models\Comment;
             </div>
         <?php endif; ?>
 
+        <!-- Commentaires -->
         <?php
         if ($comments) :
             for ($i = 0; $i < count($comments); $i++) :
-                $commentUser = \Knetwork\Models\User::find($comments[$i]->__get('user_id'));?>
+                $commentUser = $comments[$i]->getUser();?>
                 <div class="comments comment-<?= $article->__get('id'); ?> <?= ($i < count($comments) - 2) ? 'hide' : 'flex' ?>" data-commentid="<?= $comments[$i]->__get('id'); ?>">
                     <p class="no-margin"><a href="index.php?action=profile&id=<?= $commentUser->__get('id'); ?>"><img src="<?= $commentUser->getProfileImage(); ?>" alt="Photo de profil de <?= $commentUser->getNames(); ?>" class="w40px margin-right-small circle hfit"></a></p>
                     <div class="theme-l4 comments-content w100 padding margin-bottom round">
                         <div class="flex flex-justify-between">
                             <p class="no-margin"><a class="bold no-decoration hover-underline" href="index.php?action=profile&id=<?= $commentUser->__get('id'); ?>"><?= $commentUser->getNames(); ?></a></p>
                             <div class="flex">
+                                <!-- TODO: Mettre dans un helper -->
                                 <!-- Temps écoulé -->
                                 <p class="no-margin opacity font-small">
                                     <?php $time = \Knetwork\Controllers\ArticleController::dateDiff(time(), $comments[$i]->__get('created_at')); ?>

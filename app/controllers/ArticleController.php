@@ -16,7 +16,7 @@ class ArticleController extends Controller
         // Si il il y a des images, on les traîte
         if ($files['size'][0] > 0) {
             $names = $this::uploadImages($article->__get('user_id'), $article->__get('id'), $files);
-            $article->saveImages($names);
+            $article->savePictures($names);
         }
 
         header('location: index.php');
@@ -26,7 +26,7 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
 
-        if ($content == "" && !$article->haveImages()) {
+        if ($content == "" && !$article->havePictures()) {
             $this->deleteArticle($id);
         }
 
@@ -39,7 +39,7 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
 
-        if ($article->haveImages()) {
+        if ($article->havePictures()) {
             self::deleteDirArticle($_SESSION['id'], $id);
         }
 

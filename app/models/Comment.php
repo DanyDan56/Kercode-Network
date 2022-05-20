@@ -4,8 +4,10 @@ namespace Knetwork\Models;
 
 use Exception;
 
-class Comment extends \Knetwork\Libs\ORM
+class Comment extends Model
 {
+    private static array $data = ['id', 'article_id', 'user_id', 'content', 'created_at', 'updated_at'];
+
     private int $id;
     private int $article_id;
     private int $user_id;
@@ -23,37 +25,38 @@ class Comment extends \Knetwork\Libs\ORM
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
-        parent::insert($data) ?? throw new Exception("Erreur lors de la sauvegarde du commentaire dans la base de donnée", 3);
+        if(!parent::insert($data)) throw new Exception("Erreur lors de la sauvegarde du commentaire dans la base de donnée", 3);
 
         return new self($data);
     }
 
-    public static function getLastByArticle(int $id): array
+    public static function getLastByArticle(int $id, int $limit = 2): array
     {
-        $data = ['id', 'article_id', 'user_id', 'content', 'created_at', 'updated_at'];
+        $query = parent::select(self::$data) . parent::where(['article_id']) . parent::order('created_at', true) . parent::limit($limit);
 
-        return array_reverse(parent::last($data, 'created_at', 2, true, 'article_id', $id));
+        return parent::execute($query, true, ['article_id' => $id]);
     }
 
-    public static function getAll(int $id = null): array
+    public static function getAll(int $article_id = 0): array
     {
-        $data = ['id', 'article_id', 'user_id', 'content', 'created_at', 'updated_at'];
+        $query = parent::select(self::$data);
+        if ($article_id) $query .= parent::where(['article_id']);
 
-        return $id ? parent::all($data, 'article_id', $id) : parent::all($data);
+        return $article_id ? parent::execute($query, true, ['article_id' => $article_id]) : parent::execute($query, true);
     }
 
     public static function find(int $id): self
     {
-        $data = ['id', 'article_id', 'user_id', 'content', 'created_at', 'updated_at'];
-
-        return new self(self::findById($id, $data));
+        $query = parent::select(self::$data) . parent::where(['id']);
+        
+        return new self(parent::result($query, false, ['id' => $id]));
     }
 
     public static function countByArticle(int $id): int
     {
-        $query = parent::countNew() . parent::where('article_id', $id);
+        $query = parent::count('id') . parent::where(['article_id']);
 
-        return parent::result($query);
+        return parent::result($query, false, ['article_id' => $id])[0];
     }
 
     public function __construct(array $data)
@@ -88,6 +91,13 @@ class Comment extends \Knetwork\Libs\ORM
 
     public function modify(string $content): bool
     {
-        return self::updateById($this->id, ['content' => $content]);
+        $query = parent::update(['content']) . parent::where(['id']);
+
+        return parent::executeSimple($query, ['content' => $content, 'id' => $this->id]);
+    }
+
+    public function getUser(): User
+    {
+        return User::find($this->user_id);
     }
 }

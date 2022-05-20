@@ -1,7 +1,6 @@
 <!-- On charge les modules requis pour la page d'aministration -->
 <?php 
 include_once 'modules/navbar.php';
-include_once 'modules/dashboard.php';
 ?>
 
 <!-- On change le titre -->
@@ -21,6 +20,7 @@ include_once 'modules/dashboard.php';
             <?php
             switch ($page) {
                 case 'users':
+                    include_once 'modules/dashboard.php';
                     echo $dashboard;
                     include_once 'modules/table_users.php';
                     echo $tableUsers;
@@ -34,6 +34,7 @@ include_once 'modules/dashboard.php';
                     echo $userDetails;
                     break;
                 case 'articles':
+                    include_once 'modules/dashboard.php';
                     echo $dashboard;
                     include_once 'modules/table_articles.php';
                     echo $tableArticles;
@@ -47,6 +48,7 @@ include_once 'modules/dashboard.php';
                     echo $articleDetails;
                     break;
                 case 'comments':
+                    include_once 'modules/dashboard.php';
                     echo $dashboard;
                     include_once 'modules/table_comments.php';
                     echo $tableComments;
@@ -60,6 +62,7 @@ include_once 'modules/dashboard.php';
                     echo $commentDetails;
                     break;
                 default:
+                    include_once 'modules/dashboard.php';
                     echo $dashboard;
                     include_once 'modules/charts.php';
                     echo $charts;
