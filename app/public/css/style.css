@@ -180,6 +180,10 @@
     flex-grow: 2;
 }
 
+.flex-column {
+    flex-direction: column;
+}
+
 /****************************************
             PAGE CONTAINER
 *****************************************/
@@ -413,6 +417,10 @@ input[type="radio"]:checked:before {
     height: 106px;
 }
 
+.h50 {
+    height: 50%;
+}
+
 .h100 {
     height: 100%;
 }
@@ -450,7 +458,7 @@ input[type="radio"]:checked:before {
 }
 
 .w67 {
-    width: 66%;
+    width: 67%;
 }
 
 .w75 {

@@ -28,8 +28,8 @@
         <div class="theme-l3 flex">
             <p class="bold margin">
                 Publié par <a href="indexadmin.php?action=useredit&id=<?= $commentUser->__get('id'); ?>"><?= $commentUser->getNames(); ?></a><br>
-                Créé le <?= \Knetwork\Controllers\Controller::dateToFrench($comment->__get('created_at'), "d F Y H:i:s"); ?><br>
-                Mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($comment->__get('updated_at'), "d F Y H:i:s"); ?>
+                Créé le <?= \Knetwork\Helpers\Helper::dateToFrench($comment->__get('created_at'), "d F Y H:i:s"); ?><br>
+                Mise à jour le <?= \Knetwork\Helpers\Helper::dateToFrench($comment->__get('updated_at'), "d F Y H:i:s"); ?>
             </p>
         </div>
 

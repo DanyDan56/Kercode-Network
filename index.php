@@ -14,7 +14,6 @@ date_default_timezone_set('Europe/Paris');
 /* TODO:
 - Chart commentaires
 - Likes
-- Helpers
 - Services
 - Réécriture des urls (.htaccess)
 */

@@ -14,7 +14,7 @@
         <!-- Infos -->
         <p><i class="fa fa-briefcase fa-fw margin-right text-theme"></i><?= $user->__get('job'); ?></p>
         <p><i class="fa fa-home fa-fw margin-right text-theme"></i><?= $user->__get('address'); ?>, FR</p>
-        <p><i class="fa fa-birthday-cake fa-fw margin-right text-theme"></i><?= self::dateToFrench($user->__get('birthdayDate')); ?></p>
+        <p><i class="fa fa-birthday-cake fa-fw margin-right text-theme"></i><?= \Knetwork\Helpers\Helper::dateToFrench($user->__get('birthdayDate')); ?></p>
     </div>
 </aside>
 

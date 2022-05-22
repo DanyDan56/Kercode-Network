@@ -15,6 +15,7 @@ class Article extends Model
     private string $created_at;
     private string $updated_at;
 
+    #region Méthodes de classe
     public static function save(array $data): self
     {
         $data = [
@@ -57,7 +58,9 @@ class Article extends Model
         
         return parent::result($query)[0];
     }
+    #endregion
 
+    #region Méthodes d'objet
     public function __construct(array $data)
     {
         $this->user_id = $data['user_id'];
@@ -86,6 +89,11 @@ class Article extends Model
             default:
                 throw new Exception('Propriété invalide !', 3);
         }
+    }
+
+    public function getDirPath(): string
+    {
+        return $_ENV['PATHDIRUSER'] . $this->user_id . '/articles/' . $this->id;
     }
 
     public function modify(string $content): bool
@@ -138,4 +146,5 @@ class Article extends Model
     {
         return Comment::getAll($this->id);
     }
+    #endregion
 }

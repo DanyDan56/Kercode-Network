@@ -3,17 +3,11 @@
 namespace Knetwork\Controllers;
 
 use \Knetwork\Models\User;
+use Knetwork\Helpers\Helper;
 
 class UserController extends Controller
 {
     private $user = null;
-
-    private static function createDirUser(int $id): void
-    {
-        if(!mkdir('app/private/images/users/' . $id . "/articles", 0644, true)) {
-            throw new \Exception("Création de l'espace de stockage dédié échoué", 3);
-        }
-    }
 
     public function __get(string $property): mixed
     {
@@ -73,12 +67,12 @@ class UserController extends Controller
             
             // Si tout se passe bien, on créé un espace utilisateur dédié sur le serveur
             $id = User::getId(['email' => $data['email']]);
-            self::createDirUser($id);
+            Helper::createDir($_ENV['PATHDIRUSER'] . $id . '/articles');
 
             // Si une image de profil a été sélectionnée, on l'enregistre
             if ($data['imageProfile']['name'] != "") {
                 // Upload
-                $name = parent::uploadImage($id, $data['imageProfile']);
+                $name = Helper::uploadImage($_ENV['PATHDIRUSER'] . $id, $data['imageProfile']);
 
                 // Sauvegarde dans la base de donnée
                 if (!User::updateById($id, ['image_profile' => $name])) throw new \Exception("Erreur lors de l'enregistrement de l'image sur le serveur", 3);

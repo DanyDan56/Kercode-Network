@@ -2,6 +2,7 @@
 
 namespace Knetwork\Controllers;
 
+use Knetwork\Helpers\Helper;
 use \Knetwork\Models\Article;
 
 class ArticleController extends Controller
@@ -15,7 +16,7 @@ class ArticleController extends Controller
 
         // Si il il y a des images, on les traîte
         if ($files['size'][0] > 0) {
-            $names = $this::uploadImages($article->__get('user_id'), $article->__get('id'), $files);
+            $names = Helper::uploadImages($article->getDirPath(), $files);
             $article->savePictures($names);
         }
 
@@ -26,9 +27,8 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
 
-        if ($content == "" && !$article->havePictures()) {
-            $this->deleteArticle($id);
-        }
+        // Si l'article est vide, on le supprime
+        if ($content == "" && !$article->havePictures()) $this->deleteArticle($id);
 
         if (!$article->modify($content)) throw new \Exception("Erreur lors de la modification de l'article dans la base de donnée", 3);
 
@@ -39,9 +39,8 @@ class ArticleController extends Controller
     {
         $article = Article::find($id);
 
-        if ($article->havePictures()) {
-            self::deleteDirArticle($_SESSION['id'], $id);
-        }
+        // Si il y a des images liées à l'article, on les supprime
+        if ($article->havePictures()) Helper::deleteDir($article->getDirPath());
 
         if (!Article::delete($id)) throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
 

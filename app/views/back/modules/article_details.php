@@ -28,8 +28,8 @@
         <div class="theme-l3 flex">
             <p class="bold margin">
                 Publié par <a href="indexadmin.php?action=useredit&id=<?= $articleUser->__get('id'); ?>"><?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?></a><br>
-                Créé le <?= \Knetwork\Controllers\Controller::dateToFrench($article->__get('created_at'), "d F Y H:i:s"); ?><br>
-                Mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($article->__get('updated_at'), "d F Y H:i:s"); ?>
+                Créé le <?= \Knetwork\Helpers\Helper::dateToFrench($article->__get('created_at'), "d F Y H:i:s"); ?><br>
+                Mise à jour le <?= \Knetwork\Helpers\Helper::dateToFrench($article->__get('updated_at'), "d F Y H:i:s"); ?>
             </p>
         </div>
 
@@ -52,7 +52,7 @@
         <p class="margin">
             Poids des images uploadées sur le serveur: 
             <?php if ($article->havePictures()): ?>
-                <strong><?= \Knetwork\Controllers\Controller::formatSize(\Knetwork\Controllers\Controller::folderSize("app/private/images/users/" . $articleUser->__get('id') . "/articles/" . $article->__get('id'))) ?></strong><br>
+                <strong><?= \Knetwork\Helpers\Helper::formatSize($article->getDirPath()); ?></strong><br>
             <?php else: ?>
                 <strong>0 Ko</strong><br>
             <?php endif; ?>

@@ -15,24 +15,8 @@
                 <!-- Nom et prénom du profil -->
                 <h4 class="no-margin"><a class="no-decoration hover-underline" href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><?= $articleUser->getNames(); ?></a></h4>
                 
-                <span class="opacity">
-                    <!-- TODO: Mettre dans un helper -->
-                    <!-- On calcul le temps écoulé depuis la publication de l'article -->
-                    <?php $time = \Knetwork\Controllers\ArticleController::dateDiff(time(), $article->__get('created_at')); ?>
-                        <?php
-                            $str = "";
-                            if ($time['day'] > 0) {
-                                $str .= $time['day'] . " jour";
-                                $time['day'] > 1 ? $str .= "s" : "";
-                            } elseif ($time['minute'] < 1 && $time['hour'] < 1 && $time['day'] < 1) {
-                                $str = "À l'instant";
-                            } else {
-                                $time['hour'] > 0 ? $str .= $time['hour'] . " h " : "";
-                                $time['minute'] > 0 ? $str .= $time['minute'] . " min" : "";
-                            }
-                            echo $str;
-                        ?>
-                </span>
+                <!-- On calcul le temps écoulé depuis la publication de l'article -->
+                <span class="opacity"><?= \Knetwork\Helpers\Helper::dateDiff(time(), $article->__get('created_at')); ?></span>
             </div>
 
             <!-- Menu d'édition et de suppression -->
@@ -70,56 +54,70 @@
                 <!-- Si une seule image -->
                 <?php if (count($images) === 1): ?>
                     <div class="w100">
-                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0] ?>'>
+                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->getNames(); ?>" class="pointer w100 h100 fill modalable" data-path='<?= $images[0]; ?>'>
                     </div>
                 <!-- Si 2 images -->
-                <?php elseif (count($images) === 2): $i = 0; ?>
-                    <?php foreach ($images as $image): $i++; ?>
-                        <div class="w49">
-                            <img src="<?= $image ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $image ?>'>
+                <?php elseif (count($images) === 2): ?>
+                    <?php foreach ($images as $image): ?>
+                        <div class="w50">
+                            <img src="<?= $image; ?>" alt="Photo de <?= $articleUser->getNames(); ?>" class="pointer w100 h100 fill modalable" data-path='<?= $image; ?>'>
                         </div>
                     <?php endforeach; ?>
                 <!-- Si 3 images -->
                 <?php elseif (count($images) === 3): ?>
                     <div class="w67">
-                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer margin-bottom w100 modalable" data-path='<?= $images[0]; ?>'>
+                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->getNames(); ?>" class="pointer w100 h100 fill modalable" data-path='<?= $images[0]; ?>'>
                     </div>
-                    <div class="w33">
+                    <div class="w33 flex flex-column">
                         <?php for($i = 1; $i < 3; $i++): ?>
-                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable <?= $i === 2 ? 'margin-bottom' : ''; ?>" data-path='<?= $images[$i] ?>'>
+                            <img src="<?= $images[$i]; ?>" alt="Photo de <?= $articleUser->getNames(); ?>" class="pointer w100 h50 fill modalable" data-path='<?= $images[$i]; ?>'>
                         <?php endfor; ?>
                     </div>
+                 <!-- Si 4 images -->
+                 <?php elseif (count($images) === 4): ?>
+                    <?php foreach ($images as $image): ?>
+                        <div class="w50">
+                            <img src="<?= $image; ?>" alt="Photo de <?= $articleUser->getNames(); ?>" class="pointer w100 h100 fill modalable" data-path='<?= $image; ?>'>
+                        </div>
+                    <?php endforeach; ?>
+                <!-- Sinon 5 images -->
                 <?php else: ?>
                     <div class="w100">
-                        <img src="<?= $images[0] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 modalable" data-path='<?= $images[0] ?>'>
+                        <img src="<?= $images[0]; ?>" alt="Photo de <?= $articleUser->getNames(); ?>" class="pointer w100 h100 fill modalable" data-path='<?= $images[0]; ?>'>
                     </div>
                     <?php for($i = 1; $i < count($images); $i++): ?>
                         <div class="w25">
-                            <img src="<?= $images[$i] ?>" alt="Photo de <?= $articleUser->__get('firstname') . ' ' . $articleUser->__get('lastname'); ?>" class="pointer w100 margin-bottom modalable" data-path='<?= $images[$i] ?>'>
+                            <img src="<?= $images[$i]; ?>" alt="Photo de <?= $articleUser->getNames(); ?>" class="pointer w100 fill modalable" data-path='<?= $images[$i]; ?>'>
                         </div>
                     <?php endfor; ?>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
         
-        <!-- Boutons d'intéractions -->
-        <button type="button" class="btn btn-like theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-thumbs-up"></i>&nbsp;J'aime</button>
-        <button type="button" class="btn btn-comment theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-comment"></i>&nbsp;Commenter</button>
-        
-        <!-- Infos d'intéractions -->
-        <?php $comments = $article->getComments(); ?>
-        <span class="float-right opacity"><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
+        <!-- Barre d'intéractions -->
+        <div class="margin-top">
+            <!-- Boutons Like et Comment -->
+            <button type="button" class="btn btn-like theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-thumbs-up"></i>&nbsp;J'aime</button>
+            <button type="button" class="btn btn-comment theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-comment"></i>&nbsp;Commenter</button>
+            
+            <!-- Infos Likes et Comments -->
+            <?php $comments = $article->getComments(); ?>
+            <span class="float-right opacity"><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
+        </div>
 
         <hr class="no-margin">
 
         <!-- Commentaires -->
+
+        <!-- Si il y a plus de 2 commentaires, les 2 derniers seront visibles.
+             On affiche la totalité des commentaires en cliquant ici (script) -->
         <?php if (count($comments) > 2) : ?>
             <div class="show-comments pointer hover-underline bold" data-articleid="<?= $article->__get('id'); ?>">
                 <p class="no-events">Voir les commentaires précédents</p>
             </div>
         <?php endif; ?>
 
-        <!-- Commentaires -->
+        <!-- Liste de tous les commentaires -->
         <?php
         if ($comments) :
             for ($i = 0; $i < count($comments); $i++) :
@@ -130,23 +128,9 @@
                         <div class="flex flex-justify-between">
                             <p class="no-margin"><a class="bold no-decoration hover-underline" href="index.php?action=profile&id=<?= $commentUser->__get('id'); ?>"><?= $commentUser->getNames(); ?></a></p>
                             <div class="flex">
-                                <!-- TODO: Mettre dans un helper -->
                                 <!-- Temps écoulé -->
                                 <p class="no-margin opacity font-small">
-                                    <?php $time = \Knetwork\Controllers\ArticleController::dateDiff(time(), $comments[$i]->__get('created_at')); ?>
-                                    <?php
-                                        $str = "";
-                                        if ($time['day'] > 0) {
-                                            $str .= $time['day'] . " jour";
-                                            $time['day'] > 1 ? $str .= "s" : "";
-                                        } elseif ($time['minute'] < 1 && $time['hour'] < 1 && $time['day'] < 1) {
-                                            $str = "À l'instant";
-                                        } else {
-                                            $time['hour'] > 0 ? $str .= $time['hour'] . " h " : "";
-                                            $time['minute'] > 0 ? $str .= $time['minute'] . " min" : "";
-                                        }
-                                        echo $str;
-                                    ?>
+                                    <?= \Knetwork\Helpers\Helper::dateDiff(time(), $comments[$i]->__get('created_at')); ?>
                                 </p>
                                 
                                 <!-- Actions -->

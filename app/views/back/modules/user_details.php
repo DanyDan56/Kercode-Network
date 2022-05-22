@@ -25,8 +25,8 @@
 
         <div class="theme-l3 flex">
             <p class="bold margin">
-                Compte créé le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('createdAt'), "d F Y H:i:s"); ?><br>
-                Dernière mise à jour le <?= \Knetwork\Controllers\Controller::dateToFrench($userToEdit->__get('updatedAt'), "d F Y H:i:s"); ?>
+                Compte créé le <?= \Knetwork\Helpers\Helper::dateToFrench($userToEdit->__get('createdAt'), "d F Y H:i:s"); ?><br>
+                Dernière mise à jour le <?= \Knetwork\Helpers\Helper::dateToFrench($userToEdit->__get('updatedAt'), "d F Y H:i:s"); ?>
             </p>
             <div class="right margin">
                 <select name="role" id="role">
@@ -80,7 +80,7 @@
     <div class="theme-l4">
         <p class="margin">
             Poids des images uploadées sur le serveur: 
-            <strong><?= \Knetwork\Controllers\Controller::formatSize(\Knetwork\Controllers\Controller::folderSize("app/private/images/users/" . $userToEdit->__get('id'))) ?></strong><br>
+            <strong><?= \Knetwork\Helpers\Helper::formatSize($userToEdit->getDirPath()); ?></strong><br>
             Nombre d'articles créés: <strong><?= $userToEdit->__get('countArticles'); ?></strong><br>
             Nombre de commentaires: <strong><?= $userToEdit->__get('countComments'); ?></strong>
         </p>

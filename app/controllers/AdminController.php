@@ -2,10 +2,11 @@
 
 namespace Knetwork\Controllers;
 
+use Knetwork\Helpers\Helper;
+use Knetwork\Controllers\Controller;
 use Knetwork\Models\User;
 use Knetwork\Models\Article;
 use Knetwork\Models\Comment;
-use Knetwork\Controllers\Controller;
 
 class AdminController extends Controller
 {
@@ -17,8 +18,8 @@ class AdminController extends Controller
         $nbComments = Comment::total();
         $nbPictures = Article::totalPictures();
 
-        $chartUsers = User::chart(parent::dateLastWeek());
-        $chartArticles = Article::chart(parent::dateLastWeek());
+        $chartUsers = User::chart(Helper::dateLastWeek());
+        $chartArticles = Article::chart(Helper::dateLastWeek());
 
         include $this->viewAdmin('home');
     }
@@ -105,7 +106,7 @@ class AdminController extends Controller
         $article = Article::find($id);
 
         if ($article->havePictures()) {
-            self::deleteDirArticle($_SESSION['id'], $id);
+            Helper::deleteDir($article->getDirPath());
         }
 
         if (!Article::delete($id)) throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);

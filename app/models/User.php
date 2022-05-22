@@ -26,7 +26,7 @@ class User extends Model
     private int $countArticles;
     private int $countComments;
 
-    // FIXME: Erreur avec le singleton   
+    // FIXME: Erreur avec le singleton - Ne reste pas setter durant le cycle de vie de l'app - Cause header redirection ??
     public static function getInstance()
     {
         // On vérifie que l'instance existe et on la retourne
@@ -117,9 +117,8 @@ class User extends Model
     public static function check(int $id, string $password, bool $admin): bool
     {
         $data = ['password' => $password, 'id' => $id];
-        if ($admin) {
-            $data['admin'] = 1;
-        }
+        
+        if ($admin) $data['admin'] = 1;
         
         return parent::exist($data);
     }
@@ -191,6 +190,11 @@ class User extends Model
         $_SESSION['id'] = $this->id;
         $_SESSION['password'] = $this->password;
         $_SESSION['admin'] = $this->admin;
+    }
+
+    public function getDirPath(): string
+    {
+        return $_ENV['PATHDIRUSER'] . $this->id;
     }
 
     public function isAdmin(): bool
