@@ -345,6 +345,10 @@ input[type="radio"]:checked:before {
     display: block;
 }
 
+.inline {
+    display: inline;
+}
+
 .overflow {
     overflow: scroll;
 }
@@ -375,6 +379,10 @@ input[type="radio"]:checked:before {
 
 .opacity {
     opacity: .60;
+}
+
+.opacity-small {
+    opacity: .80;
 }
 
 .hover-underline:hover {

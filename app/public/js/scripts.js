@@ -233,13 +233,13 @@ comments.forEach(comment => {
                 // Si un commentaire est déjà en cours d'édition, on cache le formulaire
                 if (currentCommentEdit) {
                     currentCommentContent = document.querySelector(`#comment-content-${currentCommentEdit}`);
-                    currentCommentForm = document.querySelector(`#comment-edit-${currentCommentEdit}`);
+                    currentCommentForm = document.querySelector(`#comment-form-edit-${currentCommentEdit}`);
                     currentCommentForm.classList.add('hide');
                     currentCommentContent.classList.remove('hide');
                 }
 
                 commentContent = document.querySelector(`#comment-content-${commentId}`);
-                commentEditForm = document.querySelector(`#comment-edit-${commentId}`);
+                commentEditForm = document.querySelector(`#comment-form-edit-${commentId}`);
                 commentEdit = commentEditForm.firstElementChild;
                 currentCommentEdit = commentId;
 
@@ -269,6 +269,17 @@ comments.forEach(comment => {
         commentActions.classList.add('hide');
     });
 });
+
+/*************************************************************************
+ *                                LIKES
+ *************************************************************************/
+
+ let btnLikes = document.querySelectorAll('.btn-like');
+ btnLikes.forEach(btnLike => {
+    btnLike.addEventListener('click', (e) => {
+        document.querySelector(`#form-like-${e.target.dataset.articleid}`).submit();
+    });
+ });
 
 /*************************************************************************
  *                             ADMINISTRATION

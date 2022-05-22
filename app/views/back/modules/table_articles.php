@@ -30,10 +30,10 @@
                     <?= substr($a->__get('content'), 0, 80); ?>
                     <?= strlen($a->__get('content')) > 80 ? "..." : "" ?>
                 </td> -->
-                <td class="center"><i class="fa <?= $a->__get('images') ? "fa-circle-check text-green" : "fa-circle-xmark text-red"; ?>"></i></td>
+                <td class="center"><i class="fa <?= $a->havePictures() ? "fa-circle-check text-green" : "fa-circle-xmark text-red"; ?>"></i></td>
                 <td><?= $a->countComments(); ?></td>
-                <td>#</td>
-                <td>#</td>
+                <td><?= $a->countLikes(); ?></td>
+                <td>(WIP)</td>
                 <td><?= $a->__get('created_at'); ?></td>
                 <td><?= $a->__get('updated_at'); ?></td>
                 <td class="center">

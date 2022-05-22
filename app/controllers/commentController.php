@@ -26,7 +26,7 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
 
-        if (!Comment::delete($id)) throw new \Exception("Erreur lors de la supression du commentaire dans la base de donnée", 3);
+        if (!Comment::delete(['id' => $id])) throw new \Exception("Erreur lors de la supression du commentaire dans la base de donnée", 3);
 
         header('location: index.php');
     }

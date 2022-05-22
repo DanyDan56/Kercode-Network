@@ -95,14 +95,34 @@
         <?php endif; ?>
         
         <!-- Barre d'intéractions -->
+        <?php
+        $comments = $article->getComments();
+        $likes = $article->countLikes();
+        $userHasLike = $article->userHasLike($_SESSION['id']);
+        ?>
         <div class="margin-top">
             <!-- Boutons Like et Comment -->
-            <button type="button" class="btn btn-like theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-thumbs-up"></i>&nbsp;J'aime</button>
-            <button type="button" class="btn btn-comment theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-comment"></i>&nbsp;Commenter</button>
+            <form id="form-like-<?= $article->__get('id'); ?>" class="inline" action="index?action=like&id=<?= $article->__get('id'); ?>" method="POST">
+                <button type="submit" class="btn btn-like theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-thumbs-up"></i>
+                    <?php if (!$userHasLike): ?>&nbsp;J'aime
+                    <?php else: ?>&nbsp;Je n'aime plus
+                    <?php endif; ?>
+                </button>
+            </form>
+            <button type="button" class="btn btn-comment theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-comment"></i>&nbsp;&nbsp;Commenter</button>
             
             <!-- Infos Likes et Comments -->
-            <?php $comments = $article->getComments(); ?>
-            <span class="float-right opacity"><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
+            <div class="float-right opacity-small">
+                <?php if (count($comments)): ?>
+                    <span><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
+                <?php endif; ?>
+                <?php if (count($comments) && $likes): ?>
+                    <span> - </span>
+                <?php endif; ?>
+                <?php if ($likes): ?>
+                    <span><?= $likes ?> <i class="fa fa-thumbs-up text-theme font-large"></i></span>
+                <?php endif; ?>
+            </div>
         </div>
 
         <hr class="no-margin">
@@ -149,7 +169,7 @@
                         <p id="comment-content-<?= $comments[$i]->__get('id'); ?>" class="no-margin"><?= $comments[$i]->__get('content'); ?></p>
 
                         <!-- Commentaire édition -->
-                        <form id="comment-edit-<?= $comments[$i]->__get('id'); ?>" action="index.php?action=modifycomment&id=<?= $comments[$i]->__get('id'); ?>" method="POST" class="hide">
+                        <form id="comment-form-edit-<?= $comments[$i]->__get('id'); ?>" action="index.php?action=modifycomment&id=<?= $comments[$i]->__get('id'); ?>" method="POST" class="hide">
                             <textarea name="comment-edit-<?= $comments[$i]->__get('id'); ?>" rows="2" class="w100 round" style="resize: none"></textarea>
                         </form>
                     </div>

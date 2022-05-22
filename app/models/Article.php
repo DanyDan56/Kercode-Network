@@ -130,7 +130,7 @@ class Article extends Model
         $paths = [];
         $i = 0;
         foreach ($names as $image) {
-            $paths[$i] = 'app/private/images/users/' . $this->user_id . '/articles/' . $this->id . '/' . $image['name'];
+            $paths[$i] = $this->getDirPath() . '/' . $image['name'];
             $i++;
         }
 
@@ -145,6 +145,34 @@ class Article extends Model
     public function getComments(): array
     {
         return Comment::getAll($this->id);
+    }
+
+    public function like(int $user_id): bool
+    {
+
+        if (!$this->userHasLike($user_id)) return parent::insert(['article_id' => $this->id,'user_id' => $user_id], 'article_like');
+        else return parent::delete(['user_id' => $user_id, 'article_id' => $this->id], 'article_like');
+    }
+
+    public function countLikes(): int
+    {
+        $query = parent::count('user_id', 'article_like') . parent::where(['article_id']);
+        
+        return parent::result($query, false, ['article_id' => $this->id])[0];
+    }
+
+    public function getLikes(): array
+    {
+        $query = parent::select(['user_id'], 'article_like') . parent::where(['article_id']);
+        
+        return parent::result($query, true, ['article_id' => $this->id]);
+    }
+
+    public function userHasLike(int $user_id): bool
+    {
+        $query = parent::count('user_id', 'article_like') . parent::where(['article_id', 'user_id']);
+
+        return parent::result($query, false, ['article_id' => $this->id, 'user_id' => $user_id])[0] == 1 ? true : false;
     }
     #endregion
 }

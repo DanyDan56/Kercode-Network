@@ -125,13 +125,13 @@ abstract class ORM
 
     #region DELETE
 
-    public static function delete(int $id): bool
+    public static function delete(array $data, ?string $table = null): bool
     {
-        $child = self::getTableName(get_called_class());
+        $table ? $child = $table : $child = self::getTableName(get_called_class());
 
-        $query = "DELETE FROM $child" . self::where(['id']);
+        $query = "DELETE FROM {$child}" . self::where(array_keys($data));
 
-        return self::executeSimple($query, ['id' => $id]);
+        return self::executeSimple($query, $data);
     }
     #endregion
 

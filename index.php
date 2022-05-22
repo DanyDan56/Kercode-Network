@@ -13,7 +13,6 @@ date_default_timezone_set('Europe/Paris');
 
 /* TODO:
 - Chart commentaires
-- Likes
 - Services
 - Réécriture des urls (.htaccess)
 */
@@ -66,7 +65,7 @@ try {
             $frontController->register();
         }
         // Traitement de l'enregistrement d'un nouveau compte
-        else if ($_GET['action'] == 'registerpost') {
+        elseif ($_GET['action'] == 'registerpost') {
             $data = [
                 'lastname' => htmlspecialchars($_POST['lastname']),
                 'firstname' => htmlspecialchars($_POST['firstname']),
@@ -83,14 +82,14 @@ try {
         //*************************** GESTION DE LA CONNEXION **********************************/
 
         // Traitement de la connexion à un compte
-        else if ($_GET['action'] == 'loginpost') {
+        elseif ($_GET['action'] == 'loginpost') {
             $email = htmlspecialchars($_POST['email']);
             $password = htmlspecialchars($_POST['password']);
 
             $userController->login($email, $password);
         }
         // Déconnexion
-        else if ($_GET['action'] == 'disconnect') {
+        elseif ($_GET['action'] == 'disconnect') {
             session_destroy();
             header('location: index.php');
         }
@@ -98,7 +97,7 @@ try {
         //*************************** GESTION DES ARTICLES **********************************/
 
         // Nouvel article
-        else if ($_GET['action'] == 'newarticle') {
+        elseif ($_GET['action'] == 'newarticle') {
             $userController->auth();
 
             // Si il y a aucun contenu, on redirige vers l'index
@@ -115,14 +114,14 @@ try {
             }
         }
         // Modification d'article
-        else if ($_GET['action'] == 'modifyarticle') {
+        elseif ($_GET['action'] == 'modifyarticle') {
             $userController->auth();
 
             $content = htmlspecialchars($_POST['article-edit-' . $_GET['id']]);
             $articleController->modifyArticle($_GET['id'], $content);
         }
         // Suppression d'article
-        else if ($_GET['action'] == 'deletearticle') {
+        elseif ($_GET['action'] == 'deletearticle') {
             $userController->auth();
 
             $articleController->deleteArticle($_GET['id']);
@@ -131,7 +130,7 @@ try {
         //************************* GESTION DES COMMENTAIRES ********************************/
 
         // Novueau commentaire
-        else if ($_GET['action'] == 'newcomment') {
+        elseif ($_GET['action'] == 'newcomment') {
             $userController->auth();
 
             // Si il n'y a aucun contenu, on regirige vers l'index
@@ -144,23 +143,31 @@ try {
             }
         }
         // Modification d'un commentaire
-        else if ($_GET['action'] == 'modifycomment') {
+        elseif ($_GET['action'] == 'modifycomment') {
             $userController->auth();
 
             $content = htmlspecialchars($_POST['comment-edit-' . $_GET['id']]);
             $commentController->modifyComment($_GET['id'], $content);
         }
         // Suppression d'un commentaire
-        else if ($_GET['action'] == 'deletecomment') {
+        elseif ($_GET['action'] == 'deletecomment') {
             $userController->auth();
 
             $commentController->deleteComment($_GET['id']);
         }
 
+        //*************************** GESTION DES LIKES **********************************/
+
+        elseif ($_GET['action'] == 'like') {
+            $userController->auth();
+
+            $articleController->like($_GET['id']);
+        }
+
         //*************************** GESTION DU PROFIL **********************************/
         
         // Affichage de la page de profil
-        else if ($_GET['action'] == 'profile') {
+        elseif ($_GET['action'] == 'profile') {
             $userController->auth();
 
             $frontController->profile(isset($_GET['id']) ? $_GET['id'] : $_SESSION['id']);

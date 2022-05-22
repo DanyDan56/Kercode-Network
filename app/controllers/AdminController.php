@@ -109,7 +109,7 @@ class AdminController extends Controller
             Helper::deleteDir($article->getDirPath());
         }
 
-        if (!Article::delete($id)) throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+        if (!Article::delete(['id' => $id])) throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
 
         header('Location: indexadmin.php?action=articles');
     }
@@ -138,7 +138,7 @@ class AdminController extends Controller
     {
         $user = User::find($_SESSION['id']);
 
-        if (!Comment::delete($id)) throw new \Exception("Erreur lors de la supression du commentaire dans la base de donnée", 3);
+        if (!Comment::delete(['id' => $id])) throw new \Exception("Erreur lors de la supression du commentaire dans la base de donnée", 3);
 
         header('Location: indexadmin.php?action=comments');
     }

@@ -42,7 +42,16 @@ class ArticleController extends Controller
         // Si il y a des images liées à l'article, on les supprime
         if ($article->havePictures()) Helper::deleteDir($article->getDirPath());
 
-        if (!Article::delete($id)) throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+        if (!Article::delete(['id' => $id])) throw new \Exception("Erreur lors de la supression de l'article dans la base de donnée", 3);
+
+        header('location: index.php');
+    }
+
+    public function like(int $id): void
+    {
+        $article = Article::find($id);
+
+        if (!$article->like($_SESSION['id'])) throw new \Exception("Erreur interne de la fonction like", 3);
 
         header('location: index.php');
     }
