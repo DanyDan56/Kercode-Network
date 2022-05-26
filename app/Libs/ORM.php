@@ -2,6 +2,8 @@
 
 namespace Knetwork\Libs;
 
+use Exception;
+
 //TODO: changer l'url
 if ($_SERVER['HTTP_HOST'] != "kercode-network.herokuapp.com") {
     $dotenv = \Dotenv\Dotenv::createImmuTable("./");
@@ -51,20 +53,24 @@ abstract class ORM
      */
     public static function insert(array $data, ?string $table = null): bool
     {
-        $table ? $child = $table : $child = self::getTableName(get_called_class());
+        try {
+            $table ? $child = $table : $child = self::getTableName(get_called_class());
 
-        // Mise en forme des données
-        $columns = join(",", array_keys($data));
-        $values = "";
-        foreach(array_keys($data) as $value) {
-            $values .= ':' . $value . ',';
+            // Mise en forme des données
+            $columns = join(",", array_keys($data));
+            $values = "";
+            foreach(array_keys($data) as $value) {
+                $values .= ':' . $value . ',';
+            }
+            // On supprime la dernière virgule
+            $values = substr($values, !strlen($values), -1);
+
+            $query = "INSERT INTO {$child}({$columns}) VALUES ({$values})";
+
+            return self::executeSimple($query, $data);
+        } catch (\Exception $e) {
+            throw new \Exception($e->getMessage(), 3);
         }
-        // On supprime la dernière virgule
-        $values = substr($values, !strlen($values), -1);
-
-        $query = "INSERT INTO {$child}({$columns}) VALUES ({$values})";
-
-        return self::executeSimple($query, $data);
     }
     #endregion
 
