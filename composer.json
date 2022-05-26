@@ -3,7 +3,7 @@
     "description": "Projet de fin d'annee pour la formation Kercode 2022",
     "autoload": {
         "psr-4": {
-            "Knetwork\\": "/app/"
+            "Knetwork\\": "app/"
         }
     },
     "authors": [
