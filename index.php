@@ -1,19 +1,14 @@
 <?php
 
+// On charge les packages nécessaires fourni par Composer
+require_once __DIR__ . '/vendor/autoload.php';
+
 use Knetwork\Controllers\UserController;
 use Knetwork\Controllers\FrontController;
 use Knetwork\Controllers\ArticleController;
 use Knetwork\Controllers\CommentController;
 
-// On charge les packages nécessaires fourni par Composer
-require_once __DIR__ . '/vendor/autoload.php';
-
 date_default_timezone_set('Europe/Paris');
-
-/* TODO:
-- Services
-- Réécriture des urls (.htaccess)
-*/
 
 // On démarre la session
 session_start();
