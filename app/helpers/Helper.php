@@ -52,12 +52,19 @@ abstract class Helper
         return $str;
     }
 
-    public static function dateLastWeek(): array
+    public static function yesterday(string $format = 'Y-m-d'): string
+    {
+        $date = date($format, mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')));
+
+        return $date;
+    }
+
+    public static function dateLastWeek(string $format = 'Y-m-d'): array
     {
         $dates = [];
 
         for ($i = 6; $i >= 0; $i--) {
-            array_push($dates, date('Y-m-d', mktime(0, 0, 0, date('m'), date('d')-$i, date('Y'))));
+            array_push($dates, date($format, mktime(0, 0, 0, date('m'), date('d') - $i, date('Y'))));
         }
 
         return $dates;

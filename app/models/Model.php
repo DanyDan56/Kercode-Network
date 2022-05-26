@@ -4,11 +4,13 @@ namespace Knetwork\Models;
 
 use Knetwork\Libs\ORM;
 
-class Model extends ORM
+abstract class Model extends ORM
 {
-    public static function total(): int
+    public static function total(string $column = 'id', ?string $table = null, ?array $datesBetween = null): int
     {
-        $query = parent::count('id');
+        $query = parent::count($column, $table);
+
+        if ($datesBetween) $query .= parent::between($column, $datesBetween[0], $datesBetween[1]);
         
         return parent::result($query)[0];
     }
@@ -19,11 +21,11 @@ class Model extends ORM
      * @param array $dates - Tableau de dates pour lesquelles on veut récupérer les statistiques
      * @return array
      */
-    public static function chart(array $dates): array
+    public static function chart(array $dates, ?string $table = null): array
     {
         $data = [];
         $first = true;
-        $query = parent::count('id');
+        $query = parent::count('created_at', $table);
         
         for ($i = 0; $i < count($dates); $i++) {
             $q = $query;

@@ -11,6 +11,7 @@
                 <th>Image(s)</th>
                 <th>Commentaires</th>
                 <th>Likes</th>
+                <th>Interactions</th>
                 <th>Signalement</th>
                 <th>Créé le&nbsp;&nbsp;<i class="fa fa-sort-up"></i></th>
                 <th>Mise à jour le</th>
@@ -33,6 +34,7 @@
                 <td class="center"><i class="fa <?= $a->havePictures() ? "fa-circle-check text-green" : "fa-circle-xmark text-red"; ?>"></i></td>
                 <td><?= $a->countComments(); ?></td>
                 <td><?= $a->countLikes(); ?></td>
+                <td><?= $a->countInteractions(); ?></td>
                 <td>(WIP)</td>
                 <td><?= $a->__get('created_at'); ?></td>
                 <td><?= $a->__get('updated_at'); ?></td>

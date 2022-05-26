@@ -157,7 +157,7 @@
                                 <div id="comment-actions-<?= $comments[$i]->__get('id') ?>" class="comment-actions flex hide">
                                     <?php if ($commentUser->__get('id') === $_SESSION['id']): ?>
                                         <a id="comment-action-edit-<?= $comments[$i]->__get('id') ?>" class="font-small no-margin margin-left margin-right-small pointer" title="Modifier le commentaire"><i class="fa fa-pen text-green"></i></a>
-                                        <a href="index.php?action=deletecomment&id=<?= $comments[$i]->__get('id'); ?>" class="font-small no-margin pointer" title="Supprimer le commentaire"><i class="fa fa-trash text-red"></i></a>
+                                        <a href="index.php?action=deletecomment&idcomment=<?= $comments[$i]->__get('id'); ?>&idarticle=<?= $article->__get('id'); ?>" class="font-small no-margin pointer" title="Supprimer le commentaire"><i class="fa fa-trash text-red"></i></a>
                                     <?php else: ?>
                                         <a class="font-small no-margin margin-left margin-right-small pointer" title="Signaler le commentaire"><i class="fa fa-ban text-red"></i></a>
                                     <?php endif; ?>

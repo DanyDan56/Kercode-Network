@@ -6,6 +6,7 @@
         <div id="chartUsers" class="chart card-2 margin-bottom"></div>
         <div id="chartArticles" class="chart card-2 margin-bottom"></div>
         <div id="chartComments" class="chart card-2"></div>
+        <div id="chartInteractions" class="chart card-2"></div>
     </div>
 
     <script src="app/public/js/charts.js"></script>
@@ -13,6 +14,7 @@
     <script type="text/javascript">displayChart(<?= json_encode($chartUsers) ?>, 'Comptes', 'chartUsers');</script>
     <script type="text/javascript">displayChart(<?= json_encode($chartArticles) ?>, 'Articles', 'chartArticles');</script>
     <script type="text/javascript">displayChart(<?= json_encode($chartComments) ?>, 'Commentaires', 'chartComments');</script>
+    <script type="text/javascript">displayChart(<?= json_encode($chartInteractions) ?>, 'Intéractions', 'chartInteractions');</script>
 </div>
 
 <?php $charts = ob_get_clean(); ?>

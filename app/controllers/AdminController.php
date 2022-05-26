@@ -13,14 +13,25 @@ class AdminController extends Controller
     public function home(): void
     {
         $user = User::find($_SESSION['id']);
+
+        // Statistique = total
         $nbUsers = User::total();
         $nbArticles = Article::total();
         $nbComments = Comment::total();
-        $nbPictures = Article::totalPictures();
+        $nbImages = Article::total('id', 'article_image');
 
+        // Statistique = Nouveau depuis hier
+        $betweenYesterday = [Helper::yesterday(), date('Y-m-d H:i:s', time())];
+        $newUsers = User::total('created_at', null, $betweenYesterday);
+        $newArticles = Article::total('created_at', null, $betweenYesterday);
+        $newComments = Comment::total('created_at', null, $betweenYesterday);
+        $newImages = Article::totalImages($betweenYesterday);
+
+        // Graphique des statistiques pour la dernière semaine
         $chartUsers = User::chart(Helper::dateLastWeek());
         $chartArticles = Article::chart(Helper::dateLastWeek());
         $chartComments = Comment::chart(Helper::dateLastWeek());
+        $chartInteractions = Article::chart(Helper::dateLastWeek(), 'article_user_interaction');
 
         include $this->viewAdmin('home');
     }
@@ -32,7 +43,7 @@ class AdminController extends Controller
         $nbUsers = count($users);
         $nbArticles = Article::total();
         $nbComments = Comment::total();
-        $nbPictures = Article::totalPictures();
+        $nbImages = Article::total('id', 'article_image');
 
         include $this->viewAdmin('home');
     }
@@ -44,7 +55,7 @@ class AdminController extends Controller
         $nbUsers = User::total();
         $nbArticles = count($articles);
         $nbComments = Comment::total();
-        $nbPictures = Article::totalPictures();
+        $nbImages = Article::total('id', 'article_image');
 
         include $this->viewAdmin('home');
     }
@@ -56,7 +67,7 @@ class AdminController extends Controller
         $nbUsers = User::total();
         $nbArticles = Article::total();
         $nbComments = count($comments);
-        $nbPictures = Article::totalPictures();
+        $nbImages = Article::total('id', 'article_image');
 
         include $this->viewAdmin('home');
     }

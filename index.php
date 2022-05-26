@@ -153,7 +153,7 @@ try {
         elseif ($_GET['action'] == 'deletecomment') {
             $userController->auth();
 
-            $commentController->deleteComment($_GET['id']);
+            $commentController->deleteComment($_GET['idcomment'], $_GET['idarticle']);
         }
 
         //*************************** GESTION DES LIKES **********************************/

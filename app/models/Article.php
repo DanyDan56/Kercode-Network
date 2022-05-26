@@ -52,9 +52,9 @@ class Article extends Model
         return parent::execute($query, true, $data);
     }
 
-    public static function totalPictures(): int
+    public static function totalImages(array $dates): int
     {
-        $query = parent::count('id', 'article_image');
+        $query = parent::count('article_image.id', 'article_image') . parent::innerJoin('article', 'article.id', 'article_image.id') . parent::between('created_at', $dates[0], $dates[1]);
         
         return parent::result($query)[0];
     }
@@ -149,30 +149,66 @@ class Article extends Model
 
     public function like(int $user_id): bool
     {
+        $recLike = false;
 
-        if (!$this->userHasLike($user_id)) return parent::insert(['article_id' => $this->id,'user_id' => $user_id], 'article_like');
-        else return parent::delete(['user_id' => $user_id, 'article_id' => $this->id], 'article_like');
+        if (!$this->userHasLike($user_id)) {
+            $recLike = parent::insert(['article_id' => $this->id,'user_id' => $user_id], 'article_user_like');
+            $this->addInteraction($user_id, 'add_like');
+        } else {
+            $recLike = parent::delete(['user_id' => $user_id, 'article_id' => $this->id], 'article_user_like');
+            $this->addInteraction($user_id, 'remove_like');
+        }
+
+        return $recLike;
     }
 
     public function countLikes(): int
     {
-        $query = parent::count('user_id', 'article_like') . parent::where(['article_id']);
+        $query = parent::count('user_id', 'article_user_like') . parent::where(['article_id']);
         
         return parent::result($query, false, ['article_id' => $this->id])[0];
     }
 
     public function getLikes(): array
     {
-        $query = parent::select(['user_id'], 'article_like') . parent::where(['article_id']);
+        $query = parent::select(['user_id'], 'article_user_like') . parent::where(['article_id']);
         
         return parent::result($query, true, ['article_id' => $this->id]);
     }
 
     public function userHasLike(int $user_id): bool
     {
-        $query = parent::count('user_id', 'article_like') . parent::where(['article_id', 'user_id']);
+        $query = parent::count('user_id', 'article_user_like') . parent::where(['article_id', 'user_id']);
 
         return parent::result($query, false, ['article_id' => $this->id, 'user_id' => $user_id])[0] == 1 ? true : false;
+    }
+
+    public function addInteraction(int $user_id, string $interactionName): void
+    {
+        // Try & Catch pour être sûr que le nom de l'intéraction soit bon
+        try {
+            // On récupère l'id pour le type de l'intéraction
+            $query = parent::select(['id'], 'article_interaction_type') . parent::where(['name']);
+            $idInteraction = parent::result($query, false, ['name' => $interactionName])[0];
+        } catch (\Exception $e) {
+            throw new Exception($e->getMessage(), 3);
+        }
+
+        $data = [
+            'article_id' => $this->id,
+            'user_id' => $user_id,
+            'interaction_id' => $idInteraction
+        ];
+
+        if (!parent::insert($data, 'article_user_interaction'))
+            throw new Exception("Erreur lors de l'enregistrement de l'intéraction (article_id:" . $this->id . ", user_id:" . $user_id . ", interaction_id:" . $idInteraction . ", interaction_name:" . $interactionName , 3);
+    }
+
+    public function countInteractions(): int
+    {
+        $query = parent::count('article_id', 'article_user_interaction') . parent::where(['article_id']);
+        
+        return parent::result($query, false, ['article_id' => $this->id])[0];
     }
     #endregion
 }

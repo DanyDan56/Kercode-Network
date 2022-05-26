@@ -233,6 +233,13 @@ abstract class ORM
         }
     }
 
+    /**
+     * Exécute simplement la fonction. Sert pour les insert, delete et update.
+     *
+     * @param string $query La reqûete à exécuter
+     * @param array|null $data [optionnel] - Données de liaison pour la requête
+     * @return boolean
+     */
     public static function executeSimple(string $query, ?array $data = null): bool
     {
         $pdo = self::connect();
@@ -245,7 +252,8 @@ abstract class ORM
      * Exécute une simple requête et retourne un simple résultat
      *
      * @param string $query La requête à exécuter
-     * @param array|null $data Tableau associatif servant pour la liaison des clés / valeurs
+     * @param boolean $many [optionnel] - Détermine si un ou plusieurs objets sont attendus
+     * @param array|null $data [optionnel] - Tableau associatif servant pour la liaison des clés / valeurs
      * @return mixed
      */
     public static function result(string $query, bool $many = false, ?array $data = null): mixed

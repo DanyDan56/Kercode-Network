@@ -20,8 +20,8 @@ include_once 'modules/navbar.php';
             <?php
             switch ($page) {
                 case 'users':
-                    include_once 'modules/dashboard.php';
-                    echo $dashboard;
+                    // include_once 'modules/dashboard.php';
+                    // echo $dashboard;
                     include_once 'modules/table_users.php';
                     echo $tableUsers;
                     break;
@@ -34,8 +34,8 @@ include_once 'modules/navbar.php';
                     echo $userDetails;
                     break;
                 case 'articles':
-                    include_once 'modules/dashboard.php';
-                    echo $dashboard;
+                    // include_once 'modules/dashboard.php';
+                    // echo $dashboard;
                     include_once 'modules/table_articles.php';
                     echo $tableArticles;
                     break;
@@ -48,8 +48,8 @@ include_once 'modules/navbar.php';
                     echo $articleDetails;
                     break;
                 case 'comments':
-                    include_once 'modules/dashboard.php';
-                    echo $dashboard;
+                    // include_once 'modules/dashboard.php';
+                    // echo $dashboard;
                     include_once 'modules/table_comments.php';
                     echo $tableComments;
                     break;
