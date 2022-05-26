@@ -18,6 +18,8 @@
 
 <body class="theme-l5">
 
+    <p><?= __DIR__ ?></p>
+
     <!-- On affiche la barre de navigation si on en a besoin -->
     <?php if (isset($navbar)) { echo $navbar; } ?>
 
