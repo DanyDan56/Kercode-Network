@@ -3,10 +3,10 @@
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
-use \Knetwork\Controllers\UserController;
-use \Knetwork\Controllers\FrontController;
-use \Knetwork\Controllers\ArticleController;
-use \Knetwork\Controllers\CommentController;
+use Knetwork\Controllers\UserController;
+use Knetwork\Controllers\FrontController;
+use Knetwork\Controllers\ArticleController;
+use Knetwork\Controllers\CommentController;
 
 date_default_timezone_set('Europe/Paris');
 
