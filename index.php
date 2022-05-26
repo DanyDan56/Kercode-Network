@@ -41,10 +41,10 @@ function eCatcher($e) {
 // Routeur
 try {
     // On récupère les controllers
-    $frontController = new FrontController();
-    $userController = new UserController();
-    $articleController = new ArticleController();
-    $commentController = new CommentController();
+    $frontController = new \Knetwork\Controllers\FrontController;
+    $userController = new UserController;
+    $articleController = new ArticleController;
+    $commentController = new CommentController;
 
     // On vérifie si il y a une action,
     // Si oui, on la traite,
