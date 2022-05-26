@@ -34,7 +34,7 @@ abstract class Model extends ORM
                 $first = false;
                 $q .= parent::between('created_at', '2000-01-01', $dates[$i]);
             } else {
-                $q .= parent::between('created_at', $dates[$i-1], $i != 6 ? $dates[$i] : date('Y-m-d H:i:s', time()));
+                $q .= parent::between('created_at', $dates[$i-1], $i != count($dates) - 1 ? $dates[$i] : date('Y-m-d H:i:s', time()));
             }
             
             $data[$dates[$i]] = parent::result($q)[0];

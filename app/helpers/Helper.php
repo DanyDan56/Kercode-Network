@@ -59,11 +59,11 @@ abstract class Helper
         return $date;
     }
 
-    public static function dateLastWeek(string $format = 'Y-m-d'): array
+    public static function getDates(int $days, string $format = 'Y-m-d'): array
     {
         $dates = [];
 
-        for ($i = 6; $i >= 0; $i--) {
+        for ($i = $days - 1; $i >= 0; $i--) {
             array_push($dates, date($format, mktime(0, 0, 0, date('m'), date('d') - $i, date('Y'))));
         }
 

@@ -12,7 +12,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 date_default_timezone_set('Europe/Paris');
 
 /* TODO:
-- Chart commentaires
 - Services
 - Réécriture des urls (.htaccess)
 */
@@ -21,7 +20,7 @@ date_default_timezone_set('Europe/Paris');
 session_start();
 
 // on setup les variables d'environnements si on est en développement
-if ($_SERVER['HTTP_HOST'] != "address.site.com") {
+if ($_SERVER['HTTP_HOST'] != "kercode-network.herokuapp.com") {
     $dotenv = \Dotenv\Dotenv::createImmuTable("./");
     $dotenv->load();
 }
@@ -173,6 +172,12 @@ try {
             $frontController->profile(isset($_GET['id']) ? $_GET['id'] : $_SESSION['id']);
         }
 
+        //********************************** 404 *****************************************/
+
+        else {
+            throw new Exception("Page Not Found", 404);
+        }
+
     } else {
         // On check si une session existe
         // Si oui, on affiche la page accueil
@@ -192,6 +197,8 @@ try {
     }
 }
 catch (\Exception $e) {
+    if ($e->getCode() == 404) header('Location: 404.html');
+
     eCatcher($e);
     include 'app/views/front/error.php';
 }

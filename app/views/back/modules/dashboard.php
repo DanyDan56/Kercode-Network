@@ -3,6 +3,8 @@
 <div class="admin-content">
     <h1>Dashboard</h1>
     <hr>
+
+    <!-- Cartes de statistiques pour une vision rapide (totale + différence journalier) -->
     <div class="dashboard-cards-stats flex flex-justify-between w100">
         <div class="card-2 card-stat round white">
             <a href="indexadmin.php?action=users" class="no-decoration" title="Utilisateurs">
@@ -80,6 +82,26 @@
                 </div>
             </a>
         </div>
+    </div>
+
+    <!-- Graphique de statistiques pour les 7 derniers jours -->
+    <div class="margin-top">
+        <h2 class="center">Statistiques de la semaine</h2>
+        <div class="flex flex-justify-between flex-wrap">
+            <div id="chartUsers" class="chart card-2 margin-bottom w49"></div>
+            <div id="chartArticles" class="chart card-2 margin-bottom w49"></div>
+            <div id="chartComments" class="chart card-2 w49"></div>
+            <div id="chartInteractions" class="chart card-2 w49"></div>
+        </div>
+
+        <script src="app/public/js/charts.js"></script>
+        <script src="app/public/js/libs/canvasjs.min.js"></script>
+        <script type="text/javascript">
+            displayChart(<?= json_encode($chartUsers) ?>, 'Comptes', 'chartUsers');
+            displayChart(<?= json_encode($chartArticles) ?>, 'Articles', 'chartArticles');
+            displayChart(<?= json_encode($chartComments) ?>, 'Commentaires', 'chartComments');
+            displayChart(<?= json_encode($chartInteractions) ?>, 'Intéractions', 'chartInteractions');
+        </script>
     </div>
 </div>
 

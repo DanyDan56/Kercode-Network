@@ -7,15 +7,15 @@
  */
 function displayChart(data, title, containerName)
 {
-    labels = [];
-    values = [];
+    dataPoints = [];
     value = 0;
 
     for (let key in data) {
-        labels.push(key);
-        values.push(data[key] + value);
+        dataPoints.push({ label: new Date(key).toLocaleDateString(), y: data[key] + value });
         value += data[key];
     }
+
+    console.log(dataPoints);
 
     let chartUsers = new CanvasJS.Chart(containerName, {
         animationEnabled: true,
@@ -33,15 +33,7 @@ function displayChart(data, title, containerName)
         },
         data: [{
             type: "line",
-            dataPoints: [
-                { label: new Date(labels[0]).toLocaleDateString(), y: values[0] },
-                { label: new Date(labels[1]).toLocaleDateString(), y: values[1] },
-                { label: new Date(labels[2]).toLocaleDateString(), y: values[2] },
-                { label: new Date(labels[3]).toLocaleDateString(), y: values[3] },
-                { label: new Date(labels[4]).toLocaleDateString(), y: values[4] },
-                { label: new Date(labels[5]).toLocaleDateString(), y: values[5] },
-                { label: new Date(labels[6]).toLocaleDateString(), y: values[6] }
-            ]
+            dataPoints: dataPoints
         }]
     });
 

@@ -20,18 +20,18 @@ class AdminController extends Controller
         $nbComments = Comment::total();
         $nbImages = Article::total('id', 'article_image');
 
-        // Statistique = Nouveau depuis hier
+        // Statistique = Dernière 24h
         $betweenYesterday = [Helper::yesterday(), date('Y-m-d H:i:s', time())];
         $newUsers = User::total('created_at', null, $betweenYesterday);
         $newArticles = Article::total('created_at', null, $betweenYesterday);
         $newComments = Comment::total('created_at', null, $betweenYesterday);
         $newImages = Article::totalImages($betweenYesterday);
 
-        // Graphique des statistiques pour la dernière semaine
-        $chartUsers = User::chart(Helper::dateLastWeek());
-        $chartArticles = Article::chart(Helper::dateLastWeek());
-        $chartComments = Comment::chart(Helper::dateLastWeek());
-        $chartInteractions = Article::chart(Helper::dateLastWeek(), 'article_user_interaction');
+        // Graphique des statistiques pour les 7 derniers jours
+        $chartUsers = User::chart(Helper::getDates(7));
+        $chartArticles = Article::chart(Helper::getDates(7));
+        $chartComments = Comment::chart(Helper::getDates(7));
+        $chartInteractions = Article::chart(Helper::getDates(7), 'article_user_interaction');
 
         include $this->viewAdmin('home');
     }
@@ -40,10 +40,9 @@ class AdminController extends Controller
     {
         $user = User::find($_SESSION['id']);
         $users = User::getAllWithStats();
-        $nbUsers = count($users);
-        $nbArticles = Article::total();
-        $nbComments = Comment::total();
-        $nbImages = Article::total('id', 'article_image');
+
+        // Graphique
+        $chart = User::chart(Helper::getDates(31));
 
         include $this->viewAdmin('home');
     }
@@ -52,10 +51,9 @@ class AdminController extends Controller
     {
         $user = User::find($_SESSION['id']);
         $articles = Article::getAll(null, 'created_at', true);
-        $nbUsers = User::total();
-        $nbArticles = count($articles);
-        $nbComments = Comment::total();
-        $nbImages = Article::total('id', 'article_image');
+        
+        // Graphique
+        $chart = Article::chart(Helper::getDates(31));
 
         include $this->viewAdmin('home');
     }
@@ -64,10 +62,9 @@ class AdminController extends Controller
     {
         $user = User::find($_SESSION['id']);
         $comments = Comment::getAll();
-        $nbUsers = User::total();
-        $nbArticles = Article::total();
-        $nbComments = count($comments);
-        $nbImages = Article::total('id', 'article_image');
+        
+        // Graphique
+        $chart = Comment::chart(Helper::getDates(31));
 
         include $this->viewAdmin('home');
     }

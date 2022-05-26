@@ -136,6 +136,12 @@ try {
 
             $adminController->deleteComment($_GET['id']);
         }
+
+        //********************************** 404 *****************************************/
+
+        else {
+            throw new Exception("Page Not Found", 404);
+        }
     } else {
         $userController->auth(true);
 
@@ -143,6 +149,8 @@ try {
     }
 }
 catch (\Exception $e) {
+    if ($e->getCode() == 404) header('Location: 404.html');
+    
     eCatcher($e);
     include 'app/views/front/error.php';
 }

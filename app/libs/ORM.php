@@ -3,7 +3,7 @@
 namespace Knetwork\Libs;
 
 //TODO: changer l'url
-if ($_SERVER['HTTP_HOST'] != "coffee-k6.herokuapp.com") {
+if ($_SERVER['HTTP_HOST'] != "kercode-network.herokuapp.com") {
     $dotenv = \Dotenv\Dotenv::createImmuTable("./");
     $dotenv->load();
 }
