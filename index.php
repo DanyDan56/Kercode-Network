@@ -3,10 +3,10 @@
 // On charge les packages nécessaires fourni par Composer
 require_once __DIR__ . '/vendor/autoload.php';
 
-use Knetwork\Controllers\UserController;
+use \Knetwork\Controllers\UserController;
 use \Knetwork\Controllers\FrontController;
-use Knetwork\Controllers\ArticleController;
-use Knetwork\Controllers\CommentController;
+use \Knetwork\Controllers\ArticleController;
+use \Knetwork\Controllers\CommentController;
 
 date_default_timezone_set('Europe/Paris');
 
@@ -41,10 +41,10 @@ function eCatcher($e) {
 // Routeur
 try {
     // On récupère les controllers
-    $frontController = new \Knetwork\Controllers\FrontController;
-    $userController = new UserController;
-    $articleController = new ArticleController;
-    $commentController = new CommentController;
+    $frontController = new FrontController();
+    $userController = new UserController();
+    $articleController = new ArticleController();
+    $commentController = new CommentController();
 
     // On vérifie si il y a une action,
     // Si oui, on la traite,
