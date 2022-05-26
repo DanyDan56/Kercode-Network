@@ -12,7 +12,8 @@ class FrontController extends Controller
         $user = User::find($_SESSION['id']);
         $articles = Article::getAll(null, 'created_at', true, 10);
 
-        echo __DIR__;
+        var_dump($_SERVER['DOCUMENT_ROOT']);
+        
         include $this->view('home');
     }
 

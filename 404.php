@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="fr">
     <head>
-        <title>Page non trouvé - Kercode Network</title>
+        <title>Page non trouvée - Kercode Network</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="app/public/css/style.css" rel="stylesheet">
