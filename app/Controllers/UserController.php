@@ -61,11 +61,9 @@ class UserController extends Controller
 
             // Si le compte existe déjà
             if (User::exist(['email' => $data['email']])) throw new \Exception("Ce compte existe déjà", 3);
-            var_dump($data);
             
             // On enregistre le nouveau compte
             if (!User::register($data)) throw new \Exception("Il y a eu une erreur lors de la création de votre compte.<br>Veuillez réessayer plus tard.", 3);
-            var_dump('test');die;
             
             // Si tout se passe bien, on créé un espace utilisateur dédié sur le serveur
             $id = User::getId(['email' => $data['email']]);
