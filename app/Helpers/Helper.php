@@ -75,7 +75,7 @@ abstract class Helper
 
     public static function createDir($path): void
     {
-        if(!mkdir($path, 0644, true)) throw new \Exception("Erreur lors de la création du dossier '" . $path . "'", 3);
+        if(!mkdir($path, 0700, true)) throw new \Exception("Erreur lors de la création du dossier '" . $path . "'", 3);
     }
 
     public static function deleteDir($path): void
