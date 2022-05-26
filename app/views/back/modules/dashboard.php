@@ -94,8 +94,8 @@
             <div id="chartInteractions" class="chart card-2 w49"></div>
         </div>
 
-        <script src="app/public/js/charts.js"></script>
-        <script src="app/public/js/libs/canvasjs.min.js"></script>
+        <script src="/app/public/js/charts.js"></script>
+        <script src="/app/public/js/libs/canvasjs.min.js"></script>
         <script type="text/javascript">
             displayChart(<?= json_encode($chartUsers) ?>, 'Comptes', 'chartUsers');
             displayChart(<?= json_encode($chartArticles) ?>, 'Articles', 'chartArticles');

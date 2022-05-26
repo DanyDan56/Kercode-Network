@@ -14,7 +14,7 @@ date_default_timezone_set('Europe/Paris');
 session_start();
 
 // on setup les variables d'environnements si on est en développement
-if ($_SERVER['HTTP_HOST'] != "address.site.com") {
+if ($_SERVER['HTTP_HOST'] != "kercode-network.herokuapp.com") {
     $dotenv = \Dotenv\Dotenv::createImmuTable("./");
     $dotenv->load();
 }
@@ -150,7 +150,7 @@ try {
 }
 catch (\Exception $e) {
     if ($e->getCode() == 404) header('Location: 404.html');
-    
+
     eCatcher($e);
     include 'app/views/front/error.php';
 }

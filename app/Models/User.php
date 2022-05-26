@@ -210,8 +210,8 @@ class User extends Model
     public function getProfileImage(): string
     {
         isset($this->profileImage) ?
-            $path = "app/private/images/users/" . $this->id . '/' . $this->profileImage :
-            $path = "app/public/images/examples/img_avatar2.png";
+            $path = "/app/private/images/users/" . $this->id . '/' . $this->profileImage :
+            $path = "/app/public/images/examples/img_avatar2.png";
         
         return $path;
     }
