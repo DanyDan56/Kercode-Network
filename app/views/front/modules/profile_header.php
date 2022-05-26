@@ -4,7 +4,7 @@ ob_start();
 ?>
 <div class="card-2 white">
     <div id="profile-header">
-        <img class="profile-cover" src="/app/public/images/examples/img_forest.jpg"
+        <img class="profile-cover" src="app/public/images/examples/img_forest.jpg"
             alt="Image de couverture de <?= $user->getNames(); ?>">
         <img class="profile-image circle border" src="<?= $user->getProfileImage(); ?>"
             alt="Image de profil de <?= $user->getNames(); ?>">

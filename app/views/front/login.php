@@ -10,7 +10,7 @@
 <section class="content flex flex-justify-center flex-wrap">
     <div class="col l5 m8 margin">
         <figure class="no-margin">
-            <img src="/app/public/images/demo.jpg" alt="Image de démo du site" class="w100 border">
+            <img src="app/public/images/demo.jpg" alt="Image de démo du site" class="w100 border">
             <figcaption class="theme-d2 center no-margin">Image de démo du site</figcaption>
         </figure>
     </div>
