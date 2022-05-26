@@ -20,7 +20,7 @@
             } catch(\Exception $e) { ?>
                 <?php if($e->getCode() === 0): ?>
                     <div class="info-box margin-bottom"><p><?= $e->getMessage(); ?></p></div>
-                <?php elseif($e->getCode() === 3): ?>
+                <?php elseif($e->getCode() != 0): ?>
                     <div class="alert-box margin-bottom"><p><?= $e->getMessage(); ?></p></div>
                 <?php endif; ?>
             <?php } ?>

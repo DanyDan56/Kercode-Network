@@ -68,7 +68,6 @@ try {
                 'birthday' => htmlspecialchars($_POST['birthday']),
                 'imageProfile' => $_FILES['image_profile']
             ];
-            var_dump($data);die;
             
             $userController->register($data);
         }

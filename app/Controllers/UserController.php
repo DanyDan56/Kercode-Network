@@ -85,14 +85,14 @@ class UserController extends Controller
             switch($e->getCode()) {
                 // Code 0 = Message informatif
                 case 0:
-                    require 'app/views/front/login.php';
+                    include 'app/views/front/login.php';
                     break;
                 // Code 3 = Message d'erreur
                 case 3:
-                    require 'app/views/front/register.php';
+                    include 'app/views/front/register.php';
                     break;
                 default:
-                    require 'app/views/front/register.php';
+                    include 'app/views/front/register.php';
             }
         }
     }
