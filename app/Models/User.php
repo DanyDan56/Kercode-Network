@@ -6,7 +6,7 @@ class User extends Model
 {
     private static ?User $instance = null;
     private static array $data =
-    ['user.id as id', 'firstname', 'lastname', 'email', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover', 'admin', 'user.created_at as created_at', 'user.updated_at as updated_at'];
+    ['User.id as id', 'firstname', 'lastname', 'email', 'address', 'job', 'birthday_date', 'gender', 'image_profile', 'image_cover', 'admin', 'User.created_at as created_at', 'User.updated_at as updated_at'];
 
     private int $id;
     private string $firstname;
