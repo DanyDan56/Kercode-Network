@@ -4,7 +4,7 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use Knetwork\Controllers\UserController;
-use Knetwork\Controllers\FrontController;
+use \Knetwork\Controllers\FrontController;
 use Knetwork\Controllers\ArticleController;
 use Knetwork\Controllers\CommentController;
 
