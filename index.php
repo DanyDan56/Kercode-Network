@@ -1,6 +1,5 @@
 <?php
 
-use Knetwork\Models\User;
 use Knetwork\Controllers\UserController;
 use Knetwork\Controllers\FrontController;
 use Knetwork\Controllers\ArticleController;
