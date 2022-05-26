@@ -20,6 +20,7 @@ class AdminController extends Controller
 
         $chartUsers = User::chart(Helper::dateLastWeek());
         $chartArticles = Article::chart(Helper::dateLastWeek());
+        $chartComments = Comment::chart(Helper::dateLastWeek());
 
         include $this->viewAdmin('home');
     }
