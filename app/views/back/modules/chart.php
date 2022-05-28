@@ -5,7 +5,7 @@
 
     <script src="app/public/js/charts.js"></script>
     <script src="app/public/js/libs/canvasjs.min.js"></script>
-    <script type="text/javascript">displayChart(<?= json_encode($chart); ?>, "Courbe d'évolution pour les 31 derniers jours", 'chart');</script>
+    <script type="text/javascript">displayChart(<?= json_encode($chart); ?>, "Statistiques du mois", 'chart');</script>
 </div>
 
 <?php $chart = ob_get_clean(); ?>

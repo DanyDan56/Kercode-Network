@@ -7,7 +7,7 @@
     <?php $articleUser = \Knetwork\Models\User::find($article->__get('user_id')); ?>
 
     <article class="container card-2 white round padding-top margin-bottom">
-        <div class="flex">
+        <div class="flex padding-top">
             <!-- Photo du profil -->
             <a href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><img src="<?= $articleUser->getProfileImage(); ?>" alt="<?= $articleUser->getNames(); ?>" class="circle margin-right w60px h60px"></a>
             
@@ -185,7 +185,7 @@
         
         <!-- Edition d'un nouveau commentaire -->
         <form id="form-comment-<?= $article->__get('id'); ?>" class="flex" action="index.php?action=newcomment&idarticle=<?= $article->__get('id'); ?>" method="POST">
-            <a href="index.php?action=profile"><img src="<?= $user->getProfileImage(); ?>" alt="Photo de profil de <?= $user->getNames(); ?>" class="w40px margin-right-small circle hfit"></a>
+            <a href="index.php?action=profile"><img src="<?= $user->getProfileImage(); ?>" alt="Photo de profil de <?= $user->getNames(); ?>" class="w40px h40px margin-right-small circle hfit"></a>
             <textarea name="new-comment-edit" id="new-comment-edit-<?= $article->__get('id'); ?>" rows='1' class="comment-edit w100 no-resize margin-bottom" placeholder="Ecrivez un commentaire..." data-articleid="<?= $article->__get('id'); ?>"></textarea>
             <button type="submit" class="comment-button"><i class="fa-solid fa-share opacity"></i></button>
         </form>
