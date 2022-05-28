@@ -22,7 +22,7 @@
             <tr class="<?= $i % 2 ? 'theme-l3' : 'theme-l2'; ?>">
                 <td class="center"><?= $u->__get('id'); ?></td>
                 <td>
-                    <img src="<?= $u->getProfileImage(); ?>" alt="Profil" class="w22px circle float-left margin-right-small">
+                    <img src="<?= $u->getProfileImage(); ?>" alt="Profil" class="w22px h22px circle float-left margin-right-small fill">
                     <?= $u->getNames(); ?>
                 </td>
                 <td><?= $u->__get('email'); ?></td>

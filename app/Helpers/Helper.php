@@ -52,19 +52,19 @@ abstract class Helper
         return $str;
     }
 
-    public static function yesterday(string $format = 'Y-m-d'): string
+    public static function yesterday(string $format = 'Y-m-d H:i:s'): string
     {
-        $date = date($format, mktime(0, 0, 0, date('m'), date('d') - 1, date('Y')));
+        $date = date($format, mktime(23, 59, 59, date('m'), date('d') - 1, date('Y')));
 
         return $date;
     }
 
-    public static function getDates(int $days, string $format = 'Y-m-d'): array
+    public static function getDates(int $days, string $format = 'Y-m-d H:i:s'): array
     {
         $dates = [];
 
         for ($i = $days - 1; $i >= 0; $i--) {
-            array_push($dates, date($format, mktime(0, 0, 0, date('m'), date('d') - $i, date('Y'))));
+            array_push($dates, date($format, mktime(23, 59, 59, date('m'), date('d') - $i, date('Y'))));
         }
 
         return $dates;
@@ -75,7 +75,7 @@ abstract class Helper
 
     public static function createDir($path): void
     {
-        if(!mkdir($path, 0700, true)) throw new \Exception("Erreur lors de la création du dossier '" . $path . "'", 3);
+        if(!mkdir($path, 0777, true)) throw new \Exception("Erreur lors de la création du dossier '" . $path . "'", 3);
     }
 
     public static function deleteDir($path): void
@@ -152,7 +152,7 @@ abstract class Helper
         }
 
         // Création du dossier pour la sauvegarde
-        if (!mkdir($path, 0644, true)) throw new \Exception("Erreur lors de la création du dossier '" . $path . "'", 3);
+        if (!mkdir($path, 0777, true)) throw new \Exception("Erreur lors de la création du dossier '" . $path . "'", 3);
 
         // On enregistre les images dans l'espace de l'utilisateur
         $names = [];

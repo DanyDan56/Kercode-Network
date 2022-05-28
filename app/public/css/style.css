@@ -184,6 +184,10 @@
     flex-direction: column;
 }
 
+.flex-align-self-end {
+    align-self: flex-end;
+}
+
 /****************************************
             PAGE CONTAINER
 *****************************************/
@@ -413,12 +417,20 @@ input[type="radio"]:checked:before {
     width: 106px;
 }
 
+.h22px {
+    height: 22px;
+}
+
 .h25 {
     height: 25px;
 }
 
 .h40px {
     height: 40px;
+}
+
+.h60px {
+    height: 60px;
 }
 
 .h106 {
@@ -499,6 +511,10 @@ input[type="radio"]:checked:before {
 
 .padding-top {
     padding-top: 20px;
+}
+
+.padding-bottom {
+    padding-bottom: 30px;
 }
 
 .padding-bottom-large {
@@ -801,6 +817,21 @@ input[type="radio"]:checked:before {
     transition: background-color .3s, color .15s;
 }
 
+.comment-edit {
+    border-right: none;
+    height: 42px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+.comment-button {
+    border: solid 1px rgb(118, 118, 118);
+    border-left: none;
+    height: 42px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
 /****************************************
                  PROFILE
 *****************************************/
@@ -810,7 +841,7 @@ input[type="radio"]:checked:before {
 }
 
 #profile-infos {
-    margin-left: 350px;
+    margin-left: 30px;
 }
 
 .profile-cover {    
@@ -822,11 +853,16 @@ input[type="radio"]:checked:before {
 
 .profile-image {
     display: block;
-    position: absolute;
+    /* position: absolute;
     left: 50px;
-    bottom: -200px;
+    bottom: 150px; */
+    margin-top: -50px;
+    margin-left: 30px;
     width: 250px;
+    height: 250px;
+    object-fit: cover;
     background-color: #fff;
+    z-index: 1;
 }
 
 /****************************************
@@ -1043,6 +1079,17 @@ input[type="radio"]:checked:before {
         order: -1;
     }
 
+    /* Profil */
+    #profile-infos {
+        /* margin-top: 250px; */
+        width: 100%;
+    }
+
+    .profile-image {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     /* Accueil */
     .navbar {
         justify-content: space-between;
@@ -1094,6 +1141,9 @@ input[type="radio"]:checked:before {
 
 /* TABLET */
 @media (min-width: 601px) and (max-width: 992px) {
+    /* .container {
+        width: 100vw;
+    } */
     .hide-medium {
         display: none;
     }

@@ -15,8 +15,6 @@ function displayChart(data, title, containerName)
         value += data[key];
     }
 
-    console.log(dataPoints);
-
     let chartUsers = new CanvasJS.Chart(containerName, {
         animationEnabled: true,
         theme: 'light2',

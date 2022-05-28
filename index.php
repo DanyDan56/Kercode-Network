@@ -6,7 +6,9 @@ require_once __DIR__ . '/vendor/autoload.php';
 date_default_timezone_set('Europe/Paris');
 
 // On démarre la session
-session_start();
+session_start([
+    'cookie_lifetime' => 86400,
+]);
 
 use Knetwork\Controllers\UserController;
 use Knetwork\Controllers\FrontController;

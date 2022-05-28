@@ -9,7 +9,7 @@
     <article class="container card-2 white round padding-top margin-bottom">
         <div class="flex">
             <!-- Photo du profil -->
-            <a href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><img src="<?= $articleUser->getProfileImage(); ?>" alt="<?= $articleUser->getNames(); ?>" class="circle margin-right w60px"></a>
+            <a href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><img src="<?= $articleUser->getProfileImage(); ?>" alt="<?= $articleUser->getNames(); ?>" class="circle margin-right w60px h60px"></a>
             
             <div>
                 <!-- Nom et prénom du profil -->
@@ -93,6 +93,8 @@
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+
+        <!-- <hr class="no-margin margin-bottom"> -->
         
         <!-- Barre d'intéractions -->
         <?php
@@ -100,9 +102,25 @@
         $likes = $article->countLikes();
         $userHasLike = $article->userHasLike($_SESSION['id']);
         ?>
-        <div class="margin-top">
+        <div class="margin-top-small">
+            <!-- Infos Likes et Comments -->
+            <div class="flex opacity-small margin-bottom">
+                <!-- <?php if (count($comments)): ?>
+                    <span><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
+                <?php endif; ?>
+                <?php if (count($comments) && $likes): ?>
+                    <span> - </span>
+                <?php endif; ?> -->
+                <?php if ($likes): ?>
+                    <span><?= $likes ?> <i class="fa fa-thumbs-up text-theme font-large"></i></span>
+                <?php endif; ?>
+                <?php if (count($comments)): ?>
+                    <span class="right"><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
+                <?php endif; ?>
+            </div>
+
             <!-- Boutons Like et Comment -->
-            <form id="form-like-<?= $article->__get('id'); ?>" class="inline" action="index?action=like&id=<?= $article->__get('id'); ?>" method="POST">
+            <form id="form-like-<?= $article->__get('id'); ?>" class="inline" action="index.php?action=like&id=<?= $article->__get('id'); ?>" method="POST">
                 <button type="submit" class="btn btn-like theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-thumbs-up"></i>
                     <?php if (!$userHasLike): ?>&nbsp;J'aime
                     <?php else: ?>&nbsp;Je n'aime plus
@@ -111,21 +129,10 @@
             </form>
             <button type="button" class="btn btn-comment theme-d1 margin-bottom" data-articleid="<?= $article->__get('id'); ?>"><i class="fa fa-comment"></i>&nbsp;&nbsp;Commenter</button>
             
-            <!-- Infos Likes et Comments -->
-            <div class="float-right opacity-small">
-                <?php if (count($comments)): ?>
-                    <span><?= count($comments); ?> commentaire<?= (count($comments) > 1) ? 's' : ''; ?></span>
-                <?php endif; ?>
-                <?php if (count($comments) && $likes): ?>
-                    <span> - </span>
-                <?php endif; ?>
-                <?php if ($likes): ?>
-                    <span><?= $likes ?> <i class="fa fa-thumbs-up text-theme font-large"></i></span>
-                <?php endif; ?>
-            </div>
+            
         </div>
 
-        <hr class="no-margin">
+        <hr class="no-margin margin-bottom">
 
         <!-- Commentaires -->
 
@@ -143,7 +150,7 @@
             for ($i = 0; $i < count($comments); $i++) :
                 $commentUser = $comments[$i]->getUser();?>
                 <div class="comments comment-<?= $article->__get('id'); ?> <?= ($i < count($comments) - 2) ? 'hide' : 'flex' ?>" data-commentid="<?= $comments[$i]->__get('id'); ?>">
-                    <p class="no-margin"><a href="index.php?action=profile&id=<?= $commentUser->__get('id'); ?>"><img src="<?= $commentUser->getProfileImage(); ?>" alt="Photo de profil de <?= $commentUser->getNames(); ?>" class="w40px margin-right-small circle hfit"></a></p>
+                    <p class="no-margin"><a href="index.php?action=profile&id=<?= $commentUser->__get('id'); ?>"><img src="<?= $commentUser->getProfileImage(); ?>" alt="Photo de profil de <?= $commentUser->getNames(); ?>" class="w40px h40px margin-right-small circle"></a></p>
                     <div class="theme-l4 comments-content w100 padding margin-bottom round">
                         <div class="flex flex-justify-between">
                             <p class="no-margin"><a class="bold no-decoration hover-underline" href="index.php?action=profile&id=<?= $commentUser->__get('id'); ?>"><?= $commentUser->getNames(); ?></a></p>
@@ -179,7 +186,8 @@
         <!-- Edition d'un nouveau commentaire -->
         <form id="form-comment-<?= $article->__get('id'); ?>" class="flex" action="index.php?action=newcomment&idarticle=<?= $article->__get('id'); ?>" method="POST">
             <a href="index.php?action=profile"><img src="<?= $user->getProfileImage(); ?>" alt="Photo de profil de <?= $user->getNames(); ?>" class="w40px margin-right-small circle hfit"></a>
-            <textarea name="new-comment-edit" id="new-comment-edit-<?= $article->__get('id'); ?>" rows='1' class="comment-edit w100 no-resize margin-bottom round" placeholder="Ecrivez un commentaire..." data-articleid="<?= $article->__get('id'); ?>"></textarea>
+            <textarea name="new-comment-edit" id="new-comment-edit-<?= $article->__get('id'); ?>" rows='1' class="comment-edit w100 no-resize margin-bottom" placeholder="Ecrivez un commentaire..." data-articleid="<?= $article->__get('id'); ?>"></textarea>
+            <button type="submit" class="comment-button"><i class="fa-solid fa-share opacity"></i></button>
         </form>
     </article>
 

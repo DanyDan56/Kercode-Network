@@ -7,7 +7,7 @@
         <?php if (isset($_GET['action']) && $_GET['action'] == "profile"): ?>
             <p class="center bold">Informations</p>
         <?php else: ?>
-            <p class="center"><img src="<?= $user->getProfileImage(); ?>" alt="<?= $user->getNames(); ?>" class="circle w106 h106"></p>
+            <p class="center"><img src="<?= $user->getProfileImage(); ?>" alt="<?= $user->getNames(); ?>" class="circle w106 h106 fill"></p>
             <p class="center"><a href="index.php?action=profile&id=<?= $user->__get('id'); ?>" class="no-decoration hover-underline font-xlarge"><?= $user->getNames(); ?></a></p>
         <?php endif; ?>
         <hr>

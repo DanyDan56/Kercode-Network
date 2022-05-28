@@ -42,7 +42,7 @@
         </li>
         <li class="right dropdown-hover">
             <a href="#" class="image-profile hover-white" title="Mon compte">
-                <img src="<?= $user->getProfileImage(); ?>" alt="<?= $user->getNames(); ?>" class="circle">
+                <img src="<?= $user->getProfileImage(); ?>" alt="<?= $user->getNames(); ?>" class="circle fill">
             </a>
             <div class="dropdown-content dropdown-content-right dropdown-anim white card-4">
                 <?php if ($user->isAdmin()): ?>

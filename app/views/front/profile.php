@@ -19,7 +19,7 @@ include 'modules/friends_request.php';
         <hr>
     </header>
     <div class="flex">
-        <div class="col m3 margin-top-large">
+        <div class="hide-small col m3 margin-top-large">
             <?php
             // Si on est sur la page de profil d'une autre personne
             if (isset($_GET['id'])) {

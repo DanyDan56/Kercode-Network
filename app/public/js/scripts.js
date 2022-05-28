@@ -314,9 +314,11 @@ function toggleBurger() {
 
 window.addEventListener('resize', () => {
     if (window.innerWidth > 992) {
-        adminMenu.classList.remove('slide-in');
-        adminMenu.classList.remove('slide-out');
-        adminBurger.classList.remove('slide-in-burger');
-        adminBurger.classList.remove('slide-out-burger');
+        if (adminMenu && adminBurger) {
+            adminMenu.classList.remove('slide-in');
+            adminMenu.classList.remove('slide-out');
+            adminBurger.classList.remove('slide-in-burger');
+            adminBurger.classList.remove('slide-out-burger');
+        }
     }
 });

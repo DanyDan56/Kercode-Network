@@ -10,7 +10,7 @@ class FrontController extends Controller
     public function home(): void
     {
         $user = User::find($_SESSION['id']);
-        $articles = Article::getAll(null, 'created_at', true, 10);
+        $articles = Article::getAll(null, 'created_at', true, 50);
 
         include $this->view('home');
     }

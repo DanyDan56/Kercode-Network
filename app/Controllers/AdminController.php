@@ -18,7 +18,7 @@ class AdminController extends Controller
         $nbUsers = User::total();
         $nbArticles = Article::total();
         $nbComments = Comment::total();
-        $nbImages = Article::total('id', 'article_image');
+        $nbImages = Article::total('id', 'Article_Image');
 
         // Statistique = Dernière 24h
         $betweenYesterday = [Helper::yesterday(), date('Y-m-d H:i:s', time())];
@@ -31,7 +31,7 @@ class AdminController extends Controller
         $chartUsers = User::chart(Helper::getDates(7));
         $chartArticles = Article::chart(Helper::getDates(7));
         $chartComments = Comment::chart(Helper::getDates(7));
-        $chartInteractions = Article::chart(Helper::getDates(7), 'article_user_interaction');
+        $chartInteractions = Article::chart(Helper::getDates(7), 'Article_User_Interaction');
 
         include $this->viewAdmin('home');
     }

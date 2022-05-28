@@ -45,7 +45,7 @@
             </a>
         </li>
         <li class="navbar-item margin-top">
-            <div class="margin-right-small"><img src="<?= $user->getProfileImage(); ?>" alt="Profil" class="w25px circle float-left"></div>
+            <div class="margin-right-small"><img src="<?= $user->getProfileImage(); ?>" alt="Profil" class="w25px h25 circle float-left fill"></div>
             <p class="no-margin"><?= $user->__get('firstname'); ?></p>
             <a href="index.php?action=disconnect" class="font-small right" style="width:min-content" title="Déconnexion"><i class="fa fa-right-from-bracket float-right"></i></a>
         </li>

@@ -97,17 +97,17 @@ class User extends Model
     {
         // On copie le tableau de correspondance et on lui ajoute les stats qu'on veut récupérer en plus
         $data = array_slice(self::$data, 0);
-        array_push($data, 'COUNT(article.id) as countArticles', 'req.comment_id as countComments');
+        array_push($data, 'COUNT(Article.id) as countArticles', 'req.comment_id as countComments');
 
-        $subQuery = parent::select(['COUNT(comment.id) as comment_id', 'user_id'], 'comment').
-                    parent::rightJoin('user', 'comment.user_id', 'user.id').
-                    parent::groupBy('user.id');
+        $subQuery = parent::select(['COUNT(Comment.id) as comment_id', 'user_id'], 'Comment').
+                    parent::rightJoin('User', 'Comment.user_id', 'User.id').
+                    parent::groupBy('User.id');
 
         $query = parent::select($data).
-                 parent::leftJoin('article', 'user.id', 'article.user_id').
-                 parent::leftJoinSubQuery($subQuery, 'req', 'req.user_id', 'user.id').
-                 parent::groupBy('user.id').
-                 parent::order('user.created_at', true);
+                 parent::leftJoin('Article', 'User.id', 'Article.user_id').
+                 parent::leftJoinSubQuery($subQuery, 'req', 'req.user_id', 'User.id').
+                 parent::groupBy('User.id').
+                 parent::order('User.created_at', true);
         
         if ($limit) parent::limit($limit);
         
@@ -138,9 +138,9 @@ class User extends Model
         $this->createdAt = $data['created_at'];
         $this->updatedAt = $data['updated_at'];
         $this->admin = $data['admin'];
-        if (isset($data['password'])) $this->password = $data['password'];/*  : $this->password = ""; */
-        if (isset($data['countArticles'])) $this->countArticles = $data['countArticles'];/*  : $this->countArticles = 0; */
-        if (isset($data['countComments'])) $this->countComments = $data['countComments'];/*  : $this->countComments = 0; */
+        if (isset($data['password'])) $this->password = $data['password'];
+        if (isset($data['countArticles'])) $this->countArticles = $data['countArticles'];
+        if (isset($data['countComments'])) $this->countComments = $data['countComments'];
 
         // On créé la session
         if (!isset($_SESSION['id'])) $this->createSession();
@@ -210,7 +210,7 @@ class User extends Model
     public function getProfileImage(): string
     {
         isset($this->profileImage) ?
-            $path = "app/private/images/users/" . $this->id . '/' . $this->profileImage :
+            $path = $this->getDirPath() . '/' . $this->profileImage :
             $path = "app/public/images/examples/img_avatar2.png";
         
         return $path;

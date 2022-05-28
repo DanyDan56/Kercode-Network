@@ -45,12 +45,12 @@
                 <input type="hidden" name="MAX_FILE_SIZE" value="2000000"> <!-- Max Size 2mo -->
                 <input type="file" name="image_profile" id="image_profile" accept=".png, .jpg, .jpeg">
                 <!-- Birthday Date -->
-                <label for="birthday">Date de naissance</label>
+                <label for="birthday" class="w100">Date de naissance</label>
                 <input type="date" name="birthday" id="birthday" class="w100 margin-bottom" required>
 
                 <!-- TODO: RGPD -->
                 <button type="submit" class="btn btn-block green">S'inscrire</button>
-                <p class="w100 center"><a href="index.php" title="Connectez-vous">Vous posséedez déjà un compte ? Connectez-vous</a></p>
+                <p class="w100 center"><a href="index.php" title="Connectez-vous">Vous possédez déjà un compte ? Connectez-vous</a></p>
             </form>
         </div>
     </div>
