@@ -4,6 +4,7 @@
 
 .green,
 button.green,
+a.green,
 .hover-green:hover {
     color: #fff;
     background-color: #4caf50;
@@ -16,7 +17,8 @@ button.green,
 
 .red,
 button.red,
-.hover-red:hover {
+.hover-red:hover,
+.dropdown-content a.hover-red:hover {
     color: #fff;
     background-color: #f44336;
 }
@@ -27,7 +29,8 @@ button.red,
 }
 
 .blue,
-.hover-blue:hover {
+.hover-blue:hover,
+.dropdown-content a.hover-blue:hover {
     color: #fff;
     background-color: #298dff;
 }
