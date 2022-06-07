@@ -1,3 +1,5 @@
+![image de démo](/app/public/images/demo.jpg)
+
 [![Maintainability](https://api.codeclimate.com/v1/badges/0f806d33a98fd3f007de/maintainability)](https://codeclimate.com/github/DanyDan56/Kercode-Network/maintainability)
 
 # Kercode-Network
@@ -34,8 +36,6 @@ Pour me faciliter le développement du site, j'ai créé quelques outils maison 
 - Système de notifications.
 - Gestion des évènements à venir.
 - Messagerie / Chat interne.
-
-![image de démo](/app/public/images/demo.jpg)
 
 ## Installation
 
