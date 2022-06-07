@@ -7,8 +7,8 @@
         <br>
         <span>User Three</span>
         <div class="flex opacity">
-            <button class="btn btn-block green section" title="Accepter"><i class="fa fa-check"></i></button>
-            <button class="btn btn-block red section" title="Refuser"><i class="fa fa-remove"></i></button>
+            <button class="section btn btn-block green" title="Accepter"><i class="fa fa-check"></i></button>
+            <button class="section btn btn-block red" title="Refuser"><i class="fa fa-remove"></i></button>
         </div>
     </div>
 </aside>

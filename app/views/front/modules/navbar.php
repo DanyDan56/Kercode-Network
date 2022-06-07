@@ -1,7 +1,7 @@
 <?php ob_start(); ?>
 
 <nav class="fixed-top">
-    <ul class="navbar theme-d2 font-large">
+    <ul class="navbar theme-d2 font-xlarge">
         <!-- Navbar for tablet & desktop display -->
         <li class="hide-small">
             <?php if ($user->isAdmin()): ?>

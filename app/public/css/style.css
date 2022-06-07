@@ -3,31 +3,33 @@
 *****************************************/
 
 .green,
+button.green,
 .hover-green:hover {
-    color: #fff !important;
-    background-color: #4caf50 !important;
+    color: #fff;
+    background-color: #4caf50;
 }
 
 .text-green,
 .hover-text-green:hover {
-    color: #4caf50 !important;
+    color: #4caf50;
 }
 
 .red,
+button.red,
 .hover-red:hover {
-    color: #fff !important;
-    background-color: #f44336 !important;
+    color: #fff;
+    background-color: #f44336;
 }
 
 .text-red,
 .hover-text-red:hover {
-    color: #f44336 !important;
+    color: #f44336;
 }
 
 .blue,
 .hover-blue:hover {
-    color: #fff !important;
-    background-color: #298dff !important;
+    color: #fff;
+    background-color: #298dff;
 }
 
 .text-blue,
@@ -37,18 +39,18 @@
 
 .gray,
 .hover-gray:hover {
-    background-color: #CCC !important;
+    background-color: #CCC;
 }
 
 .text-gray,
 .hover-text-gray:hover {
-    color: #757575 !important;
+    color: #757575;
 }
 
 .white,
 .hover-white:hover {
     color: #000;
-    background-color: #fff !important;
+    background-color: #fff;
 }
 
 .yellow,
@@ -498,15 +500,15 @@ input[type="radio"]:checked:before {
 }
 
 .padding {
-    padding: 8px 16px !important;
+    padding: 8px 16px;
 }
 
 .padding-medium {
-    padding: 10px 20px !important;
+    padding: 10px 20px;
 }
 
 .padding-large {
-    padding: 12px 24px !important;
+    padding: 12px 24px;
 }
 
 .padding-top {
@@ -934,7 +936,7 @@ input[type="radio"]:checked:before {
 
 .navbar li a {
     display: block;
-    padding: 8px 16px;
+    padding: 12px 20px;
 }
 
 .navbar li a:hover,
@@ -944,7 +946,7 @@ input[type="radio"]:checked:before {
 }
 
 .navbar li a.image-profile {
-    padding: 4px 16px;
+    padding: 5px 16px;
 }
 
 .navbar li a.image-profile img {
@@ -1220,3 +1222,23 @@ input[type="radio"]:checked:before {
     .col.l11 {width: 91.66666%;}
     .col.l12 {width: 99.99999%;}
 }
+
+
+/****************************************
+                 THEME
+*****************************************/
+
+.theme-l5 {color: #000; background-color: #f5f7f8;}
+.theme-l4 {color: #000; background-color: #dfe5e8;}
+.theme-l3 {color: #000; background-color: #becbd2;}
+.theme-l2 {color: #000; background-color: #9eb1bb;}
+.theme-l1 {color: #fff; background-color: #7d97a5;}
+.theme-d1 {color: #fff; background-color: #57707d;}
+.theme-d2 {color: #fff; background-color: #4d636f;}
+.theme-d3 {color: #fff; background-color: #435761;}
+.theme-d4 {color: #fff; background-color: #3a4b53;}
+.theme-d5 {color: #fff; background-color: #303e45;}
+
+.theme {color: #fff; background-color: #607d8b;}
+.text-theme {color:  #607d8b;}
+.theme-border {border-color: #607d8b;}

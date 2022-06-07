@@ -7,7 +7,7 @@
     <?php $articleUser = \Knetwork\Models\User::find($article->__get('user_id')); ?>
 
     <article class="container card-2 white round padding-top margin-bottom">
-        <div class="flex padding-top">
+        <div class="flex">
             <!-- Photo du profil -->
             <a href="index.php?action=profile&id=<?= $articleUser->__get('id'); ?>"><img src="<?= $articleUser->getProfileImage(); ?>" alt="<?= $articleUser->getNames(); ?>" class="circle margin-right w60px h60px"></a>
             

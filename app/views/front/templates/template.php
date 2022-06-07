@@ -13,7 +13,7 @@
     <!-- Custom Style -->
     <link rel="stylesheet" href="app/public/css/style.css">
     <!-- Custom Theme -->
-    <link rel="stylesheet" href="app/public/css/theme.css">
+    <!-- <link rel="stylesheet" href="app/public/css/theme.css"> -->
 </head>
 
 <body class="theme-l5">
